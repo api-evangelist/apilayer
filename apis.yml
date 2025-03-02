@@ -5,7 +5,9 @@ apis:
   - aid: apilayer:apilayer
     name: APILayer
     tags:
-      - API
+      - Discovery
+      - Catalog
+      - Marketplace
     humanURL: ' https://apilayer.com/'
     properties:
       - url: ' https://apilayer.com/'
