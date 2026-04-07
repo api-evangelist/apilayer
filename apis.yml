@@ -5,8 +5,8 @@ apis:
   - aid: apilayer:apilayer
     name: APILayer
     tags:
-      - Discovery
       - Catalog
+      - Discovery
       - Marketplace
     humanURL: ' https://apilayer.com/'
     properties:
@@ -16,8 +16,8 @@ apis:
       Discover.Integrate.Build.
 name: APILayer
 tags:
-  - Discovery
   - Catalog
+  - Discovery
   - Marketplace
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
