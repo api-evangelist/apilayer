@@ -12,7 +12,8 @@ apis:
     properties:
       - url: ' https://apilayer.com/'
         type: Documentation
-    description: 'Discover.Integrate.Build. '
+    description: >-
+      Discover.Integrate.Build.
 name: APILayer
 tags:
   - Discovery
@@ -25,15 +26,12 @@ created: '2025-03-01'
 modified: '2025-03-01'
 position: Consumer
 description: >-
-  APILayer is a technology company that specializes in providing easy access to
-  high-quality, reliable API services for developers and businesses. Their
-  platform offers a wide range of APIs that cover various categories such as
-  weather, geolocation, currency exchange, and more. With a focus on simplicity
-  and affordability, APILayer aims to empower developers to easily integrate
-  these APIs into their applications, saving time and resources. By offering a
-  seamless and efficient API solution, APILayer helps businesses enhance their
-  products and services, ultimately leading to improved customer satisfaction
-  and business success.
+  APILayer is a technology company that specializes in providing easy access to high-quality,
+  reliable API services for developers and businesses. Their platform offers a wide
+  range of APIs that cover various categories such as weather, geolocation, currency
+  exchange, and more. With a focus on simplicity and affordability, APILayer aims
+  to empower developers to easily integrate these APIs into their applications, saving
+  time and resources.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
