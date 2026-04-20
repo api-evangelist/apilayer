@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/apilayer/main/json-schema/apilayer-api-schema.json",
+  "title": "APILayer API",
+  "description": "Schema representing an API available on the APILayer marketplace",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the API"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the API"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the API and its capabilities"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category of the API (e.g., Geolocation, Currency, Weather)"
+    },
+    "baseURL": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL for API requests"
+    },
+    "documentationURL": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to the API documentation"
+    },
+    "authentication": {
+      "type": "object",
+      "description": "Authentication details for the API",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["apikey", "bearer"],
+          "description": "Authentication type"
+        },
+        "headerName": {
+          "type": "string",
+          "description": "Header name for API key authentication"
+        }
+      }
+    },
+    "plans": {
+      "type": "array",
+      "description": "Available subscription plans for this API",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "monthlyRequests": { "type": "integer" },
+          "pricePerMonth": { "type": "number" }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags describing the API"
+    }
+  },
+  "required": ["id", "name", "description", "category", "baseURL"]
+}

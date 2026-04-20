@@ -1,0 +1,30 @@
+{
+  "id": "ipstack",
+  "name": "IPstack",
+  "description": "Real-time IP geolocation API providing country, region, city, zip code, latitude, longitude, and timezone data from any IP address.",
+  "category": "Geolocation",
+  "baseURL": "https://api.ipstack.com",
+  "documentationURL": "https://ipstack.com/documentation",
+  "authentication": {
+    "type": "apikey",
+    "headerName": "access_key"
+  },
+  "plans": [
+    {
+      "name": "Free",
+      "monthlyRequests": 1000,
+      "pricePerMonth": 0.0
+    },
+    {
+      "name": "Basic",
+      "monthlyRequests": 100000,
+      "pricePerMonth": 9.99
+    },
+    {
+      "name": "Professional",
+      "monthlyRequests": 1000000,
+      "pricePerMonth": 49.99
+    }
+  ],
+  "tags": ["geolocation", "ip-address", "location", "timezone"]
+}

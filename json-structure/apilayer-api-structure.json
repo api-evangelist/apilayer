@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/apilayer/main/json-structure/apilayer-api-structure.json",
+  "title": "APILayer API",
+  "description": "Structure representing an API available on the APILayer marketplace",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the API"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the API"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the API and its capabilities"
+    },
+    "category": {
+      "type": "string",
+      "description": "Category of the API"
+    },
+    "baseURL": {
+      "type": "string",
+      "description": "Base URL for API requests"
+    },
+    "documentationURL": {
+      "type": "string",
+      "description": "URL to the API documentation"
+    },
+    "authentication": {
+      "type": "object",
+      "description": "Authentication details for the API",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Authentication type"
+        },
+        "headerName": {
+          "type": "string",
+          "description": "Header name for API key authentication"
+        }
+      }
+    },
+    "plans": {
+      "type": "array",
+      "description": "Available subscription plans",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "monthlyRequests": { "type": "int32" },
+          "pricePerMonth": { "type": "double" }
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags describing the API"
+    }
+  }
+}

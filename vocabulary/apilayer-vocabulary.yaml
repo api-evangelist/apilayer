@@ -1,0 +1,80 @@
+vocabulary:
+  name: APILayer Vocabulary
+  description: Unified taxonomy mapping API marketplace resources, categories, and personas across the APILayer platform domain
+  version: 1.0.0
+  updated: '2026-04-19'
+
+resources:
+  - name: API
+    description: An individual API available on the APILayer marketplace
+    properties:
+      - id
+      - name
+      - description
+      - category
+      - baseURL
+      - documentationURL
+      - authentication
+      - plans
+      - tags
+
+  - name: Category
+    description: A classification grouping related APIs in the marketplace
+    values:
+      - Dev Tools
+      - Marketing
+      - Finance
+      - Geolocation
+      - Scraping
+      - Security
+      - Business
+      - Communication
+      - AI/ML
+      - Weather
+      - Currency
+      - Files
+
+  - name: Plan
+    description: A subscription plan tier for an individual API
+    properties:
+      - name
+      - monthlyRequests
+      - pricePerMonth
+
+  - name: Subscription
+    description: A developer's active subscription to an API on the marketplace
+    properties:
+      - apiId
+      - planName
+      - startDate
+      - requestsUsed
+      - requestsRemaining
+
+actions:
+  - name: Discover
+    description: Browse and search APIs available in the marketplace
+  - name: Subscribe
+    description: Subscribe to an API plan to gain access
+  - name: Integrate
+    description: Integrate an API into an application using the provided credentials
+  - name: Monitor
+    description: Track API usage and request counts via the dashboard
+
+personas:
+  - name: Developer
+    description: An individual developer building applications using marketplace APIs
+  - name: Business
+    description: A business or team consuming multiple APIs for operational use cases
+
+apis:
+  - name: APILayer Marketplace
+    description: The central marketplace hosting 100+ APIs across diverse categories
+    baseURL: https://api.apilayer.com
+    categories:
+      - Dev Tools
+      - Geolocation
+      - Currency
+      - Weather
+      - Finance
+      - Security
+      - Marketing
