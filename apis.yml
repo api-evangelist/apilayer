@@ -42,7 +42,7 @@ apis:
         url: https://apilayer.com/pricing
       - type: JSONSchema
         url: json-schema/apilayer-api-schema.json
-      - type: JSON-LD
+      - type: JSONLD
         url: json-ld/apilayer-context.jsonld
 common:
   - type: Website
