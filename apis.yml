@@ -45,6 +45,10 @@ apis:
       - type: JSONLD
         url: json-ld/apilayer-context.jsonld
 common:
+  - type: GitHubOrganization
+    url: https://github.com/apilayer
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/apilayer
   - type: Website
     url: https://apilayer.com/
   - type: Documentation
