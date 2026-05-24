@@ -113,6 +113,8 @@ common:
         description: Higher volume plans for production applications requiring reliable API access.
       - name: Enterprise Plan
         description: Custom volume and SLA guarantees for enterprise-scale API consumption.
+  - type: LLMsTxt
+    url: https://apilayer.com/llms.txt
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
