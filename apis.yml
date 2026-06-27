@@ -55,7 +55,7 @@ common:
     url: https://apilayer.com/
   - type: Pricing
     url: https://apilayer.com/pricing
-  - type: SignUp
+  - type: Signup
     url: https://apilayer.com/signup
   - type: Login
     url: https://apilayer.com/login
@@ -113,7 +113,7 @@ common:
         description: Higher volume plans for production applications requiring reliable API access.
       - name: Enterprise Plan
         description: Custom volume and SLA guarantees for enterprise-scale API consumption.
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://apilayer.com/llms.txt
 maintainers:
   - FN: Kin Lane
