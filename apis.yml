@@ -45,6 +45,8 @@ apis:
       - type: JSONLD
         url: json-ld/apilayer-context.jsonld
 common:
+  - type: DomainSecurity
+    url: security/apilayer-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/apilayer
   - type: LinkedIn
