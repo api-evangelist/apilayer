@@ -1,0 +1,52 @@
+# APILayer
+
+> APILayer is a unified API marketplace: one account, one API key, and one dashboard unlock production-ready REST APIs for geolocation, finance, news, aviation, scraping, and data validation. Trusted by 2.2M+ developers handling 30M+ API calls per month. Every API is manually reviewed for quality, reliability, and performance, and free plans are available on every API. APILayer is an Idera, Inc. brand.
+
+The APILayer suite includes IPstack (IP geolocation), Positionstack (forward/reverse geocoding), Scrapestack (proxy and web scraping), Marketstack (stock market data), Mediastack (news data), Aviationstack (flight data), Mailboxlayer (email validation), Countrylayer (country data), and Serpstack (Google search results data). Each API has its own pricing plans; signup is free with no credit card required at https://app.apilayer.com/signup.
+
+## Getting Started
+- [APILayer Homepage](https://apilayer.com/): Main site — one account, one API key, every API you need
+- [All Products](https://apilayer.com/products/): Browse the complete API portfolio by category
+- [Documentation Hub](https://docs.apilayer.com/): Unified documentation for every APILayer API — organized, searchable, with changelogs
+- [Sign Up](https://app.apilayer.com/signup): Create a free account — no credit card required
+- [Login](https://app.apilayer.com/login): Access your dashboard, API keys, and usage
+
+## Geolocation APIs
+- [IPstack](https://apilayer.com/products/ipstack): Locate and identify website visitors by IP address — 2M+ locations, IPv4/IPv6, VPN/proxy detection
+- [IPstack Documentation](https://docs.apilayer.com/apilayer/docs/ipstack): IPstack API reference and integration guides
+- [Positionstack](https://apilayer.com/products/positionstack): Accurate forward and reverse batch geocoding REST API covering 2B+ addresses and places
+- [Positionstack Documentation](https://docs.apilayer.com/apilayer/docs/positionstack): Forward/reverse geocoding endpoints, authentication, and errors
+- [Aviationstack](https://apilayer.com/products/aviationstack): Free, real-time flight status and global aviation data API — flights, airlines, airports, routes
+- [Aviationstack Documentation](https://docs.apilayer.com/apilayer/docs/aviationstack): Flight tracking endpoints and parameters
+
+## Scraping APIs
+- [Scrapestack](https://apilayer.com/products/scrapestack): Real-time, scalable proxy and web scraping REST API — 35M+ IPs, JavaScript rendering, CAPTCHA handling
+- [Scrapestack Documentation](https://docs.apilayer.com/apilayer/docs/scrapestack): Scraping endpoints, JavaScript rendering, POST requests, and premium proxies
+- [Serpstack](https://apilayer.com/products/serpstack): Real-time, accurate Google search results (SERP) API
+- [Serpstack Documentation](https://docs.apilayer.com/apilayer/docs/serpstack): SERP endpoints, search parameters, and result objects
+
+## Finance APIs
+- [Marketstack](https://apilayer.com/products/marketstack): Real-time, intraday, and historical stock market data — 170,000+ tickers across 70 global exchanges, 30+ years of history
+- [Marketstack Documentation](https://docs.apilayer.com/apilayer/docs/marketstack): EOD, intraday, tickers, indices, and EDGAR filing endpoints
+
+## News APIs
+- [Mediastack](https://apilayer.com/products/mediastack): Free, simple REST API for live news and blog articles from 7,500+ sources
+- [Mediastack Documentation](https://docs.apilayer.com/apilayer/docs/mediastack): Live news, historical news, and sources endpoints
+
+## Business & Data Validation APIs
+- [Mailboxlayer](https://apilayer.com/products/mailboxlayer): Validates and verifies email addresses — syntax, typo, and SMTP checks assessing deliverability and quality
+- [Mailboxlayer Documentation](https://docs.apilayer.com/apilayer/docs/mailboxlayer): Email validation endpoint, parameters, scoring, and disposable-provider detection
+- [Countrylayer](https://apilayer.com/products/countrylayer): Reliable real-time country data API — capitals, currencies, languages, populations in lightweight JSON
+- [Countrylayer Documentation](https://docs.apilayer.com/apilayer/docs/countrylayer): Country lookup endpoints by name, capital, language, currency, region, and codes
+
+## Support
+- [Contact Sales](https://apilayer.com/support): Sales and enterprise inquiries
+- [Helpdesk](https://apilayer.com/contact-us): Technical support contact
+- [FAQs](https://apilayer.com/faqs/): Common questions on accounts, pricing, and integration
+- [Discord Community](https://discord.com/invite/hgjA78638n): Developer community and support chat
+
+## Optional
+- [Blog](https://blog.apilayer.com/): API tutorials, guides, and product updates
+- [GitHub](https://github.com/apilayer/): Official APILayer repositories and SDKs
+- [Enterprise](https://apilayer.com/enterprise/): Enterprise plans with unified reporting and reliability guarantees
+- [Affiliates](https://apilayer.com/affiliates/): APILayer affiliate program
