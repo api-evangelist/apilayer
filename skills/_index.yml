@@ -1,0 +1,27 @@
+generated: '2026-09-12'
+method: generated
+source: openapi/apilayer-*-openapi.yml, conventions/apilayer-conventions.yml,
+  errors/apilayer-error-codes.yml, rate-limits/apilayer-rate-limits.yml
+provider: APILayer
+providerId: apilayer
+note: >-
+  APILayer publishes no AGENTS.md and no skills of its own; searched 2026-09-12. These three are
+  generated from the captured contracts. Every operationId named in them is verified against the
+  published OpenAPI, and every error type is taken from APILayer's own response examples.
+skills:
+  - name: apilayer-convert-currency
+    file: apilayer-convert-currency.md
+    api: Exchange Rates API / ExchangeRate.host API
+    operations: [exchangeratesapiConvert, exchangeratehostConvert, exchangeratesapiSymbols]
+  - name: apilayer-historical-fx-series
+    file: apilayer-historical-fx-series.md
+    api: Exchange Rates API / ExchangeRate.host API
+    operations: [exchangeratesapiTimeseries, exchangeratesapiFluctuation, exchangeratesapiHistorical,
+      exchangeratesapiLatest, exchangeratehostTimeframe, exchangeratehostChange,
+      exchangeratehostHistorical, exchangeratehostLive]
+  - name: apilayer-geolocate-ip
+    file: apilayer-geolocate-ip.md
+    api: ipapi
+    operations: [ipapiIPLookup, ipapiCheckRequesterIPLookup]
+skill_count: 3
+checked: '2026-09-12'

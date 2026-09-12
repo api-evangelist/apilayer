@@ -1,0 +1,39 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for ExchangeRate.host API
+  version: 1.0.0
+extends: ../openapi/apilayer-exchangerate-openapi.yml
+x-generated: '2026-09-12'
+x-method: generated
+x-source: derived from the provider spec plus the probed artifacts in this repo; the original spec is
+  never mutated
+actions:
+- target: $.info
+  description: Record where this contract was harvested from and who publishes it.
+  update:
+    x-apis-io-provider: apilayer
+    x-apis-io-source: https://docs.apilayer.com/exchangerate/docs/api-documentation
+    x-apis-io-harvested: '2026-09-12'
+- target: $
+  description: Declare the account-wide query-string API key that every operation requires but the source
+    spec does not declare as a securityScheme.
+  update:
+    x-apilayer-auth:
+      scheme: apiKey
+      in: query
+      name: access_key
+      artifact: authentication/apilayer-authentication.yml
+- target: $
+  description: Point at the derived error catalog; the source spec carries examples but no consolidated
+    registry.
+  update:
+    x-error-catalog: errors/apilayer-error-codes.yml
+    x-error-envelope: '{"success": false, "error": {"code": <int>, "type": "<slug>", "info": "<sentence>"}}'
+    x-status-code-fidelity: observed 200 on auth failure; branch on the success boolean, not the HTTP
+      status
+- target: $
+  description: Record the read-only nature of the surface for agent planning.
+  update:
+    x-write-surface: false
+    x-idempotency: na (no mutating operations)
+    x-reversibility: na (no mutating operations)

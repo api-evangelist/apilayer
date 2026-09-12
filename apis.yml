@@ -1,11 +1,14 @@
 aid: apilayer
 name: APILayer
-description: >-
-  APILayer is an API marketplace and hub that enables developers to discover,
-  integrate, and build with high-quality, reliable API services. The platform
-  hosts 100+ APIs across categories including geolocation, currency, weather,
-  dev tools, marketing, finance, security, and AI/ML, serving 445,000+
-  developers with 30 million+ API calls monthly.
+description: APILayer is an API marketplace and hub, an Idera, Inc. brand headquartered in Vienna, Austria,
+  that publishes and operates a portfolio of self-service REST data APIs alongside a gateway marketplace
+  of third-party APIs. The house products cover IP geolocation (IPstack, ipapi), foreign exchange (Fixer,
+  Currencylayer, ExchangeRate.host, Exchange Rates API), weather (Weatherstack), market data (Marketstack),
+  news (Mediastack), aviation (Aviationstack), scraping and SERP (Scrapestack, Serpstack), and validation
+  utilities (Numverify, Mailboxlayer, Vatlayer, Userstack, Countrylayer, Positionstack, Pdflayer, Screenshotlayer).
+  One account and one dashboard cover every product, each product is keyed and billed separately, and
+  every API has a free plan. APILayer publishes 22 OpenAPI documents from its own SwaggerHub organization,
+  an llms.txt, and an OAuth-protected hosted MCP server.
 type: Index
 deliveryModel:
   model: saas
@@ -32,114 +35,251 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/apilayer.png
 tags:
-  - API Catalog
-  - API Discovery
-  - API Marketplace
-  - Developer Tools
-  - SaaS APIs
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/apilayer/refs/heads/main/apis.yml
+- API Marketplace
+- API Catalog
+- API Discovery
+- Developer Tools
+- SaaS APIs
+- Geolocation
+- Currency
+- Data APIs
+url: https://raw.githubusercontent.com/api-evangelist/apilayer/refs/heads/main/apis.yml
 created: '2025-03-01'
-modified: '2026-04-19'
+modified: '2026-09-12'
 specificationVersion: '0.23'
 apis:
-  - aid: apilayer:apilayer-api
-    name: APILayer Marketplace API
-    description: >-
-      The APILayer Marketplace API provides access to 100+ APIs across
-      geolocation, currency, weather, dev tools, marketing, finance, security,
-      and AI/ML categories. Individual APIs include IPstack, Fixer,
-      Currencylayer, Weatherstack, Serpstack, Mediastack, and many more,
-      each with their own endpoints and authentication.
-    humanURL: https://apilayer.com/
-    baseURL: https://api.apilayer.com
-    tags:
-      - API Marketplace
-      - Currency
-      - Geolocation
-      - Weather
-    properties:
-      - type: Documentation
-        url: https://apilayer.com/
-      - type: Pricing
-        url: https://apilayer.com/pricing
-      - type: JSONSchema
-        url: json-schema/apilayer-api-schema.json
-      - type: JSONLD
-        url: json-ld/apilayer-context.jsonld
-common:
-  - type: DomainSecurity
-    url: security/apilayer-domain-security.yml
-  - type: GitHubOrganization
-    url: https://github.com/apilayer
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/apilayer
-  - type: Website
-    url: https://apilayer.com/
+- aid: apilayer:apilayer-api
+  name: APILayer Marketplace API
+  description: The APILayer marketplace gateway at api.apilayer.com fronts the third-party APIs listed
+    on marketplace.apilayer.com (Bank Data, Tax Data and others) behind a single subscription. Authentication
+    here is an `apikey` REQUEST HEADER, not the `access_key` query parameter the house products use, and
+    unlike those products the gateway returns a real HTTP 401 on an invalid credential.
+  humanURL: https://marketplace.apilayer.com/
+  baseURL: https://api.apilayer.com
+  tags:
+  - API Marketplace
+  - Currency
+  - Geolocation
+  - Weather
+  properties:
   - type: Documentation
-    url: https://apilayer.com/
+    url: https://marketplace.apilayer.com/
+  - type: JSONSchema
+    url: json-schema/apilayer-api-schema.json
+  - type: JSONLD
+    url: json-ld/apilayer-context.jsonld
+- aid: apilayer:exchangerate-host-api
+  name: ExchangeRate.host API
+  description: Real-time and historical foreign exchange rates for 168 world currencies, with live quotes,
+    single-day historical rates, date-range time frames, change queries and currency conversion. Five
+    GET endpoints, authenticated with an access_key query parameter.
+  humanURL: https://exchangerate.host/
+  baseURL: https://api.exchangerate.host
+  tags:
+  - Currency
+  - Foreign Exchange
+  - Financial Data
+  properties:
+  - type: OpenAPI
+    url: openapi/apilayer-exchangerate-openapi.yml
+  - type: Overlay
+    url: overlays/apilayer-exchangerate-overlay.yaml
+  - type: Documentation
+    url: https://docs.apilayer.com/exchangerate/docs/api-documentation
+  - type: APIReference
+    url: https://docs.apilayer.com/exchangerate/docs/api-documentation
   - type: Pricing
-    url: https://apilayer.com/pricing
-  - type: Signup
-    url: https://apilayer.com/signup
-  - type: Login
-    url: https://apilayer.com/login
-  - type: Blog
-    url: https://blog.apilayer.com/
-  - type: Features
-    data:
-      - name: API Marketplace
-        description: Browse and integrate 100+ high-quality APIs across categories including geolocation, currency, weather, dev tools, and more.
-      - name: Unified Authentication
-        description: Single API key management across multiple APIs from the APILayer platform.
-      - name: Low Latency Infrastructure
-        description: High-performance, reliable API infrastructure with global CDN for low-latency responses.
-      - name: Developer Dashboard
-        description: Centralized dashboard to manage API subscriptions, monitor usage, and access documentation.
-      - name: Usage Analytics
-        description: Real-time usage tracking and analytics across all subscribed APIs.
-  - type: UseCases
-    data:
-      - name: IP Geolocation
-        description: Determine user location, timezone, and geographic data from IP addresses using IPstack or IPapi.
-      - name: Currency Conversion
-        description: Access real-time and historical currency exchange rates using Fixer or Currencylayer APIs.
-      - name: Weather Data
-        description: Integrate real-time weather forecasts and historical weather data using Weatherstack.
-      - name: Search Engine Data
-        description: Scrape search engine results programmatically using the Serpstack API.
-      - name: Phone Validation
-        description: Validate and look up phone number details globally using Numverify.
-  - type: Integrations
-    data:
-      - name: IPstack
-        description: IP geolocation API for geographic profiling and location intelligence.
-      - name: Fixer
-        description: Real-time and historical currency exchange rate data API.
-      - name: Weatherstack
-        description: Real-time weather data and forecasting API.
-      - name: Serpstack
-        description: Search engine results page scraping and SERP data API.
-      - name: Mediastack
-        description: Live and historical news data API for media monitoring.
-      - name: Numverify
-        description: Global phone number validation and carrier lookup API.
-      - name: Coinlayer
-        description: Real-time cryptocurrency exchange rate data API.
-      - name: Pdflayer
-        description: HTML to PDF conversion and document generation API.
-  - type: Solutions
-    data:
-      - name: Free Plan
-        description: Limited free tier for each API to explore and prototype integrations.
-      - name: Basic Plan
-        description: Entry-level paid plan with increased request limits for individual APIs.
-      - name: Professional Plan
-        description: Higher volume plans for production applications requiring reliable API access.
-      - name: Enterprise Plan
-        description: Custom volume and SLA guarantees for enterprise-scale API consumption.
-  - type: LlmsText
-    url: https://apilayer.com/llms.txt
+    url: https://exchangerate.host/pricing
+- aid: apilayer:exchange-rates-api
+  name: Exchange Rates API
+  description: 'Foreign exchange rate data for 170 world currencies drawn from 15+ sources: latest rates,
+    single-date historical rates, time series, fluctuation between two dates, currency conversion and
+    a supported-symbols list. Six GET endpoints under a /v1 path prefix.'
+  humanURL: https://exchangeratesapi.io/
+  baseURL: https://api.exchangeratesapi.io/v1
+  tags:
+  - Currency
+  - Foreign Exchange
+  - Financial Data
+  properties:
+  - type: OpenAPI
+    url: openapi/apilayer-exchangeratesapi-openapi.yml
+  - type: Overlay
+    url: overlays/apilayer-exchangeratesapi-overlay.yaml
+  - type: Documentation
+    url: https://docs.apilayer.com/exchangeratesapi/docs/api-documentation
+  - type: APIReference
+    url: https://docs.apilayer.com/exchangeratesapi/docs/api-documentation
+  - type: Pricing
+    url: https://exchangeratesapi.io/pricing
+- aid: apilayer:ipapi
+  name: ipapi
+  description: Real-time IP to geolocation lookup returning location, connection, timezone, currency and
+    optional threat-assessment data for an IPv4 or IPv6 address, plus a /check endpoint that resolves
+    the caller's own address. Supports field selection, JSON or XML output and bulk lookups.
+  humanURL: https://ipapi.com/
+  baseURL: https://api.ipapi.com/api
+  tags:
+  - Geolocation
+  - IP Intelligence
+  - Security
+  properties:
+  - type: OpenAPI
+    url: openapi/apilayer-ipapi-openapi.yml
+  - type: Overlay
+    url: overlays/apilayer-ipapi-overlay.yaml
+  - type: Documentation
+    url: https://docs.apilayer.com/ipapi/docs/api-documentation
+  - type: APIReference
+    url: https://docs.apilayer.com/ipapi/docs/api-documentation
+  - type: Pricing
+    url: https://ipapi.com/pricing
+common:
+- type: Website
+  url: https://apilayer.com/
+- type: DeveloperPortal
+  url: https://apilayer.com/developers/
+- type: Documentation
+  url: https://docs.apilayer.com/apilayer/docs/api-layer-hub
+- type: APIReference
+  url: https://docs.apilayer.com/
+- type: GettingStarted
+  url: https://apilayer.com/developers/suite/
+- type: SignUp
+  url: https://app.apilayer.com/signup
+- type: Login
+  url: https://app.apilayer.com/login
+- type: Support
+  url: https://apilayer.com/support/
+- type: HelpCenter
+  url: https://apilayer.com/contact-us/
+- type: Community
+  url: https://discord.com/invite/hgjA78638n
+- type: FAQ
+  url: https://apilayer.com/faqs/
+- type: Blog
+  url: https://blog.apilayer.com/
+- type: BlogRSS
+  url: https://blog.apilayer.com/feed/
+- type: GitHubOrganization
+  url: https://github.com/apilayer
+- type: Postman
+  url: https://www.postman.com/apilayer
+- type: LinkedIn
+  url: https://www.linkedin.com/company/apilayer
+- type: TermsOfService
+  url: https://www.ideracorp.com/legal/APILayer
+- type: PrivacyPolicy
+  url: https://www.ideracorp.com/en/legal/privacypolicy
+- type: LLMsTxt
+  url: llms/apilayer-llms.txt
+- type: LlmsText
+  url: https://apilayer.com/llms.txt
+- type: Packages
+  url: packages/apilayer-packages.yml
+- type: SDKs
+  url: packages/apilayer-packages.yml
+- type: WellKnown
+  url: well-known/apilayer-well-known.yml
+- type: MCPServer
+  url: mcp/apilayer-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/apilayer-tool-crosswalk.yml
+- type: Authentication
+  url: authentication/apilayer-authentication.yml
+- type: OAuthScopes
+  url: scopes/apilayer-scopes.yml
+- type: Conformance
+  url: conformance/apilayer-conformance.yml
+- type: ErrorCatalog
+  url: errors/apilayer-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/apilayer-lifecycle.yml
+- type: StatusPage
+  url: lifecycle/apilayer-lifecycle.yml
+- type: ChangeLog
+  url: changelog/apilayer-changelog.yml
+- type: Conventions
+  url: conventions/apilayer-conventions.yml
+- type: DataModel
+  url: data-model/apilayer-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/apilayer-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/apilayer-rate-limits.yml
+- type: FinOps
+  url: finops/apilayer-finops.yml
+- type: Vocabulary
+  url: vocabulary/apilayer-vocabulary.yaml
+- type: Rules
+  url: rules/apilayer-jsonschema-spectral-rules.yml
+- type: Examples
+  url: examples/apilayer-api-example.json
+- type: DomainSecurity
+  url: security/apilayer-domain-security.yml
+- type: Features
+  data:
+  - name: API Marketplace
+    description: Browse and integrate 100+ high-quality APIs across categories including geolocation,
+      currency, weather, dev tools, and more.
+  - name: Unified Authentication
+    description: Single API key management across multiple APIs from the APILayer platform.
+  - name: Low Latency Infrastructure
+    description: High-performance, reliable API infrastructure with global CDN for low-latency responses.
+  - name: Developer Dashboard
+    description: Centralized dashboard to manage API subscriptions, monitor usage, and access documentation.
+  - name: Usage Analytics
+    description: Real-time usage tracking and analytics across all subscribed APIs.
+- type: UseCases
+  data:
+  - name: IP Geolocation
+    description: Determine user location, timezone, and geographic data from IP addresses using IPstack
+      or IPapi.
+  - name: Currency Conversion
+    description: Access real-time and historical currency exchange rates using Fixer or Currencylayer
+      APIs.
+  - name: Weather Data
+    description: Integrate real-time weather forecasts and historical weather data using Weatherstack.
+  - name: Search Engine Data
+    description: Scrape search engine results programmatically using the Serpstack API.
+  - name: Phone Validation
+    description: Validate and look up phone number details globally using Numverify.
+- type: Integrations
+  data:
+  - name: IPstack
+    description: IP geolocation API for geographic profiling and location intelligence.
+  - name: Fixer
+    description: Real-time and historical currency exchange rate data API.
+  - name: Weatherstack
+    description: Real-time weather data and forecasting API.
+  - name: Serpstack
+    description: Search engine results page scraping and SERP data API.
+  - name: Mediastack
+    description: Live and historical news data API for media monitoring.
+  - name: Numverify
+    description: Global phone number validation and carrier lookup API.
+  - name: Coinlayer
+    description: Real-time cryptocurrency exchange rate data API.
+  - name: Pdflayer
+    description: HTML to PDF conversion and document generation API.
+- type: Solutions
+  data:
+  - name: Free Plan
+    description: Limited free tier for each API to explore and prototype integrations.
+  - name: Basic Plan
+    description: Entry-level paid plan with increased request limits for individual APIs.
+  - name: Professional Plan
+    description: Higher volume plans for production applications requiring reliable API access.
+  - name: Enterprise Plan
+    description: Custom volume and SLA guarantees for enterprise-scale API consumption.
 maintainers:
-  - FN: Kin Lane
-    email: info@apievangelist.com
+- FN: Kin Lane
+  email: info@apievangelist.com
+position: Producing
+x-enrichment:
+  date: '2026-09-12'
+  status: enriched
+  artifacts_added: 28
+  pass: local-v3

@@ -1,0 +1,119 @@
+generated: '2026-09-12'
+method: searched
+source: https://apilayer.com/developers/suite/ (APILayer's own SDK page, which links each
+  package), https://www.npmjs.com/~api-layer, and the npm registry metadata endpoint
+  registry.npmjs.org/<pkg>
+provider: APILayer
+providerId: apilayer
+summary: >-
+  APILayer ships Node.js only, and says so: "Right now, we only have the Node.js SDK. If you are
+  a developer and love to write code, join us to build SDKs in different languages and
+  environments." Five per-product client packages plus one React chart component, all published
+  by the npm user `api-layer` and all linked from apilayer.com/developers/suite/, which is what
+  makes them first-party. Nothing exists on PyPI, Maven Central, NuGet, pkg.go.dev, RubyGems,
+  Packagist or crates.io - the packages named `apilayer` on npm and `ApiLayer` on PyPI are
+  third-party and unrelated.
+packages:
+  - name: apilayer-fixer
+    registry: npm
+    url: https://www.npmjs.com/package/apilayer-fixer
+    language: javascript
+    official: true
+    version: 1.0.3
+    published: '2024-12-19'
+    license: ISC
+    covers: Fixer (FX rates)
+    install: npm install apilayer-fixer
+    publisher: api-layer
+  - name: apilayer-ipstack
+    registry: npm
+    url: https://www.npmjs.com/package/apilayer-ipstack
+    language: javascript
+    official: true
+    version: 1.0.1
+    published: '2024-10-23'
+    license: ISC
+    covers: IPstack (IP geolocation)
+    install: npm install apilayer-ipstack
+    publisher: api-layer
+  - name: apilayer-aviationstack
+    registry: npm
+    url: https://www.npmjs.com/package/apilayer-aviationstack
+    language: javascript
+    official: true
+    version: 1.0.1
+    published: '2024-10-24'
+    license: ISC
+    covers: Aviationstack (flight data)
+    install: npm install apilayer-aviationstack
+    publisher: api-layer
+  - name: apilayer-marketstack
+    registry: npm
+    url: https://www.npmjs.com/package/apilayer-marketstack
+    language: javascript
+    official: true
+    version: 1.0.0
+    published: '2024-12-19'
+    license: ISC
+    covers: Marketstack (stock market data)
+    install: npm install apilayer-marketstack
+    publisher: api-layer
+  - name: apilayer-coinlayer
+    registry: npm
+    url: https://www.npmjs.com/package/apilayer-coinlayer
+    language: javascript
+    official: true
+    version: 1.0.0
+    published: '2024-12-23'
+    license: ISC
+    covers: Coinlayer (crypto rates)
+    install: npm install apilayer-coinlayer
+    publisher: api-layer
+  - name: react-fixer
+    registry: npm
+    url: https://www.npmjs.com/package/react-fixer
+    language: javascript
+    official: true
+    version: 1.0.7
+    published: '2024-10-10'
+    license: ISC
+    type: ui-component
+    covers: React chart components over the Fixer JSON response; APILayer lists it under
+      DevTools rather than SDKs.
+    install: npm install react-fixer
+    publisher: api-layer
+sdk_count: 5
+currency_finding: >-
+  Every first-party package was last published between October and December 2024 - roughly two
+  years stale as of this check - while the product contracts kept moving (Marketstack and
+  Serpstack are both on 2.0.0). No package declares a repository or homepage in its registry
+  metadata, so there is no public source tree to read, and none of the five carries a source
+  link on GitHub even though APILayer maintains an active org there. Nothing covers the three
+  APIs captured in this repo: there is no client for exchangerate.host, exchangeratesapi.io or
+  ipapi.com.
+coverage_gap:
+  products_with_sdk: 5
+  products_with_published_openapi: 22
+  note: 17 of APILayer's 22 published contracts have no first-party client library in any
+    language.
+registries_checked:
+  - registry: npm
+    result: 6 first-party packages found
+  - registry: pypi
+    result: no first-party package; `ApiLayer` 0.0.6 is by an unrelated author
+      (github.com/lipopo/api_layer)
+  - registry: maven-central
+    result: no match for "apilayer" in search.maven.org
+  - registry: nuget
+    result: no first-party package; the three matches (ForeverTools.APILayer,
+      AMDIT.ApiLayerLibrary, RestCountries) are community-authored
+  - registry: pkg.go.dev
+    result: proxy.golang.org has no module under github.com/apilayer
+  - registry: rubygems
+    result: no first-party gem; `apilayer` 2.1.0, `currency_layer`, `vat_layer` and
+      `mailboxlayer` are all community gems by github.com/actfong
+  - registry: packagist
+    result: no match owned by APILayer
+  - registry: crates.io
+    result: no match for "apilayer"
+checked: '2026-09-12'

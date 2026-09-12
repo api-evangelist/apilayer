@@ -3,149 +3,425 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
 provider: APILayer
 providerId: apilayer
+generated: '2026-09-12'
+method: searched
+source: https://exchangerate.host/pricing, https://exchangeratesapi.io/pricing/,
+  https://ipapi.com/pricing (all HTTP 200, read 2026-09-12)
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - API Catalog
-  - API Discovery
-  - API Marketplace
-  - Developer Tools
-  - SaaS APIs
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+modified: '2026-09-12'
+supersedes: >-
+  A 2026-05-04 bulk-sweep scaffold that invented three tiers ("Free 1,000 req/mo at 10 rpm",
+  "Professional 100,000 req/mo, price TBD", "Enterprise") against https://api.apilayer.com. None
+  of those numbers came from APILayer and the marketplace host they were attached to publishes
+  no plans at all. Replaced here with the tiers APILayer actually publishes.
+platform_pricing:
+  marketplace_wide_page: false
+  note: >-
+    There is NO marketplace-level pricing page. https://apilayer.com/pricing returns HTTP 404
+    (checked 2026-09-12) and no pricing link appears in the apilayer.com navigation or footer.
+    Every plan is published on the product's own domain, priced per product and billed per
+    product, so a customer of four APILayer APIs holds four subscriptions and four keys. The
+    only platform-wide commitments APILayer states are: a free plan on every API, no credit card
+    required to start, and monthly or yearly billing with a 10-15 percent annual discount.
+  free_tier_universal: true
+  billing_periods: [monthly, yearly]
+  currency: USD
 plans:
-  - id: apilayer-free
+  - id: exchangerate-free
+    api: ExchangeRate.host API
     name: Free
     type: freemium
-    description: Free entry tier for the APILayer API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
+    price: '0.00'
+    currency: USD
+    period: month
+    source: https://exchangerate.host/pricing
     entries:
       - label: API Requests
-        description: Monthly API request quota across all included endpoints
         name: api_requests
         type: quota
         metric: requests
-        limit: 1000
+        limit: 100
         timeFrame: month
-        geo: global
-        domains:
-          - https://api.apilayer.com
         unit: 1
         price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.apilayer.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
     elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: APILayer Marketplace API
-  - id: apilayer-pro
-    name: Professional
+      - name: Daily Updates
+      - name: Historical Rates
+      - name: HTTPS Encryption
+      - name: No Support
+      - name: Non-Commercial Use only
+  - id: exchangerate-basic
+    api: ExchangeRate.host API
+    name: Basic
     type: paid
-    description: Production tier for APILayer. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
+    price: '14.99'
+    price_yearly: '161.99'
+    currency: USD
+    period: month
+    source: https://exchangerate.host/pricing
     entries:
       - label: API Requests
-        description: Monthly API request quota
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 10000
+        timeFrame: month
+        unit: 1
+        price: '14.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: requests
+        unit: 1
+        price: '0.005996'
+    elements:
+      - name: Hourly Updates
+      - name: Historical Rates
+      - name: Standard Support
+      - name: Commercial Use
+      - name: Source Currency Switching
+      - name: Currency Conversion
+  - id: exchangerate-professional-plus
+    api: ExchangeRate.host API
+    name: Professional Plus
+    type: paid
+    price: '59.99'
+    price_yearly: '629.99'
+    currency: USD
+    period: month
+    source: https://exchangerate.host/pricing
+    entries:
+      - label: API Requests
         name: api_requests
         type: quota
         metric: requests
         limit: 100000
         timeFrame: month
-        geo: global
-        domains:
-          - https://api.apilayer.com
         unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.apilayer.com
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
+        price: '59.99'
       - label: Overage
-        description: Per-request price after monthly quota is exceeded
         name: overage
         type: metered
         metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.apilayer.com
-        unit: 1000
-        price: TBD
-        userMultiplied: false
+        unit: 1
+        price: '0.0023996'
     elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: APILayer Marketplace API
-  - id: apilayer-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for APILayer. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
+      - name: 10-minute Updates
+      - name: Time-Frame Queries
+      - name: Commercial Use
+  - id: exchangerate-business
+    api: ExchangeRate.host API
+    name: Business
+    type: paid
+    price: '99.99'
+    price_yearly: '1019.99'
+    currency: USD
+    period: month
+    source: https://exchangerate.host/pricing
     entries:
       - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 500000
+        timeFrame: month
+        unit: 1
+        price: '99.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: requests
+        unit: 1
+        price: '0.00079992'
+    elements:
+      - name: 60-second Updates
+      - name: Currency-Change Queries
+      - name: Commercial Use
+  - id: exchangerate-custom
+    api: ExchangeRate.host API
+    name: Custom
+    type: enterprise
+    price: custom
+    currency: USD
+    period: negotiated
+    source: https://exchangerate.host/pricing
+    entries:
+      - label: API Requests
         name: api_requests
         type: quota
         metric: requests
         limit: -1
         timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.apilayer.com
         unit: 1
         price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.apilayer.com
-        unit: 1
-        price: custom
-        userMultiplied: false
     elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: APILayer Marketplace API
+      - name: Volume Requests
+      - name: Dedicated Technical Support
+  - id: exchangeratesapi-free
+    api: Exchange Rates API
+    name: Free
+    type: freemium
+    price: '0.00'
+    currency: USD
+    period: month
+    source: https://exchangeratesapi.io/pricing/
+    entries:
+      - label: API Requests
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 100
+        timeFrame: month
+        unit: 1
+        price: '0.00'
+    elements:
+      - name: Daily Updates
+      - name: Historical Rates
+      - name: No Support
+      - name: Non-Commercial Use only
+  - id: exchangeratesapi-basic
+    api: Exchange Rates API
+    name: Basic
+    type: paid
+    price: '14.99'
+    price_yearly: '161.99'
+    price_monthly_if_billed_yearly: '13.99'
+    currency: USD
+    period: month
+    source: https://exchangeratesapi.io/pricing/
+    entries:
+      - label: API Requests
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 10000
+        timeFrame: month
+        unit: 1
+        price: '14.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: requests
+        unit: 1
+        price: '0.005996'
+    elements:
+      - name: Hourly Updates
+      - name: Commercial Use
+      - name: Standard Support
+  - id: exchangeratesapi-professional
+    api: Exchange Rates API
+    name: Professional
+    type: paid
+    price: '59.99'
+    price_yearly: '629.99'
+    price_monthly_if_billed_yearly: '52.99'
+    currency: USD
+    period: month
+    source: https://exchangeratesapi.io/pricing/
+    entries:
+      - label: API Requests
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 100000
+        timeFrame: month
+        unit: 1
+        price: '59.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: requests
+        unit: 1
+        price: '0.0023996'
+    elements:
+      - name: 10-minute Updates
+      - name: Time-Frame Queries
+  - id: exchangeratesapi-business
+    api: Exchange Rates API
+    name: Business
+    type: paid
+    price: '99.99'
+    price_yearly: '1019.99'
+    price_monthly_if_billed_yearly: '84.99'
+    currency: USD
+    period: month
+    source: https://exchangeratesapi.io/pricing/
+    entries:
+      - label: API Requests
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 500000
+        timeFrame: month
+        unit: 1
+        price: '99.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: requests
+        unit: 1
+        price: '0.00079992'
+    elements:
+      - name: 60-second Updates
+      - name: Currency-Change Queries
+  - id: exchangeratesapi-custom
+    api: Exchange Rates API
+    name: Custom
+    type: enterprise
+    price: custom
+    currency: USD
+    period: negotiated
+    source: https://exchangeratesapi.io/pricing/
+    entries:
+      - label: API Requests
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: -1
+        timeFrame: month
+        unit: 1
+        price: custom
+    elements:
+      - name: Volume Requests
+      - name: Dedicated Technical Support
+  - id: ipapi-free
+    api: ipapi
+    name: Free
+    type: freemium
+    price: '0.00'
+    currency: USD
+    period: month
+    source: https://ipapi.com/pricing
+    entries:
+      - label: Lookups
+        name: api_requests
+        type: quota
+        metric: lookups
+        limit: 100
+        timeFrame: month
+        unit: 1
+        price: '0.00'
+    elements:
+      - name: Location Data
+      - name: HTTPS Encryption
+      - name: No Support
+      - name: Non-Commercial Use only
+  - id: ipapi-standard
+    api: ipapi
+    name: Standard
+    type: paid
+    price: '12.99'
+    price_monthly_if_billed_yearly: '11.99'
+    currency: USD
+    period: month
+    source: https://ipapi.com/pricing
+    entries:
+      - label: Lookups
+        name: api_requests
+        type: quota
+        metric: lookups
+        limit: 50000
+        timeFrame: month
+        unit: 1
+        price: '12.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: lookups
+        unit: 1
+        price: '0.0010392'
+    elements:
+      - name: Standard Support
+      - name: Commercial Use
+      - name: Currency Data
+      - name: Time Zone Data
+      - name: Connection Data
+  - id: ipapi-business
+    api: ipapi
+    name: Business
+    type: paid
+    price: '59.99'
+    price_monthly_if_billed_yearly: '52.99'
+    currency: USD
+    period: month
+    source: https://ipapi.com/pricing
+    entries:
+      - label: Lookups
+        name: api_requests
+        type: quota
+        metric: lookups
+        limit: 500000
+        timeFrame: month
+        unit: 1
+        price: '59.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: lookups
+        unit: 1
+        price: '0.00047992'
+    elements:
+      - name: Bulk Lookups
+      - name: Commercial Use
+  - id: ipapi-business-pro
+    api: ipapi
+    name: Business Pro
+    type: paid
+    price: '99.99'
+    price_monthly_if_billed_yearly: '84.99'
+    currency: USD
+    period: month
+    source: https://ipapi.com/pricing
+    entries:
+      - label: Lookups
+        name: api_requests
+        type: quota
+        metric: lookups
+        limit: 2000000
+        timeFrame: month
+        unit: 1
+        price: '99.99'
+      - label: Overage
+        name: overage
+        type: metered
+        metric: lookups
+        unit: 1
+        price: '0.00019998'
+    elements:
+      - name: Security Data
+      - name: Bulk Lookups
+      - name: Commercial Use
+  - id: ipapi-custom
+    api: ipapi
+    name: Custom
+    type: enterprise
+    price: custom
+    currency: USD
+    period: negotiated
+    source: https://ipapi.com/pricing
+    entries:
+      - label: Lookups
+        name: api_requests
+        type: quota
+        metric: lookups
+        limit: -1
+        timeFrame: month
+        unit: 1
+        price: custom
+    elements:
+      - name: Volume Lookups
+      - name: Dedicated Technical Support
+plan_count: 15
+findings:
+  - The free tier is 100 requests a MONTH - roughly three a day - and is explicitly
+    non-commercial with no support. It is an evaluation allowance, not a usable free plan.
+  - HTTPS appears as a paid feature in the feature matrix and in APILayer's own error catalog
+    (code 105, https_access_restricted), meaning free-tier traffic is expected to carry the API
+    key over plaintext HTTP.
+  - Every paid tier bills overage per request beyond the quota, at a published per-request
+    price, so cost is metered rather than hard-capped. An agent that loops can spend real money.
+  - Pricing is uniform across the FX products (14.99 / 59.99 / 99.99 for 10k / 100k / 500k) and
+    differs on ipapi, which suggests a shared pricing template across the estate.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com

@@ -1,0 +1,269 @@
+generated: '2026-09-12'
+method: probed
+source: live HTTPS probes of every host this record knows (registrable domain, www, API base hosts, OpenAPI
+  servers[] hosts, docs/console host, MCP host, and the authorization server the MCP protected-resource
+  document names); re-probed 2026-09-12 including marketplace.apilayer.com
+provider: APILayer
+providerId: apilayer
+note: 'Three real documents were served, all of them on the agent/auth side of the estate: mcp.apilayer.com
+  publishes an RFC 9728 OAuth protected-resource descriptor, and the authorization server it names (auth.apilayer.com,
+  a third host that the primary domain would never have revealed) publishes both OpenID Connect discovery
+  and RFC 8414 OAuth authorization server metadata. apilayer.com itself serves no /.well-known document
+  at all - no security.txt, no api-catalog, no ai-plugin.json, no agent card. The product API hosts (api.exchangerate.host,
+  api.exchangeratesapi.io, api.ipapi.com) answer HTTP 200 to EVERY /.well-known path with the standard
+  APILayer error envelope ({"success": false, "error": {"code": 101, ...}}); that is a catch-all soft-200,
+  not a document, and it is recorded here as a miss.'
+hosts:
+- host: apilayer.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.apilayer.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: api.apilayer.com
+  note: Kong gateway; every unrouted path answers {"message":"no Route matched with those values"}.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: docs.apilayer.com
+  note: SwaggerHub Portal; /.well-known/* 302s into the portal silent-login flow and resolves to the docs
+    shell, never to a discovery document.
+  documents:
+  - path: /.well-known/security.txt
+    status: 302
+  - path: /.well-known/openid-configuration
+    status: 302
+  - path: /.well-known/oauth-authorization-server
+    status: 302
+  - path: /.well-known/oauth-protected-resource
+    status: 302
+  - path: /.well-known/api-catalog
+    status: 302
+  - path: /.well-known/ai-plugin.json
+    status: 302
+  - path: /.well-known/agent-card.json
+    status: 302
+  - path: /.well-known/agent.json
+    status: 302
+- host: app.apilayer.com
+  note: Dashboard origin returns 403 Forbidden for every /.well-known path.
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/oauth-protected-resource
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+- host: mcp.apilayer.com
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: apilayer-oauth-protected-resource.json
+    content_type: application/json
+    note: RFC 9728. Declares resource https://mcp.apilayer.com/mcp, authorization_servers [https://auth.apilayer.com],
+      scopes_supported [mcp:read, api:ipstack], bearer_methods_supported [header].
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: auth.apilayer.com
+  note: Discovered only from the authorization_servers[] array of the MCP protected-resource document
+    - it is not linked from apilayer.com.
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: apilayer-openid-configuration.json
+    content_type: application/json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: apilayer-oauth-authorization-server.json
+    content_type: application/json
+    note: RFC 8414. Same body as the OIDC document.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: blog.apilayer.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: api.exchangerate.host
+  note: SOFT-200. Every /.well-known path returns HTTP 200 with the APILayer error envelope (code 101,
+    missing_access_key). No document is served; all paths recorded as misses.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served_document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    served_document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served_document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    served_document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent.json
+    status: 200
+    served_document: false
+- host: api.exchangeratesapi.io
+  note: SOFT-200, identical catch-all error envelope. No document served.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served_document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    served_document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served_document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    served_document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent.json
+    status: 200
+    served_document: false
+- host: api.ipapi.com
+  note: SOFT-200, identical catch-all error envelope. No document served.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served_document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    served_document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served_document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    served_document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    served_document: false
+  - path: /.well-known/agent.json
+    status: 200
+    served_document: false
+- host: marketplace.apilayer.com
+  note: Legacy APILayer marketplace storefront; gateway host is api.apilayer.com.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+agent_card:
+  found: false
+  note: No A2A Agent Card on any host. /.well-known/agent-card.json and the legacy /.well-known/agent.json
+    were probed on all eleven hosts; every result was a 404, a 403, a 302 into a login flow, or a soft-200
+    error envelope. No a2a/ artifact and no AgentCard pointer were written.
+security_txt:
+  found: false
+checked: '2026-09-12'

@@ -1,0 +1,228 @@
+generated: '2026-09-12'
+method: derived
+source: openapi/_original/*.json ($ref graph and property names)
+provider: APILayer
+providerId: apilayer
+note: APILayer product APIs are flat response documents, not a resource graph. Each endpoint returns one
+  self-contained JSON object; there are no ids that address another resource, no nested sub-resource URLs
+  and no create/update surface, so there is nothing to model as has_many/belongs_to. Every relationship
+  below is a $ref inside one response schema. The only shared shape across all three APIs is `Error`.
+id_prefixes: null
+entities:
+- name: LiveResponse
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - terms
+  - privacy
+  - timestamp
+  - source
+  - quotes
+  field_count: 6
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/LiveResponse
+- name: HistoricalResponse
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - terms
+  - privacy
+  - historical
+  - date
+  - timestamp
+  - source
+  - quotes
+  field_count: 8
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/HistoricalResponse
+- name: ConvertResponse
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - terms
+  - privacy
+  - query
+  - info
+  - result
+  field_count: 6
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/ConvertResponse
+- name: TimeframeResponse
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - terms
+  - privacy
+  - timeframe
+  - start_date
+  - end_date
+  - source
+  - quotes
+  field_count: 8
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/TimeframeResponse
+- name: ChangeResponse
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - terms
+  - privacy
+  - change
+  - start_date
+  - end_date
+  - source
+  - quotes
+  field_count: 8
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/ChangeResponse
+- name: Error
+  api: exchangerate
+  type: object
+  fields:
+  - success
+  - error
+  field_count: 2
+  source: openapi/_original/apilayer-exchangerate-openapi-original.json#/components/schemas/Error
+- name: SymbolsResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - symbols
+  field_count: 2
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/SymbolsResponse
+- name: LatestRatesResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - timestamp
+  - base
+  - date
+  - rates
+  field_count: 5
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/LatestRatesResponse
+- name: HistoricalRatesResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - historical
+  - date
+  - timestamp
+  - base
+  - rates
+  field_count: 6
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/HistoricalRatesResponse
+- name: ConvertQuery
+  api: exchangeratesapi
+  type: object
+  fields:
+  - from
+  - to
+  - amount
+  field_count: 3
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/ConvertQuery
+- name: ConvertInfo
+  api: exchangeratesapi
+  type: object
+  fields:
+  - timestamp
+  - rate
+  field_count: 2
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/ConvertInfo
+- name: ConvertResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - query
+  - info
+  - historical
+  - date
+  - result
+  field_count: 6
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/ConvertResponse
+- name: TimeSeriesResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - timeseries
+  - start_date
+  - end_date
+  - base
+  - rates
+  field_count: 6
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/TimeSeriesResponse
+- name: FluctuationResponse
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - fluctuation
+  - start_date
+  - end_date
+  - base
+  - rates
+  field_count: 6
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/FluctuationResponse
+- name: Error
+  api: exchangeratesapi
+  type: object
+  fields:
+  - success
+  - error
+  field_count: 2
+  source: openapi/_original/apilayer-exchangeratesapi-openapi-original.json#/components/schemas/Error
+- name: IpLookupResponse
+  api: ipapi
+  type: object
+  fields:
+  - ip
+  - hostname
+  - type
+  - continent_code
+  - continent_name
+  - country_code
+  - country_name
+  - region_code
+  - region_name
+  - city
+  - zip
+  - latitude
+  - longitude
+  - msa
+  - dma
+  - radius
+  - ip_routing_type
+  - connection_type
+  - location
+  - time_zone
+  - currency
+  - connection
+  - security
+  field_count: 23
+  source: openapi/_original/apilayer-ipapi-openapi-original.json#/components/schemas/IpLookupResponse
+- name: Error
+  api: ipapi
+  type: object
+  fields:
+  - success
+  - error
+  field_count: 2
+  source: openapi/_original/apilayer-ipapi-openapi-original.json#/components/schemas/Error
+relationships:
+- from: exchangeratesapi.ConvertResponse
+  to: exchangeratesapi.ConvertInfo
+  kind: has_one
+  via: $ref
+  confidence: high
+- from: exchangeratesapi.ConvertResponse
+  to: exchangeratesapi.ConvertQuery
+  kind: has_one
+  via: $ref
+  confidence: high
+entity_count: 17
+relationship_count: 2
+checked: '2026-09-12'

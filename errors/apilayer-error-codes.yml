@@ -1,0 +1,168 @@
+generated: '2026-09-12'
+method: derived
+source: openapi/_original/*.json (components.responses examples published by APILayer), cross-checked
+  against live responses observed 2026-09-12 on api.ipapi.com and api.exchangerate.host
+provider: APILayer
+providerId: apilayer
+format: proprietary
+rfc9457: false
+envelope:
+  shape: '{"success": false, "error": {"code": <int>, "type": "<slug>", "info": "<human sentence>"}}'
+  success_flag: success
+  container: error
+  fields:
+  - code
+  - type
+  - info
+  note: Not application/problem+json. There is no type URI, no title/detail/instance, and no machine-stable
+    link to documentation. The `type` slug is the only reliable discriminator; `code` is REUSED across
+    different meanings (104 is both api_access_blocked on 403 and usage_limit_reached on 429; 105 covers
+    two distinct 403 conditions), so an agent must branch on `type`, never on `code` alone.
+status_code_fidelity:
+  documented: true
+  observed: false
+  note: The OpenAPI maps each error class onto a real HTTP status (401/403/404/429/500/503), but the deployed
+    API returned HTTP 200 carrying the error envelope for an invalid access key on both hosts probed 2026-09-12.
+    An agent that branches on HTTP status alone will read an auth failure as a success. Branch on the
+    `success` boolean.
+problem_types:
+- type: invalid_access_key
+  code: 101
+  http_status: 401
+  title: Invalid Access Key
+  detail: You have not supplied a valid API Access Key.
+  remediation: Check the access_key query parameter against the key shown in the APILayer dashboard for
+    that product. Keys are per-product subscription, not global.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: missing_access_key
+  code: 101
+  http_status: 401
+  title: Missing Access Key
+  detail: 'You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]'
+  remediation: Append ?access_key=YOUR_ACCESS_KEY to the request. There is no header form of this credential.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: inactive_user
+  code: 102
+  http_status: 401
+  title: Inactive User
+  detail: Permission denied - User not active.
+  remediation: The account is not active. Complete signup or contact support@apilayer.com.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: account_on_hold
+  code: 107
+  http_status: 401
+  title: Account On Hold
+  detail: Your account currently has open invoices and API has been automatically disabled.
+  remediation: Settle the open balance or downgrade the subscription in the dashboard; API access resumes
+    once billing is current.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: api_access_blocked
+  code: 104
+  http_status: 403
+  title: Api Access Blocked
+  detail: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact
+    support.
+  remediation: Upgrade the subscription plan or contact support; access has been administratively disabled.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: https_access_restricted
+  code: 105
+  http_status: 403
+  title: Https Access Restricted
+  detail: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
+  remediation: HTTPS is a paid feature. Upgrade off the free plan, or call the http:// endpoint (not advised
+    for an access key in the query string).
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: function_access_restricted
+  code: 105
+  http_status: 403
+  title: Function Access Restricted
+  detail: Access Restricted - Your current Subscription Plan does not support this API Function.
+  remediation: The endpoint is gated to a higher plan tier. Check the feature matrix on the product pricing
+    page.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: invalid_api_function
+  code: 103
+  http_status: 404
+  title: Invalid Api Function
+  detail: This API Function does not exist.
+  remediation: The path does not exist on this product. Check the endpoint list in the OpenAPI captured
+    under openapi/.
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: 404_not_found
+  code: 404
+  http_status: 404
+  title: 404 Not Found
+  detail: 404 - The requested resource could not be found. Please try again or contact support.
+  remediation: Resource not found. Verify path parameters (e.g. the IP address or date segment).
+  retryable: false
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: usage_limit_reached
+  code: 104
+  http_status: 429
+  title: Usage Limit Reached
+  detail: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
+  remediation: The monthly request quota is exhausted. Wait for the calendar-month reset or upgrade the
+    plan.
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: daily_usage_limit_reached
+  code: 104
+  http_status: 429
+  title: Daily Usage Limit Reached
+  detail: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription
+    plan.
+  remediation: The daily cap is exhausted. Retry after the day rolls over.
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: fair_use_limit_reached
+  code: 104
+  http_status: 429
+  title: Fair Use Limit Reached
+  detail: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
+  remediation: Contact support@apilayer.com; a fair-use ceiling has engaged above the plan quota.
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: rate_limit_reached
+  code: 106
+  http_status: 429
+  title: Rate Limit Reached
+  detail: You have exceeded the maximum rate limitation allowed on your subscription plan.
+  remediation: Back off and retry. This is the per-second/per-minute rate ceiling of the plan, distinct
+    from the monthly quota (code 104).
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: internal_error
+  code: 0
+  http_status: 500
+  title: Internal Error
+  detail: 'An error has occured. [Technical Support: support@apilayer.com]'
+  remediation: Retry with backoff; if persistent contact support@apilayer.com.
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+- type: maintenance_mode
+  code: 503
+  http_status: 503
+  title: Maintenance Mode
+  detail: The API is in maintenance mode.
+  remediation: The service is in maintenance. Retry later; check the product status page.
+  retryable: true
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json#/components/responses
+checked: '2026-09-12'
+validation_errors:
+  note: Per-operation 400/422 responses name validation slugs in prose rather than in an enumerated list.
+  documented_slugs:
+  - invalid_from_currency
+  - invalid_to_currency
+  - invalid_conversion_amount
+  - invalid_date
+  - too_many_ips
+  evidence: openapi/_original/apilayer-exchangerate-openapi-original.json /convert 400; openapi/_original/apilayer-ipapi-openapi-original.json
+    /{IPAddress} 422

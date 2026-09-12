@@ -3,90 +3,139 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: APILayer
 providerId: apilayer
+generated: '2026-09-12'
+method: searched
+source: https://exchangerate.host/pricing, https://exchangeratesapi.io/pricing/,
+  https://ipapi.com/pricing, openapi/_original/*.json (published 429 examples), and live
+  header inspection of https://api.exchangerate.host/live and
+  https://api.ipapi.com/api/check on 2026-09-12
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - API Catalog
-  - API Discovery
-  - API Marketplace
-  - Developer Tools
-  - SaaS APIs
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the APILayer API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+modified: '2026-09-12'
+supersedes: >-
+  A 2026-05-04 bulk-sweep scaffold that asserted 10/100/1000 requests per minute with
+  X-RateLimit-Limit/Remaining/Reset and RateLimit-Policy response headers against
+  api.apilayer.com. None of that was published by APILayer and none of those headers are sent.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  observed: []
+  note: >-
+    NO rate-limit response headers are sent. Live responses from api.exchangerate.host and
+    api.ipapi.com on 2026-09-12 carried only date, content-type, cache-control, CORS, HSTS and
+    Cloudflare headers - no X-RateLimit-*, no RateLimit-*, no Retry-After. This is the single
+    most consequential gap for an agent: remaining quota is invisible at runtime, so the only
+    way to discover exhaustion is to hit it.
 responseCodes:
   throttled: 429
   quotaExceeded: 429
   serviceUnavailable: 503
+  caveat: >-
+    The 429 is documented in the OpenAPI. It was not verifiable live without burning a real
+    quota, and the same surface was observed returning HTTP 200 for an authentication failure,
+    so status-code fidelity on the error path is not established. Detect exhaustion from the
+    body: success:false with error.type usage_limit_reached, daily_usage_limit_reached,
+    fair_use_limit_reached or rate_limit_reached.
+limit_kinds:
+  - kind: monthly_quota
+    published: true
+    signal: error.type usage_limit_reached (code 104)
+    note: The headline number on every pricing page. Resets on the billing month.
+  - kind: daily_quota
+    published: partial
+    signal: error.type daily_usage_limit_reached (code 104)
+    note: A daily cap exists - APILayer publishes the error for it - but no pricing page states
+      the daily number for any tier.
+  - kind: burst_rate
+    published: false
+    signal: error.type rate_limit_reached (code 106)
+    note: >-
+      APILayer's own error text says "You have exceeded the maximum rate limitation allowed on
+      your subscription plan. Please refer to the Rate Limits section of the documentation."
+      No such section is reachable - docs.apilayer.com renders client-side and no rate-limits
+      page exists under any product path probed. The per-second/per-minute ceiling is therefore
+      referenced by the API but published nowhere.
+  - kind: fair_use
+    published: false
+    signal: error.type fair_use_limit_reached (code 104)
+    note: An undocumented ceiling above the plan quota; the error directs the caller to support.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - APILayer Marketplace API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - APILayer Marketplace API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
+  - tier: Free
+    scope: per-key (per product subscription)
+    metric: requests
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - APILayer Marketplace API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
+    timeFrame: month
+    burst: null
+    applies: [ExchangeRate.host API, Exchange Rates API, ipapi]
+    source: product pricing pages
+  - tier: Basic (ExchangeRate.host / Exchange Rates API)
+    scope: per-key
+    metric: requests
+    limit: 10000
+    timeFrame: month
+    burst: null
+    overage_price_per_request: '0.005996'
+    applies: [ExchangeRate.host API, Exchange Rates API]
+  - tier: Professional / Professional Plus
+    scope: per-key
+    metric: requests
     limit: 100000
     timeFrame: month
-    applies:
-      - APILayer Marketplace API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
+    burst: null
+    overage_price_per_request: '0.0023996'
+    applies: [ExchangeRate.host API, Exchange Rates API]
+  - tier: Business
+    scope: per-key
+    metric: requests
+    limit: 500000
+    timeFrame: month
+    burst: null
+    overage_price_per_request: '0.00079992'
+    applies: [ExchangeRate.host API, Exchange Rates API]
+  - tier: Standard (ipapi)
+    scope: per-key
+    metric: lookups
+    limit: 50000
+    timeFrame: month
+    burst: null
+    overage_price_per_request: '0.0010392'
+    applies: [ipapi]
+  - tier: Business (ipapi)
+    scope: per-key
+    metric: lookups
+    limit: 500000
+    timeFrame: month
+    burst: null
+    overage_price_per_request: '0.00047992'
+    applies: [ipapi]
+  - tier: Business Pro (ipapi)
+    scope: per-key
+    metric: lookups
+    limit: 2000000
+    timeFrame: month
+    burst: null
+    overage_price_per_request: '0.00019998'
+    applies: [ipapi]
+  - tier: Custom
     scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - APILayer Marketplace API
+    metric: requests
+    limit: -1
+    timeFrame: month
+    burst: null
+    applies: [ExchangeRate.host API, Exchange Rates API, ipapi]
+limit_count: 8
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Overage, not cut-off
+    description: Paid tiers meter past the quota at a published per-request price rather than
+      hard-stopping, so exceeding the plan costs money instead of returning 429.
+  - name: Backoff
+    description: No Retry-After is sent, so a client must choose its own backoff. Distinguish
+      rate_limit_reached (retry shortly) from usage_limit_reached (do not retry this month).
+  - name: Scope
+    description: Limits attach to the per-product access key, not to the APILayer account. Each
+      subscribed product carries its own independent quota.
 maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com

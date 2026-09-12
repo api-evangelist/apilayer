@@ -1,0 +1,75 @@
+generated: '2026-09-12'
+method: searched
+source: https://docs.apilayer.com/changelog, https://status.ipapi.com/,
+  https://status.exchangeratesapi.io/, https://exchangeratesapi.io/api-status/,
+  and openapi/_original/*.json
+provider: APILayer
+providerId: apilayer
+versioning:
+  scheme: path-and-product
+  description: >-
+    There is no single APILayer API version. Each product carries its own contract version in
+    the SwaggerHub document (most are 1.0.0; Marketstack and Serpstack are at 2.0.0) and only
+    some products carry a version segment in the path - Exchange Rates API serves
+    https://api.exchangeratesapi.io/v1, while exchangerate.host and ipapi.com serve unversioned
+    roots. A client cannot pin a version on the unversioned hosts.
+  current:
+    - api: ExchangeRate.host API
+      contract_version: 1.0.0
+      path_version: none
+    - api: Exchange Rates API
+      contract_version: 1.0.0
+      path_version: v1
+    - api: ipapi
+      contract_version: 1.0.0
+      path_version: none
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    No deprecation or sunset policy is published anywhere on apilayer.com, docs.apilayer.com or
+    the product sites, and no operation in any captured spec carries `deprecated: true`.
+    Products do leave the catalog without a machine-readable notice - giflayer and streetlayer
+    still have repositories in APILayer's GitHub organization but appear nowhere on
+    https://apilayer.com/products/ (checked 2026-09-12) - and nothing in the estate records when
+    or whether their endpoints were retired. APILayer also ships a `maintenance_mode` error (code 503) but does not document a planned
+    maintenance window or notification channel.
+status_pages:
+  - name: ipapi status
+    url: https://status.ipapi.com/
+    status: 200
+    scope: ipapi only
+  - name: Exchange Rates API status
+    url: https://status.exchangeratesapi.io/
+    status: 200
+    scope: exchangeratesapi.io only
+  - name: Exchange Rates API status (site page)
+    url: https://exchangeratesapi.io/api-status/
+    status: 200
+    scope: exchangeratesapi.io only
+status_page_note: >-
+  Status is published PER PRODUCT, on per-product subdomains. There is no status.apilayer.com -
+  the host does not resolve - so a customer of several APILayer products has no single place to
+  see whether the platform is healthy.
+changelog:
+  url: https://docs.apilayer.com/changelog
+  status: 200
+  scope: per product (the landing URL redirects to /changelog/docs/marketstack)
+  note: Entries are rendered client-side by the SwaggerHub Portal and are not retrievable
+    without a browser; see changelog/apilayer-changelog.yml.
+sla:
+  published: false
+  note: Uptime is described in prose on the product FAQs ("closely monitored around the clock")
+    but no numeric availability target, credit schedule or support-response commitment is
+    published outside an enterprise contract.
+support:
+  - type: HelpCenter
+    url: https://apilayer.com/contact-us/
+  - type: Community
+    url: https://discord.com/invite/hgjA78638n
+  - type: Email
+    url: mailto:support@apilayer.com
+    note: Address appears inside APILayer's own published error strings.
+checked: '2026-09-12'

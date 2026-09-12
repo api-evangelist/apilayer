@@ -1,0 +1,244 @@
+generated: '2026-09-12'
+method: searched
+source: https://docs.apilayer.com/<product> - every product documentation page names its own spec URL
+  on APILayer's SwaggerHub organization apilayer-863; the organization listing at https://api.swaggerhub.com/apis/apilayer-863
+  corroborates it (45 documents, 22 products plus per-product -QA1 copies)
+provider: APILayer
+providerId: apilayer
+finding: 'APILayer publishes 22 OpenAPI 3.0/3.1 documents covering 132 operations, and the catalog had
+  none of them: the apilayer record carried no openapi/ directory at all before this round. They were
+  invisible because docs.apilayer.com is a SwaggerHub Portal that renders client-side and 302s anonymous
+  requests through a silent-login flow, and because api.apilayer.com is a Kong gateway that 404s every
+  conventional spec path. The spec URLs are in the served HTML payload of each product page.'
+ownership: 'All 22 are APILayer''s: each is served from APILayer''s own SwaggerHub organization and named
+  by APILayer''s own docs host, and every servers[] entry is an APILayer product domain. Nineteen of the
+  products, however, have their OWN repo in all/*, and APILayer is their declared parent (ipstack carries
+  x-parent-company: apilayer). Carrying their contracts here too would duplicate them across the estate,
+  so this record carries only the three products that have no repo of their own - exchangerate, exchangeratesapi
+  and ipapi - and indexes the rest as leads.'
+carried_in_this_repo: 3
+indexed_total: 22
+total_operations: 132
+documents:
+- product: aviationstack
+  title: AviationStack
+  openapi_version: 3.0.0
+  operations: 11
+  server: https://api.aviationstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/AviationstackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/aviationstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/aviationstack
+- product: coinlayer
+  title: Coinlayer
+  openapi_version: 3.0.0
+  operations: 6
+  server: https://api.coinlayer.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/CoinlayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/coinlayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/coinlayer
+- product: countrylayer
+  title: CountryLayer
+  openapi_version: 3.0.0
+  operations: 9
+  server: https://api.countrylayer.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/CountrylayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/countrylayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/countrylayer
+- product: currencylayer
+  title: Currency layer
+  openapi_version: 3.0.0
+  operations: 5
+  server: https://api.currencylayer.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/CurrencylayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/currencylayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/currencylayer
+- product: exchangerate
+  title: ExchangeRate.host API
+  openapi_version: 3.0.0
+  operations: 5
+  server: https://api.exchangerate.host
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/ExchangeratehostAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/exchangerate/docs/api-documentation
+  http_status: 200
+  carried_here: true
+- product: exchangeratesapi
+  title: Exchange Rates API
+  openapi_version: 3.0.0
+  operations: 6
+  server: https://api.exchangeratesapi.io/v1
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/ExchangeratesAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/exchangeratesapi/docs/api-documentation
+  http_status: 200
+  carried_here: true
+- product: fixer
+  title: fixer.io layer
+  openapi_version: 3.0.0
+  operations: 6
+  server: https://data.fixer.io/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/FixerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/fixer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/fixer
+- product: ipapi
+  title: ipapi
+  openapi_version: 3.0.0
+  operations: 2
+  server: https://api.ipapi.com/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/IPapi/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/ipapi/docs/api-documentation
+  http_status: 200
+  carried_here: true
+- product: ipstack
+  title: IPstack API
+  openapi_version: 3.0.2
+  operations: 2
+  server: https://api.ipstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/IPstackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/ipstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/ipstack
+- product: languagelayer
+  title: Language Layer
+  openapi_version: 3.0.0
+  operations: 3
+  server: https://api.languagelayer.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/LanguagelayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/languagelayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/languagelayer
+- product: mailboxlayer
+  title: Mailboxlayer API
+  openapi_version: 3.1.0
+  operations: 2
+  server: https://apilayer.net/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/MailboxlayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/mailboxlayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/mailboxlayer
+- product: marketstack
+  title: Marketstack
+  openapi_version: 3.0.0
+  operations: 46
+  server: https://api.marketstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/MarketstackAPIv2/2.0.0/swagger.json
+  docs: https://docs.apilayer.com/marketstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/marketstack
+- product: mediastack
+  title: Mediastack API
+  openapi_version: 3.0.0
+  operations: 2
+  server: https://api.mediastack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/MediastackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/mediastack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/mediastack
+- product: numverify
+  title: numverify
+  openapi_version: 3.0.0
+  operations: 2
+  server: https://apilayer.net/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/numverify-api/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/numverify/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/numverify
+- product: pdflayer
+  title: pdflayer API
+  openapi_version: 3.0.3
+  operations: 2
+  server: https://api.pdflayer.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/PDFlayer-API/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/pdflayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/pdflayer
+- product: positionstack
+  title: Positionstack
+  openapi_version: 3.0.0
+  operations: 4
+  server: https://api.positionstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/PositionstackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/positionstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/positionstack
+- product: scrapestack
+  title: Scrapestack API
+  openapi_version: 3.1.0
+  operations: 3
+  server: https://api.scrapestack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/ScrapestackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/scrapestack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/scrapestack
+- product: screenshotlayer
+  title: Screenshotlayer
+  openapi_version: 3.0.0
+  operations: 1
+  server: https://api.screenshotlayer.com/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/ScreenshotlayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/screenshotlayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/screenshotlayer
+- product: serpstack
+  title: Serpstack API
+  openapi_version: 3.1.0
+  operations: 2
+  server: https://api.serpstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/SerpstackAPI-QA1/2.0.0/swagger.json
+  docs: https://docs.apilayer.com/serpstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/serpstack
+  note: The docs page names https://api.swaggerhub.com/apis/apilayer-863/SerpstackAPI/2.0.0/swagger.json,
+    which returns HTTP 404. Only the -QA1 copy resolves, and its metadata is production (title "Serpstack
+    API", server https://api.serpstack.com). Recorded here for the child repo to resolve; not carried
+    in this repo.
+- product: userstack
+  title: userstack
+  openapi_version: 3.0.0
+  operations: 2
+  server: https://api.userstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/UserstackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/userstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/userstack
+- product: vatlayer
+  title: Vatlayer
+  openapi_version: 3.0.0
+  operations: 5
+  server: https://apilayer.net/api
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/VatlayerAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/vatlayer/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/vatlayer
+- product: weatherstack
+  title: Weatherstack
+  openapi_version: 3.0.0
+  operations: 6
+  server: https://api.weatherstack.com
+  spec_url: https://api.swaggerhub.com/apis/apilayer-863/WeatherstackAPI/1.0.0/swagger.json
+  docs: https://docs.apilayer.com/weatherstack/docs/api-documentation
+  http_status: 200
+  carried_here: false
+  owned_by_repo: all/weatherstack
+checked: '2026-09-12'

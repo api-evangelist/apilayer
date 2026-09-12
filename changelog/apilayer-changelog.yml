@@ -1,0 +1,24 @@
+generated: '2026-09-12'
+method: searched
+source: https://docs.apilayer.com/changelog
+provider: APILayer
+providerId: apilayer
+url: https://docs.apilayer.com/changelog
+status: 200
+scheme: per-product, undated in any machine-readable form
+entries: []
+entry_count: 0
+note: >-
+  APILayer does publish a changelog: docs.apilayer.com/changelog is a first-class product inside
+  its SwaggerHub Portal, described in the portal payload as "Changes made are then
+  chronologically recorded", and the landing URL redirects to /changelog/docs/marketstack, so
+  the log is organised per product rather than platform-wide. No entries are captured here
+  because the portal renders every document body client-side: the served HTML contains the
+  navigation and metadata but none of the prose, and the portal content endpoints under
+  /services/api/ answer 404 to anonymous requests. There is no RSS or Atom feed, no JSON feed
+  and no dated anchor list. A human with a browser can read it; a machine cannot. Recording
+  entry_count: 0 against a live 200 is the honest result - the changelog exists and is
+  unreadable, which is a different finding from a changelog that does not exist.
+machine_readable: false
+feed: null
+checked: '2026-09-12'

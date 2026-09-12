@@ -1,0 +1,78 @@
+generated: '2026-09-12'
+method: derived
+source: openapi/_original/*.json, well-known/apilayer-oauth-protected-resource.json,
+  mcp/apilayer-mcp.yml
+provider: APILayer
+providerId: apilayer
+surfaces:
+  - kind: openapi
+    location: openapi/apilayer-exchangerate-openapi.yml, openapi/apilayer-exchangeratesapi-openapi.yml,
+      openapi/apilayer-ipapi-openapi.yml
+    gated: false
+    operations: 13
+  - kind: mcp
+    location: https://mcp.apilayer.com/mcp
+    gated: true
+    gate: OAuth 2.1 bearer (RFC 9728 challenge); anonymous tools/list returns 401
+    tools_enumerated: 0
+  - kind: graphql
+    location: null
+    gated: null
+    note: APILayer publishes no GraphQL surface.
+crosswalk: []
+mcp_only: []
+rest_only:
+  - operationId: exchangeratehostLive
+    api: ExchangeRate.host API
+    reason: MCP server declares only the api:ipstack scope; no ExchangeRate.host tool exists.
+  - operationId: exchangeratehostHistorical
+    api: ExchangeRate.host API
+    reason: same
+  - operationId: exchangeratehostConvert
+    api: ExchangeRate.host API
+    reason: same
+  - operationId: exchangeratehostTimeframe
+    api: ExchangeRate.host API
+    reason: same
+  - operationId: exchangeratehostChange
+    api: ExchangeRate.host API
+    reason: same
+  - operationId: exchangeratesapiLatest
+    api: Exchange Rates API
+    reason: same
+  - operationId: exchangeratesapiHistorical
+    api: Exchange Rates API
+    reason: same
+  - operationId: exchangeratesapiConvert
+    api: Exchange Rates API
+    reason: same
+  - operationId: exchangeratesapiTimeseries
+    api: Exchange Rates API
+    reason: same
+  - operationId: exchangeratesapiFluctuation
+    api: Exchange Rates API
+    reason: same
+  - operationId: exchangeratesapiSymbols
+    api: Exchange Rates API
+    reason: same
+  - operationId: ipapiIPLookup
+    api: ipapi
+    reason: same
+  - operationId: ipapiCheckRequesterIPLookup
+    api: ipapi
+    reason: same
+coverage:
+  rest_operations: 13
+  mcp_tools_known: 0
+  bound: 0
+  mcp_only: 0
+  rest_only: 13
+  binding_confidence: n/a
+note: >-
+  An empty crosswalk is the finding, not a failure to do the work. The MCP server is real,
+  reachable and correctly advertised, but its published scope set (mcp:read, api:ipstack) names
+  one product, and that product is not one of the three whose contracts this record carries.
+  Nothing can be bound without inventing a mapping. If APILayer widens the scope set - or an
+  authenticated tools/list is run - re-derive this file; the REST side is already enumerated
+  above and every operationId here is verified against the published spec.
+checked: '2026-09-12'

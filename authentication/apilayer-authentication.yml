@@ -1,0 +1,79 @@
+generated: '2026-09-12'
+method: searched
+source: https://docs.apilayer.com/exchangerate/docs/api-documentation (docs), plus openapi/_original/*.json
+  and the probed discovery documents in well-known/
+provider: APILayer
+providerId: apilayer
+summary: APILayer runs THREE independent authentication systems. (1) Every REST product API (ipapi.com,
+  exchangerate.host, exchangeratesapi.io and the rest of the *stack/*layer family) is authenticated with
+  a per-product API access key passed as the `access_key` QUERY STRING parameter - no header form, no
+  bearer token, no scope. (2) The legacy marketplace gateway at api.apilayer.com uses an `apikey` REQUEST
+  HEADER instead. (3) The hosted MCP server at mcp.apilayer.com uses OAuth 2.1 bearer tokens from auth.apilayer.com,
+  advertised through RFC 9728 protected-resource metadata and RFC 8414 / OpenID Connect discovery. A developer
+  holding an APILayer account can meet all three.
+schemes:
+- id: access_key
+  type: apiKey
+  in: query
+  name: access_key
+  required: true
+  applies_to: every REST product endpoint (exchangerate.host, exchangeratesapi.io, ipapi.com and every
+    other APILayer product host)
+  description: Your API Access Key, issued per product subscription in the APILayer dashboard.
+  evidence: openapi/_original/apilayer-ipapi-openapi-original.json parameters[access_key]
+  caveats:
+  - The key travels in the URL, so it is written to proxy logs, browser history and Referer headers. APILayer
+    documents no header alternative.
+  - 'A missing or invalid key does NOT return 401 over the wire. The live surface answers HTTP 200 with
+    a body of {"success": false, "error": {"code": 101, "type": "invalid_access_key"}}. Observed 2026-09-12
+    on https://api.ipapi.com/api/check?access_key=x and https://api.exchangerate.host/live. The OpenAPI
+    documents 401 for this case; the deployed API does not send it.'
+  - Only 9 of the 22 OpenAPI documents APILayer publishes declare a securityScheme at all. The three specs
+    captured in this repo declare `access_key` as a required query parameter on every operation but carry
+    no components.securitySchemes block and no top-level security requirement.
+- id: apikey-header
+  type: apiKey
+  in: header
+  name: apikey
+  required: true
+  applies_to: https://api.apilayer.com - the marketplace gateway behind marketplace.apilayer.com
+  description: Marketplace API key, sent as an `apikey` request header.
+  evidence: 'https://marketplace.apilayer.com/bank_data-api publishes the call verbatim: curl --request
+    GET ''https://api.apilayer.com/bank_data/iban_validate?iban_number=...'' --header ''apikey: YOUR API
+    KEY'''
+  caveats:
+  - 'This gateway DOES honour HTTP status: an invalid key returned a real 401 with {"message":"Invalid
+    authentication credentials"} when probed 2026-09-12, unlike the product hosts, which answer 200 on
+    an auth failure. The two halves of APILayer behave differently on the same failure and an agent must
+    know which host it is talking to.'
+  - The header form is the more defensible design of the two - the credential stays out of the URL - but
+    it is used only on the legacy marketplace, not on the flagship products.
+- id: apilayer-oauth
+  type: oauth2
+  applies_to: https://mcp.apilayer.com/mcp
+  issuer: https://auth.apilayer.com
+  authorization_endpoint: https://auth.apilayer.com/oauth2/auth
+  token_endpoint: https://auth.apilayer.com/oauth2/token
+  device_authorization_endpoint: https://auth.apilayer.com/oauth2/device/auth
+  registration_endpoint: https://auth.apilayer.com/oauth2/register
+  userinfo_endpoint: https://auth.apilayer.com/userinfo
+  jwks_uri: https://auth.apilayer.com/.well-known/jwks.json
+  grant_types:
+  - authorization_code
+  - implicit
+  - client_credentials
+  - refresh_token
+  - urn:ietf:params:oauth:grant-type:device_code
+  pkce: true
+  dynamic_client_registration: true
+  bearer_methods:
+  - header
+  evidence: well-known/apilayer-openid-configuration.json, well-known/apilayer-oauth-protected-resource.json
+transport:
+  https_required: true
+  note: HTTPS on the REST products is a PAID feature. The published error catalog carries code 105 https_access_restricted
+    - "Access Restricted - Your current Subscription Plan does not support HTTPS Encryption" - so free-tier
+    keys are expected to be sent over plaintext HTTP.
+mfa_or_mtls: none published
+key_rotation: not documented
+checked: '2026-09-12'

@@ -1,0 +1,36 @@
+generated: '2026-09-12'
+method: probed
+source: https://auth.apilayer.com/.well-known/openid-configuration and
+  https://mcp.apilayer.com/.well-known/oauth-protected-resource
+provider: APILayer
+providerId: apilayer
+note: >-
+  APILayer publishes no scopes reference page. This list is read verbatim from the OAuth
+  authorization server metadata and the MCP protected-resource descriptor, which are the only
+  places APILayer states its scopes. Scopes apply ONLY to the hosted MCP server; the REST
+  product APIs use an unscoped account-wide access_key.
+authorization_server: https://auth.apilayer.com
+protected_resource: https://mcp.apilayer.com/mcp
+scopes:
+  - name: openid
+    description: Standard OpenID Connect scope; requests an ID token.
+    source: authorization server metadata
+  - name: offline_access
+    description: Standard OAuth scope; requests a refresh token.
+    source: authorization server metadata
+  - name: offline
+    description: Legacy alias for offline_access advertised alongside it.
+    source: authorization server metadata
+  - name: mcp:read
+    description: Read access to the APILayer hosted MCP server.
+    source: authorization server metadata and MCP protected-resource metadata
+  - name: api:ipstack
+    description: Access to the IPstack product through the MCP server.
+    source: authorization server metadata and MCP protected-resource metadata
+finding: >-
+  The scope list is the strongest available evidence of how much of the marketplace the MCP
+  server actually fronts. Exactly ONE product scope exists - api:ipstack - against a catalog of
+  22 published OpenAPI documents. The MCP surface is an IPstack pilot, not a marketplace-wide
+  agent door.
+docs: null
+checked: '2026-09-12'

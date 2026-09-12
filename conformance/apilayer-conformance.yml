@@ -1,0 +1,90 @@
+generated: '2026-09-12'
+method: searched
+source: openapi/_original/*.json, well-known/*.json (probed 2026-09-12), and
+  https://www.ideracorp.com/legal/APILayer
+provider: APILayer
+providerId: apilayer
+note: >-
+  Reward-only. An entry with conforms:false records a standard that was checked for and not
+  found, not a penalty. APILayer's market (general-purpose data APIs: FX rates, IP geolocation)
+  has no sector data standard of its own, so the domain-standard slot is genuinely empty rather
+  than unmet.
+conformance:
+  - id: oauth2
+    conforms: true
+    evidence: https://auth.apilayer.com/.well-known/oauth-authorization-server (HTTP 200) -
+      authorization_code, client_credentials, refresh_token and device_code grants, PKCE
+      (S256), dynamic client registration.
+  - id: oidc
+    conforms: true
+    evidence: https://auth.apilayer.com/.well-known/openid-configuration (HTTP 200) - issuer,
+      jwks_uri, userinfo_endpoint, RS256 id_token signing.
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: true
+    evidence: https://auth.apilayer.com/.well-known/oauth-authorization-server (HTTP 200)
+  - id: rfc9728
+    name: OAuth 2.0 Protected Resource Metadata
+    conforms: true
+    evidence: https://mcp.apilayer.com/.well-known/oauth-protected-resource (HTTP 200) and the
+      WWW-Authenticate challenge on POST https://mcp.apilayer.com/mcp, which carries
+      resource_metadata pointing at it.
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    evidence: https://mcp.apilayer.com/mcp answers JSON-RPC with a 401 and an RFC 9728 bearer
+      challenge; the transport is Streamable HTTP. Tool schemas are auth-gated.
+  - id: openapi
+    conforms: true
+    evidence: 22 OpenAPI 3.0/3.1 documents published by APILayer's own SwaggerHub organization
+      (apilayer-863) and linked from each product page on docs.apilayer.com; three are captured
+      in openapi/ (see apis.yml note on estate scope).
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence: Errors use a proprietary {success,error{code,type,info}} envelope with
+      Content-Type application/json. See errors/apilayer-error-codes.yml.
+  - id: rfc8594
+    name: Sunset HTTP Header
+    conforms: false
+    evidence: No Sunset or Deprecation header observed and no deprecation policy published.
+  - id: idempotency
+    conforms: false
+    evidence: No mutating operations exist on the captured surface, so no idempotency mechanism
+      is required or published. See conventions/apilayer-conventions.yml.
+  - id: pagination
+    conforms: false
+    evidence: None of the operations in the three specs captured under openapi/ paginate - each
+      returns a single self-contained document - so there is no pagination convention to assert
+      for this record.
+  - id: hsts
+    conforms: true
+    evidence: security/apilayer-domain-security.yml - apilayer.com serves
+      Strict-Transport-Security with max-age 2592000.
+  - id: dnssec
+    conforms: false
+    evidence: security/apilayer-domain-security.yml - apilayer.com is not DNSSEC signed.
+  - id: json_schema
+    conforms: true
+    evidence: json-schema/apilayer-api-schema.json and the components.schemas blocks of the
+      captured OpenAPI documents.
+domain_standard:
+  applicable: false
+  note: >-
+    Checked for a declarable domain standard in the contracts and found none, which is the
+    correct result for this market rather than a gap. The FX products emit ISO 4217 currency
+    codes and ISO 8601 dates and the IP product emits ISO 3166-1 country codes, but these are
+    field-level value vocabularies, not a message or interface standard a counterparty could
+    implement against. There is no ISO 20022, FIX, FDX or comparable wire standard in any
+    APILayer contract.
+    Identifier vocabularies observed, for the record: ISO 4217 (currency), ISO 8601 (date),
+    ISO 3166-1 alpha-2 (country), IANA tz database (timezone).
+compliance:
+  published: false
+  certifications: []
+  trust_center: null
+  note: >-
+    No SOC 2, ISO 27001, PCI or HIPAA claim is published on apilayer.com, on any product site,
+    or on the Idera legal pages. probe-security-programs.py returned vdp=none trust=none on
+    2026-09-12. No Compliance pointer was emitted, because there is nothing to point at.
+checked: '2026-09-12'

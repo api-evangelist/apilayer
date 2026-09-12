@@ -1,0 +1,88 @@
+generated: '2026-09-12'
+method: derived
+source: openapi/_original/*.json, live responses observed 2026-09-12 on api.ipapi.com and
+  api.exchangerate.host, and https://docs.apilayer.com/exchangerate/docs/api-documentation
+provider: APILayer
+providerId: apilayer
+summary: >-
+  Every APILayer product API in this record is a READ-ONLY GET surface: one required query-string
+  credential, a handful of query parameters, one JSON document back. There is no request body,
+  no mutating verb, and no resource graph. That single fact determines most of this file.
+authentication:
+  style: query-string API key (`access_key`)
+  header_alternative: none
+  scopes: none on REST; OAuth scopes exist only on the hosted MCP server
+  artifact: authentication/apilayer-authentication.yml
+idempotency:
+  supported: false
+  coverage: na
+  mechanism: null
+  scope: []
+  note: >-
+    There is no write surface. All 13 operations across the three captured contracts are GET,
+    so replay protection is neither present nor required. `na` rather than `none`: nothing is
+    missing, there is simply nothing to make idempotent. No Idempotency-Key header is
+    documented, offered, or needed. If APILayer ever ships a mutating endpoint this field must
+    be re-evaluated.
+reversibility:
+  grade: na
+  note: >-
+    Read-only surface - no operation changes provider-side state, so there is nothing an agent
+    could need to take back. No cancel/refund/void/undo/restore operation exists and none is
+    required.
+  reversal_operations: []
+dry_run_mode:
+  supported: na
+  note: Read-only surface; every call is already side-effect free. The free plan (100 requests
+    a month, no credit card) is the closest thing to a rehearsal mode.
+pagination:
+  style: none
+  note: Each captured operation returns one complete document. `timeframe` and `timeseries`
+    endpoints bound the response by a start/end date range rather than paging.
+  params: []
+field_selection:
+  supported: true
+  param: fields
+  note: '`fields` takes a comma-separated list and trims the response; documented on the ipapi
+    lookup operations. Not available on every product.'
+output_format:
+  supported: true
+  param: output
+  values: [json, xml]
+  note: XML is offered alongside JSON on the ipapi surface; JSON is the default.
+jsonp:
+  supported: true
+  param: callback
+  note: A JSONP callback function name may be supplied. This is a browser-era affordance and
+    implies the access key is expected to travel in client-side URLs.
+metadata:
+  supported: false
+request_tracing:
+  request_id_header: none observed
+  note: No X-Request-Id or equivalent correlation header was returned on any probed response.
+    An agent cannot quote a request id to support.
+versioning:
+  style: per-product; only some hosts carry a /v1 path segment
+  artifact: lifecycle/apilayer-lifecycle.yml
+error_envelope:
+  shape: '{"success": false, "error": {"code": <int>, "type": "<slug>", "info": "<sentence>"}}'
+  rfc9457: false
+  critical: >-
+    HTTP status is NOT a reliable success signal. An invalid or missing access key returned
+    HTTP 200 with the error envelope on both hosts probed 2026-09-12. Branch on the `success`
+    boolean and then on `error.type`; `error.code` is reused across unrelated conditions.
+  artifact: errors/apilayer-error-codes.yml
+rate_limit_signaling:
+  response_headers: none observed
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header was present on any response probed
+    2026-09-12. Exhaustion is signalled only in the body, as error type
+    usage_limit_reached / daily_usage_limit_reached / rate_limit_reached. An agent has no way to
+    see how much quota remains before it runs out.
+  artifact: rate-limits/apilayer-rate-limits.yml
+transport:
+  https: available on paid plans only
+  note: Error code 105 https_access_restricted states that the free plan does not support HTTPS
+    encryption, which means the free tier is expected to transmit the access key in a plaintext
+    URL.
+checked: '2026-09-12'

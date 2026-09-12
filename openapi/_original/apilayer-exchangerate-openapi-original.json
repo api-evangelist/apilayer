@@ -1,0 +1,1276 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ExchangeRate.host API",
+    "description": "Exchangerate provides a simple REST API with real-time and historical exchange rates for 168 world currencies, delivering currency pairs in universally usable JSON format - compatible with any of your applications.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.exchangerate.host"
+    }
+  ],
+  "paths": {
+    "/change": {
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "ExchangeRate.host :- /change",
+        "description": "Returns the change (both margin and percentage) of one or more currencies, relative to a Source Currency, within a specific time-frame. If no time-frame is supplied the API returns change values from yesterday's EOD data to the latest available rates.",
+        "operationId": "exchangeratehostChange",
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "A unique key assigned to each API account used to authenticate with the API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Specify the start date of your time frame. [Format: YYYY-MM-DD]",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2010-03-01"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Specify the end date of your time frame. [Format: YYYY-MM-DD]",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "2010-04-01"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          },
+          {
+            "name": "currencies",
+            "in": "query",
+            "description": "Specify a comma-separated list of currency codes to limit your API response to specific currencies.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD,GBP,EUR"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Set to `1` for pretty-printed JSON.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "example": 1
+            }
+          },
+          {
+            "name": "callback",
+            "in": "query",
+            "description": "Wrap the response in the function name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Currency change (start/end rate, absolute + percentage) per currency pair.\n *\n * **Note:** *Since foreign exchange (forex) markets are only open from Sunday 5 PM ET to Friday 5 PM ET, change parameters may converge to zero during weekends.*",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChangeResponse"
+                },
+                "examples": {
+                  "changeExample": {
+                    "summary": "Example change response",
+                    "value": {
+                      "success": true,
+                      "terms": "https://currencylayer.com/terms",
+                      "privacy": "https://currencylayer.com/privacy",
+                      "change": true,
+                      "start_date": "2015-01-01",
+                      "end_date": "2015-01-02",
+                      "source": "USD",
+                      "quotes": {
+                        "USDAUD": {
+                          "start_rate": 1.2345,
+                          "end_rate": 1.3456,
+                          "change": 0.1111,
+                          "change_pct": 0.09
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied, invalid_start_date, invalid_end_date).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    },
+    "/timeframe": {
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "ExchangeRate.host :- /timeframe",
+        "description": "Returns historical exchange rates for a time-period of your choice (maximum range: 365 days). Specify your preferred time frame consisting of a start_date and an end_date, both of the format YYYY-MM-DD.\n *\n * **Note:** *Since the exchangeratehost API supports time frames of up to 365 days, not limiting the output currencies may produce very large files. For optimal performance and reduced server load, it is recommended to use the currencies parameter to select only the currencies you need.*",
+        "operationId": "exchangeratehostTimeframe",
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "A unique key assigned to each API account used to authenticate with the API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Specify the start date of your time frame. [Format: YYYY-MM-DD]",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2010-03-01"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Specify the end date of your time frame. [Format: YYYY-MM-DD]",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2010-03-02"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          },
+          {
+            "name": "currencies",
+            "in": "query",
+            "description": "Specify a comma-separated list of currency codes to limit your API response to specific currencies.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "AUD,EUR,GBP,PLN"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Set to `1` for pretty-printed JSON.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "example": 1
+            }
+          },
+          {
+            "name": "callback",
+            "in": "query",
+            "description": "Wrap the response in the function name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exchange-rate quotes for each date in the requested timeframe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimeframeResponse"
+                },
+                "examples": {
+                  "timeframeExample": {
+                    "summary": "Example timeframe response",
+                    "value": {
+                      "success": true,
+                      "terms": "https://currencylayer.com/terms",
+                      "privacy": "https://currencylayer.com/privacy",
+                      "timeseries": true,
+                      "start_date": "2012-05-01",
+                      "end_date": "2012-05-03",
+                      "source": "USD",
+                      "quotes": {
+                        "2012-05-01": {
+                          "USDAUD": 0.9645,
+                          "USDCHF": 0.91957
+                        },
+                        "2012-05-02": {
+                          "USDAUD": 0.9575,
+                          "USDCHF": 0.92036
+                        },
+                        "2012-05-03": {
+                          "USDAUD": 0.95404,
+                          "USDCHF": 0.91525
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied, invalid_start_date, invalid_end_date, invalid_time_frame, time_frame_too_long).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    },
+    "/historical": {
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "ExchangeRate.host :- /historical",
+        "description": "Returns accurate historical exchange rate data for every past day all the way back to the year of 1999. Historical rates may be accessed by attaching the date parameter with a valid date (Format: YYYY-MM-DD).\n *\n * **Note:** *Please be aware that Exchange Rate data for certain currencies may not be available for each requested day (e.g. Bitcoin was only introduced in 2009).*",
+        "operationId": "exchangeratehostHistorical",
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "A unique key assigned to each API account used to authenticate with the API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Specify a date for which to request historical rates. [Format: YYYY-MM-DD]",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2005-02-01"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "GBP"
+            }
+          },
+          {
+            "name": "currencies",
+            "in": "query",
+            "description": "Specify a comma-separated list of currency codes to limit your API response to specific currencies.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "AUD,CHF,EUR,GBP,PLN"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Set to `1` for pretty-printed JSON.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "example": 1
+            }
+          },
+          {
+            "name": "callback",
+            "in": "query",
+            "description": "Wrap the response in the function name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical exchange rate data for the requested date.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalResponse"
+                },
+                "examples": {
+                  "historicalExample": {
+                    "summary": "Example historical rates response",
+                    "value": {
+                      "success": true,
+                      "terms": "https://currencylayer.com/terms",
+                      "privacy": "https://currencylayer.com/privacy",
+                      "historical": true,
+                      "date": "2005-02-01",
+                      "timestamp": 1430401802,
+                      "source": "USD",
+                      "quotes": {
+                        "USDEUR": 0.918019,
+                        "USDGBP": 0.650364,
+                        "USDJPY": 119.640479
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_date_supplied, invalid_date).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    },
+    "/convert": {
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "ExchangeRate.host :- /convert",
+        "description": "Performs a single currency conversion. Specify a from currency code, a to currency code, and the amount you would like to convert.",
+        "operationId": "exchangeratehostConvert",
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "A unique key assigned to each API account used to authenticate with the API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Specify the currency to convert from.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Specify the currency to convert to.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "GBP"
+            }
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "Specify the amount to convert.",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 10
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Specify a date to use historical rates for this conversion. [Format: YYYY-MM-DD]",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Set to `1` for pretty-printed JSON.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "example": 1
+            }
+          },
+          {
+            "name": "callback",
+            "in": "query",
+            "description": "Wrap the response in the function name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Currency conversion result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConvertResponse"
+                },
+                "examples": {
+                  "convertExample": {
+                    "summary": "Example conversion response",
+                    "value": {
+                      "success": true,
+                      "terms": "https://currencylayer.com/terms",
+                      "privacy": "https://currencylayer.com/privacy",
+                      "query": {
+                        "from": "USD",
+                        "to": "EUR",
+                        "amount": 10
+                      },
+                      "info": {
+                        "timestamp": 1519328414,
+                        "quote": 0.813399
+                      },
+                      "result": 8.13399
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation error (e.g. invalid_from_currency, invalid_to_currency, invalid_conversion_amount, invalid_date).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "ExchangeRate.host :- /live",
+        "description": "Returns real-time exchange rates. Optionally define an additional source currency and specific output currencies using the currencies parameter.\n *\n * **Note:** *Exchange rate data is refreshed every 60 minutes for Free & Basic customers, every 10 minutes for the Professional Plan, and every 60 seconds for Business customers.*",
+        "operationId": "exchangeratehostLive",
+        "parameters": [
+          {
+            "name": "access_key",
+            "in": "query",
+            "description": "A unique key assigned to each API account used to authenticate with the API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "USD"
+            }
+          },
+          {
+            "name": "currencies",
+            "in": "query",
+            "description": "Specify a comma-separated list of currency codes to limit your API response to specific currencies.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "AUD,EUR,GBP,PLN"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "Set to `1` for pretty-printed JSON.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "example": 1
+            }
+          },
+          {
+            "name": "callback",
+            "in": "query",
+            "description": "Wrap the response in the function name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Real-time exchange rates.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LiveResponse"
+                },
+                "examples": {
+                  "liveExample": {
+                    "summary": "Example live rates response",
+                    "value": {
+                      "success": true,
+                      "terms": "https://currencylayer.com/terms",
+                      "privacy": "https://currencylayer.com/privacy",
+                      "timestamp": 1430401802,
+                      "source": "USD",
+                      "quotes": {
+                        "USDEUR": 0.918019,
+                        "USDGBP": 0.650364,
+                        "USDJPY": 119.640479
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "403": {
+            "$ref": "#/components/responses/403"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "429": {
+            "$ref": "#/components/responses/429"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          },
+          "503": {
+            "$ref": "#/components/responses/503"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LiveResponse": {
+        "description": "Real-time exchange rates.",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "terms": {
+            "type": "string",
+            "example": "https://currencylayer.com/terms"
+          },
+          "privacy": {
+            "type": "string",
+            "example": "https://currencylayer.com/privacy"
+          },
+          "timestamp": {
+            "type": "integer",
+            "example": 1430401802
+          },
+          "source": {
+            "type": "string",
+            "example": "USD"
+          },
+          "quotes": {
+            "description": "Currency-pair quotes keyed by pair symbol (e.g. USDEUR).",
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "type": "object",
+        "example": {
+          "success": true,
+          "terms": "https://currencylayer.com/terms",
+          "privacy": "https://currencylayer.com/privacy",
+          "timestamp": 1430401802,
+          "source": "USD",
+          "quotes": {
+            "USDEUR": 0.918019,
+            "USDGBP": 0.650364,
+            "USDJPY": 119.640479
+          }
+        }
+      },
+      "HistoricalResponse": {
+        "description": "Historical exchange rate data for a date.",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "terms": {
+            "type": "string"
+          },
+          "privacy": {
+            "type": "string"
+          },
+          "historical": {
+            "type": "boolean",
+            "example": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2005-02-01"
+          },
+          "timestamp": {
+            "type": "integer",
+            "example": 1430401802
+          },
+          "source": {
+            "type": "string",
+            "example": "USD"
+          },
+          "quotes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        },
+        "type": "object",
+        "example": {
+          "success": true,
+          "terms": "https://currencylayer.com/terms",
+          "privacy": "https://currencylayer.com/privacy",
+          "historical": true,
+          "date": "2005-02-01",
+          "timestamp": 1430401802,
+          "source": "USD",
+          "quotes": {
+            "USDEUR": 0.918019,
+            "USDGBP": 0.650364,
+            "USDJPY": 119.640479
+          }
+        }
+      },
+      "ConvertResponse": {
+        "description": "Currency conversion result.",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "terms": {
+            "type": "string"
+          },
+          "privacy": {
+            "type": "string"
+          },
+          "query": {
+            "properties": {
+              "from": {
+                "type": "string",
+                "example": "USD"
+              },
+              "to": {
+                "type": "string",
+                "example": "EUR"
+              },
+              "amount": {
+                "type": "number",
+                "example": 10
+              }
+            },
+            "type": "object"
+          },
+          "info": {
+            "properties": {
+              "timestamp": {
+                "type": "integer",
+                "example": 1519328414
+              },
+              "quote": {
+                "type": "number",
+                "example": 0.813399
+              }
+            },
+            "type": "object"
+          },
+          "result": {
+            "type": "number",
+            "example": 8.13399
+          }
+        },
+        "type": "object"
+      },
+      "TimeframeResponse": {
+        "description": "Exchange-rate quotes for each date in a timeframe.",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "terms": {
+            "type": "string"
+          },
+          "privacy": {
+            "type": "string"
+          },
+          "timeframe": {
+            "type": "boolean",
+            "example": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2012-05-01"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2012-05-03"
+          },
+          "source": {
+            "type": "string",
+            "example": "USD"
+          },
+          "quotes": {
+            "description": "Map of ISO date -> (map of currency pair -> rate).",
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "type": "object",
+        "example": {
+          "success": true,
+          "terms": "https://currencylayer.com/terms",
+          "privacy": "https://currencylayer.com/privacy",
+          "timeseries": true,
+          "start_date": "2012-05-01",
+          "end_date": "2012-05-03",
+          "source": "USD",
+          "quotes": {
+            "2012-05-01": {
+              "USDAUD": 0.9645,
+              "USDCHF": 0.91957
+            },
+            "2012-05-02": {
+              "USDAUD": 0.9575,
+              "USDCHF": 0.92036
+            },
+            "2012-05-03": {
+              "USDAUD": 0.95404,
+              "USDCHF": 0.91525
+            }
+          }
+        }
+      },
+      "ChangeResponse": {
+        "description": "Currency fluctuation between two dates.",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "terms": {
+            "type": "string"
+          },
+          "privacy": {
+            "type": "string"
+          },
+          "change": {
+            "type": "boolean",
+            "example": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2015-01-01"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2015-01-02"
+          },
+          "source": {
+            "type": "string",
+            "example": "USD"
+          },
+          "quotes": {
+            "description": "Map of currency pair -> change statistics.",
+            "type": "object",
+            "additionalProperties": {
+              "properties": {
+                "start_rate": {
+                  "type": "number"
+                },
+                "end_rate": {
+                  "type": "number"
+                },
+                "change": {
+                  "type": "number"
+                },
+                "change_pct": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
+            }
+          }
+        },
+        "type": "object",
+        "example": {
+          "success": true,
+          "terms": "https://currencylayer.com/terms",
+          "privacy": "https://currencylayer.com/privacy",
+          "change": true,
+          "start_date": "2015-01-01",
+          "end_date": "2015-01-02",
+          "source": "USD",
+          "quotes": {
+            "USDAUD": {
+              "start_rate": 1.2345,
+              "end_rate": 1.3456,
+              "change": 0.1111,
+              "change_pct": 0.09
+            }
+          }
+        }
+      },
+      "Error": {
+        "title": "Error",
+        "type": "object",
+        "required": [
+          "success",
+          "error"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "example": 101
+              },
+              "type": {
+                "type": "string",
+                "example": "invalid_access_key"
+              },
+              "info": {
+                "type": "string",
+                "example": "You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "401": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "account_on_hold": {
+                "summary": "account_on_hold",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 107,
+                    "type": "account_on_hold",
+                    "info": "Your account currently has open invoices and API has been automatically disabled. Please settle your open balance or downgrade to the Free Plan to restore API access. [Support: support@apilayer.com]"
+                  }
+                }
+              },
+              "invalid_access_key": {
+                "summary": "invalid_access_key",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 101,
+                    "type": "invalid_access_key",
+                    "info": "You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]"
+                  }
+                }
+              },
+              "missing_access_key": {
+                "summary": "missing_access_key",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 101,
+                    "type": "missing_access_key",
+                    "info": "You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]"
+                  }
+                }
+              },
+              "inactive_user": {
+                "summary": "inactive_user",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 102,
+                    "type": "inactive_user",
+                    "info": "Permission denied - User not active."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "https_access_restricted": {
+                "summary": "https_access_restricted",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 105,
+                    "type": "https_access_restricted",
+                    "info": "Access Restricted - Your current Subscription Plan does not support HTTPS Encryption."
+                  }
+                }
+              },
+              "function_access_restricted": {
+                "summary": "function_access_restricted",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 105,
+                    "type": "function_access_restricted",
+                    "info": "Access Restricted - Your current Subscription Plan does not support this API Function."
+                  }
+                }
+              },
+              "api_access_blocked": {
+                "summary": "api_access_blocked",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 104,
+                    "type": "api_access_blocked",
+                    "info": "Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "invalid_api_function": {
+                "summary": "invalid_api_function",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 103,
+                    "type": "invalid_api_function",
+                    "info": "This API Function does not exist."
+                  }
+                }
+              },
+              "404_not_found": {
+                "summary": "404_not_found",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 404,
+                    "type": "404_not_found",
+                    "info": "404 - The requested resource could not be found. Please try again or contact support."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "429": {
+        "description": "Too Many Requests",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "usage_limit_reached": {
+                "summary": "usage_limit_reached",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 104,
+                    "type": "usage_limit_reached",
+                    "info": "Your monthly usage limit has been reached. Please upgrade your Subscription Plan."
+                  }
+                }
+              },
+              "daily_usage_limit_reached": {
+                "summary": "daily_usage_limit_reached",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 104,
+                    "type": "daily_usage_limit_reached",
+                    "info": "Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan."
+                  }
+                }
+              },
+              "fair_use_limit_reached": {
+                "summary": "fair_use_limit_reached",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 104,
+                    "type": "fair_use_limit_reached",
+                    "info": "Your fair use limit has been reached. [Please contact support: support@apilayer.com]"
+                  }
+                }
+              },
+              "rate_limit_reached": {
+                "summary": "rate_limit_reached",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 106,
+                    "type": "rate_limit_reached",
+                    "info": "You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the \"Rate Limits\" section of the API Documentation for details. "
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "internal_error": {
+                "summary": "internal_error",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 0,
+                    "type": "internal_error",
+                    "info": "An error has occured. [Technical Support: support@apilayer.com]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "503": {
+        "description": "Service Unavailable",
+        "content": {
+          "application/json; Charset=UTF-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "maintenance_mode": {
+                "summary": "maintenance_mode",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": 503,
+                    "type": "maintenance_mode",
+                    "info": ""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Official ExchangeRate.host documentation (reference)",
+    "url": "https://exchangerate.host/documentation"
+  }
+}

@@ -1,0 +1,67 @@
+generated: '2026-09-12'
+method: probed
+source: https://mcp.apilayer.com/mcp
+status: gated
+supersedes: 2026-09-11 probe of the same endpoint; this round adds the RFC 9728 /
+  RFC 8414 discovery chain and the declared scope set.
+server:
+  name: apilayer
+  transport: http
+  url: https://mcp.apilayer.com/mcp
+deployment:
+  mode: remote
+  endpoint: https://mcp.apilayer.com/mcp
+  install: null
+  package: null
+  auth: oauth
+  verified: probed
+  probe: gated
+  checked: '2026-09-12'
+  source: endpoint named in APILayer's own product documentation
+    (https://docs.apilayer.com/ipstack/docs/mcp-user-guide, HTTP 200), then probed directly
+  probe_why: RFC 9728 bearer challenge on the MCP path
+authorization:
+  challenge: 'WWW-Authenticate: Bearer resource_metadata="https://mcp.apilayer.com/.well-known/oauth-protected-resource"'
+  protected_resource_metadata: well-known/apilayer-oauth-protected-resource.json
+  authorization_server: https://auth.apilayer.com
+  authorization_server_metadata: well-known/apilayer-oauth-authorization-server.json
+  openid_configuration: well-known/apilayer-openid-configuration.json
+  dynamic_client_registration: true
+  scopes_supported:
+    - mcp:read
+    - api:ipstack
+  grant_types:
+    - authorization_code
+    - client_credentials
+    - refresh_token
+    - urn:ietf:params:oauth:grant-type:device_code
+  note: >-
+    This is a correctly-built agent door. The 401 carries a resource_metadata pointer, the
+    protected-resource document names its authorization server, and that server publishes both
+    OIDC discovery and RFC 8414 metadata with PKCE and dynamic client registration. An MCP
+    client can complete the handshake with no out-of-band configuration.
+probes:
+  - method: tools/list
+    request: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    result: '{"jsonrpc":"2.0","error":{"code":-32001,"message":"Authentication required"},"id":null}'
+    date: '2026-09-12'
+  - method: initialize
+    http_status: 401
+    result: same bearer challenge; no anonymous handshake is permitted
+    date: '2026-09-12'
+tools: []
+tools_note: >-
+  No tool list captured. Anonymous tools/list and initialize both return the OAuth challenge, so
+  the live inputSchemas require an authenticated introspection run. Do NOT derive a tool list
+  from the OpenAPI and store it here - that is a candidate manifest and belongs under an
+  X-MCPServerCandidate pointer.
+coverage_finding: >-
+  The declared scope set is the strongest public evidence of what this server actually fronts,
+  and it names exactly one product: api:ipstack. APILayer publishes 22 OpenAPI contracts and a
+  22-product docs portal; the MCP surface reaches one of them. The only mcp-user-guide page in
+  the whole portal is under /ipstack/ - the same path for every other product returns 404. The
+  hosted MCP server is an IPstack pilot, not a marketplace-wide agent door, and none of the
+  three APIs captured in this repo (exchangerate.host, exchangeratesapi.io, ipapi.com) is
+  reachable through it.
+checked: '2026-09-12'
