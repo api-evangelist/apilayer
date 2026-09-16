@@ -50,10 +50,11 @@ specificationVersion: '0.23'
 apis:
 - aid: apilayer:apilayer-api
   name: APILayer Marketplace API
-  description: The APILayer marketplace gateway at api.apilayer.com fronts the third-party APIs listed
-    on marketplace.apilayer.com (Bank Data, Tax Data and others) behind a single subscription. Authentication
-    here is an `apikey` REQUEST HEADER, not the `access_key` query parameter the house products use, and
-    unlike those products the gateway returns a real HTTP 401 on an invalid credential.
+  description: >-
+    The APILayer marketplace gateway at api.apilayer.com fronts the third-party APIs listed on marketplace.apilayer.com
+    (Bank Data, Tax Data and others) behind a single subscription. Authentication here is an `apikey`
+    REQUEST HEADER, not the `access_key` query parameter the house products use, and unlike those products
+    the gateway returns a real HTTP 401 on an invalid credential.
   humanURL: https://marketplace.apilayer.com/
   baseURL: https://api.apilayer.com
   tags:
@@ -68,66 +69,28 @@ apis:
     url: json-schema/apilayer-api-schema.json
   - type: JSONLD
     url: json-ld/apilayer-context.jsonld
-- aid: apilayer:exchangerate-host-api
-  name: ExchangeRate.host API
-  description: Real-time and historical foreign exchange rates for 168 world currencies, with live quotes,
-    single-day historical rates, date-range time frames, change queries and currency conversion. Five
-    GET endpoints, authenticated with an access_key query parameter.
-  humanURL: https://exchangerate.host/
-  baseURL: https://api.exchangerate.host
+- aid: apilayer:apilayer-endpoints-api
+  name: APILayer Endpoints API
+  description: The Endpoints API from APILayer — 12 operation(s) for endpoints.
+  humanURL: https://marketplace.apilayer.com/
+  baseURL: https://api.apilayer.com
   tags:
-  - Currency
-  - Foreign Exchange
-  - Financial Data
+  - Endpoints
   properties:
   - type: OpenAPI
-    url: openapi/apilayer-exchangerate-openapi.yml
-  - type: Overlay
-    url: overlays/apilayer-exchangerate-overlay.yaml
+    url: openapi/apilayer-endpoints-api-openapi.yml
   - type: Documentation
     url: https://docs.apilayer.com/exchangerate/docs/api-documentation
   - type: APIReference
     url: https://docs.apilayer.com/exchangerate/docs/api-documentation
   - type: Pricing
     url: https://exchangerate.host/pricing
-- aid: apilayer:exchange-rates-api
-  name: Exchange Rates API
-  description: 'Foreign exchange rate data for 170 world currencies drawn from 15+ sources: latest rates,
-    single-date historical rates, time series, fluctuation between two dates, currency conversion and
-    a supported-symbols list. Six GET endpoints under a /v1 path prefix.'
-  humanURL: https://exchangeratesapi.io/
-  baseURL: https://api.exchangeratesapi.io/v1
-  tags:
-  - Currency
-  - Foreign Exchange
-  - Financial Data
-  properties:
-  - type: OpenAPI
-    url: openapi/apilayer-exchangeratesapi-openapi.yml
-  - type: Overlay
-    url: overlays/apilayer-exchangeratesapi-overlay.yaml
   - type: Documentation
     url: https://docs.apilayer.com/exchangeratesapi/docs/api-documentation
   - type: APIReference
     url: https://docs.apilayer.com/exchangeratesapi/docs/api-documentation
   - type: Pricing
     url: https://exchangeratesapi.io/pricing
-- aid: apilayer:ipapi
-  name: ipapi
-  description: Real-time IP to geolocation lookup returning location, connection, timezone, currency and
-    optional threat-assessment data for an IPv4 or IPv6 address, plus a /check endpoint that resolves
-    the caller's own address. Supports field selection, JSON or XML output and bulk lookups.
-  humanURL: https://ipapi.com/
-  baseURL: https://api.ipapi.com/api
-  tags:
-  - Geolocation
-  - IP Intelligence
-  - Security
-  properties:
-  - type: OpenAPI
-    url: openapi/apilayer-ipapi-openapi.yml
-  - type: Overlay
-    url: overlays/apilayer-ipapi-overlay.yaml
   - type: Documentation
     url: https://docs.apilayer.com/ipapi/docs/api-documentation
   - type: APIReference
@@ -135,6 +98,12 @@ apis:
   - type: Pricing
     url: https://ipapi.com/pricing
 common:
+- type: Overlay
+  url: overlays/apilayer-exchangerate-overlay.yaml
+- type: Overlay
+  url: overlays/apilayer-exchangeratesapi-overlay.yaml
+- type: Overlay
+  url: overlays/apilayer-ipapi-overlay.yaml
 - type: Website
   url: https://apilayer.com/
 - type: DeveloperPortal
