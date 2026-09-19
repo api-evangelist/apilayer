@@ -42,6 +42,15 @@ tags:
 - SaaS APIs
 - Geolocation
 - Currency
+- Data API
+tags_raw:
+- API Marketplace
+- API Catalog
+- API Discovery
+- Developer Tools
+- SaaS APIs
+- Geolocation
+- Currency
 - Data APIs
 url: https://raw.githubusercontent.com/api-evangelist/apilayer/refs/heads/main/apis.yml
 created: '2025-03-01'
@@ -74,7 +83,8 @@ apis:
   description: The Endpoints API from APILayer — 12 operation(s) for endpoints.
   humanURL: https://marketplace.apilayer.com/
   baseURL: https://api.apilayer.com
-  tags:
+  tags: []
+  tags_raw:
   - Endpoints
   properties:
   - type: OpenAPI
