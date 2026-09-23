@@ -1,21 +1,23 @@
+# x-archived-from: apilayer-exchangeratesapi-openapi.yml
+# x-archived-on: 2026-09-16
 openapi: 3.0.0
 info:
-  title: ExchangeRate.host API
-  description: Exchangerate provides a simple REST API with real-time and historical exchange rates for 168 world currencies,
-    delivering currency pairs in universally usable JSON format - compatible with any of your applications.
+  title: Exchange Rates API
+  description: Powered by 15+ exchange rate data sources, the Exchange Rates API delivers real-time and historical exchange
+    rate data for 170 world currencies. Endpoints cover latest rates, historical rates, currency conversion, time-series and
+    fluctuation data.
   version: 1.0.0
 servers:
-- url: https://api.exchangerate.host
+- url: https://api.exchangeratesapi.io/v1
 paths:
-  /change:
+  /fluctuation:
     get:
       tags:
       - Endpoints
-      summary: ExchangeRate.host :- /change
-      description: Returns the change (both margin and percentage) of one or more currencies, relative to a Source Currency,
-        within a specific time-frame. If no time-frame is supplied the API returns change values from yesterday's EOD data
-        to the latest available rates.
-      operationId: exchangeratehostChange
+      summary: exchangeratesapi :- /fluctuation
+      description: Returns fluctuation data (start rate, end rate, change and change percentage) between two dates for the
+        requested currencies.
+      operationId: exchangeratesapiFluctuation
       parameters:
       - name: access_key
         in: query
@@ -25,77 +27,61 @@ paths:
           type: string
       - name: start_date
         in: query
-        description: 'Specify the start date of your time frame. [Format: YYYY-MM-DD]'
-        required: false
+        description: 'The start date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
         schema:
           type: string
-          example: '2010-03-01'
+          format: date
       - name: end_date
         in: query
-        description: 'Specify the end date of your time frame. [Format: YYYY-MM-DD]'
+        description: 'The end date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: base
+        in: query
+        description: 'Change the base currency of your fluctuation data. [Default: EUR]'
         required: false
         schema:
           type: string
-          example: '2010-04-01'
-      - name: source
+          example: EUR
+      - name: symbols
         in: query
-        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        description: Comma-separated list of currency codes to limit the output currencies.
         required: false
         schema:
           type: string
-          example: USD
-      - name: currencies
-        in: query
-        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
-        required: false
-        schema:
-          type: string
-          example: USD,GBP,EUR
-      - name: format
-        in: query
-        description: Set to `1` for pretty-printed JSON.
-        required: false
-        schema:
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: 1
+          example: USD,GBP,JPY
       - name: callback
         in: query
-        description: Wrap the response in the function name.
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
         required: false
         schema:
           type: string
       responses:
         '200':
-          description: "Currency change (start/end rate, absolute + percentage) per currency pair.\n *\n * **Note:** *Since\
-            \ foreign exchange (forex) markets are only open from Sunday 5 PM ET to Friday 5 PM ET, change parameters may\
-            \ converge to zero during weekends.*"
+          description: Fluctuation metrics (start/end rate, change, change %) per currency.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChangeResponse'
+                $ref: '#/components/schemas/FluctuationResponse'
               examples:
-                changeExample:
-                  summary: Example change response
+                default:
                   value:
                     success: true
-                    terms: https://currencylayer.com/terms
-                    privacy: https://currencylayer.com/privacy
-                    change: true
-                    start_date: '2015-01-01'
-                    end_date: '2015-01-02'
-                    source: USD
-                    quotes:
-                      USDAUD:
-                        start_rate: 1.2345
-                        end_rate: 1.3456
-                        change: 0.1111
-                        change_pct: 0.09
+                    fluctuation: true
+                    start_date: '2015-12-01'
+                    end_date: '2015-12-24'
+                    base: EUR
+                    rates:
+                      USD:
+                        start_rate: 1.066494
+                        end_rate: 1.073844
+                        change: 0.00735
+                        change_pct: 0.6899
         '400':
-          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied,
-            invalid_start_date, invalid_end_date).
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
           content:
             application/json:
               schema:
@@ -112,17 +98,13 @@ paths:
           $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
-  /timeframe:
+  /timeseries:
     get:
       tags:
       - Endpoints
-      summary: ExchangeRate.host :- /timeframe
-      description: "Returns historical exchange rates for a time-period of your choice (maximum range: 365 days). Specify\
-        \ your preferred time frame consisting of a start_date and an end_date, both of the format YYYY-MM-DD.\n *\n * **Note:**\
-        \ *Since the exchangeratehost API supports time frames of up to 365 days, not limiting the output currencies may produce\
-        \ very large files. For optimal performance and reduced server load, it is recommended to use the currencies parameter\
-        \ to select only the currencies you need.*"
-      operationId: exchangeratehostTimeframe
+      summary: exchangeratesapi :- /timeseries
+      description: Returns daily historical exchange rates between two dates (max. 365 days) for the requested currencies.
+      operationId: exchangeratesapiTimeseries
       parameters:
       - name: access_key
         in: query
@@ -132,79 +114,64 @@ paths:
           type: string
       - name: start_date
         in: query
-        description: 'Specify the start date of your time frame. [Format: YYYY-MM-DD]'
+        description: 'The start date of your preferred timeframe. [Format: YYYY-MM-DD]'
         required: true
         schema:
           type: string
-          example: '2010-03-01'
+          format: date
       - name: end_date
         in: query
-        description: 'Specify the end date of your time frame. [Format: YYYY-MM-DD]'
+        description: 'The end date of your preferred timeframe. [Format: YYYY-MM-DD]'
         required: true
         schema:
           type: string
-          example: '2010-03-02'
-      - name: source
+          format: date
+      - name: base
         in: query
-        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        description: 'Change the base currency of your time-series data. [Default: EUR]'
         required: false
         schema:
           type: string
-          example: USD
-      - name: currencies
+          example: EUR
+      - name: symbols
         in: query
-        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        description: Comma-separated list of currency codes to limit the output currencies.
         required: false
         schema:
           type: string
-          example: AUD,EUR,GBP,PLN
-      - name: format
-        in: query
-        description: Set to `1` for pretty-printed JSON.
-        required: false
-        schema:
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: 1
+          example: USD,GBP,JPY
       - name: callback
         in: query
-        description: Wrap the response in the function name.
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
         required: false
         schema:
           type: string
       responses:
         '200':
-          description: Exchange-rate quotes for each date in the requested timeframe.
+          description: Daily time-series rates keyed by ISO date.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TimeframeResponse'
+                $ref: '#/components/schemas/TimeSeriesResponse'
               examples:
-                timeframeExample:
-                  summary: Example timeframe response
+                default:
                   value:
                     success: true
-                    terms: https://currencylayer.com/terms
-                    privacy: https://currencylayer.com/privacy
                     timeseries: true
                     start_date: '2012-05-01'
                     end_date: '2012-05-03'
-                    source: USD
-                    quotes:
+                    base: EUR
+                    rates:
                       '2012-05-01':
-                        USDAUD: 0.9645
-                        USDCHF: 0.91957
+                        USD: 1.322891
+                        AUD: 1.278047
+                        CAD: 1.302303
                       '2012-05-02':
-                        USDAUD: 0.9575
-                        USDCHF: 0.92036
-                      '2012-05-03':
-                        USDAUD: 0.95404
-                        USDCHF: 0.91525
+                        USD: 1.315066
+                        AUD: 1.274202
+                        CAD: 1.299083
         '400':
-          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied,
-            invalid_start_date, invalid_end_date, invalid_time_frame, time_frame_too_long).
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
           content:
             application/json:
               schema:
@@ -221,16 +188,13 @@ paths:
           $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
-  /historical:
+  /symbols:
     get:
       tags:
       - Endpoints
-      summary: ExchangeRate.host :- /historical
-      description: "Returns accurate historical exchange rate data for every past day all the way back to the year of 1999.\
-        \ Historical rates may be accessed by attaching the date parameter with a valid date (Format: YYYY-MM-DD).\n *\n *\
-        \ **Note:** *Please be aware that Exchange Rate data for certain currencies may not be available for each requested\
-        \ day (e.g. Bitcoin was only introduced in 2009).*"
-      operationId: exchangeratehostHistorical
+      summary: exchangeratesapi :- /symbols
+      description: Returns all currently supported currency symbols together with their full names.
+      operationId: exchangeratesapiSymbols
       parameters:
       - name: access_key
         in: query
@@ -238,72 +202,27 @@ paths:
         required: true
         schema:
           type: string
-      - name: date
-        in: query
-        description: 'Specify a date for which to request historical rates. [Format: YYYY-MM-DD]'
-        required: true
-        schema:
-          type: string
-          example: '2005-02-01'
-      - name: source
-        in: query
-        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
-        required: false
-        schema:
-          type: string
-          example: GBP
-      - name: currencies
-        in: query
-        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
-        required: false
-        schema:
-          type: string
-          example: AUD,CHF,EUR,GBP,PLN
-      - name: format
-        in: query
-        description: Set to `1` for pretty-printed JSON.
-        required: false
-        schema:
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: 1
       - name: callback
         in: query
-        description: Wrap the response in the function name.
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
         required: false
         schema:
           type: string
       responses:
         '200':
-          description: Historical exchange rate data for the requested date.
+          description: Supported currency symbols (code -> name).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HistoricalResponse'
+                $ref: '#/components/schemas/SymbolsResponse'
               examples:
-                historicalExample:
-                  summary: Example historical rates response
+                default:
                   value:
                     success: true
-                    terms: https://currencylayer.com/terms
-                    privacy: https://currencylayer.com/privacy
-                    historical: true
-                    date: '2005-02-01'
-                    timestamp: 1430401802
-                    source: USD
-                    quotes:
-                      USDEUR: 0.918019
-                      USDGBP: 0.650364
-                      USDJPY: 119.640479
-        '400':
-          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_date_supplied,
-            invalid_date).
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                    symbols:
+                      USD: United States Dollar
+                      EUR: Euro
+                      GBP: British Pound Sterling
         '401':
           $ref: '#/components/responses/401'
         '403':
@@ -320,10 +239,9 @@ paths:
     get:
       tags:
       - Endpoints
-      summary: ExchangeRate.host :- /convert
-      description: Performs a single currency conversion. Specify a from currency code, a to currency code, and the amount
-        you would like to convert.
-      operationId: exchangeratehostConvert
+      summary: exchangeratesapi :- /convert
+      description: Converts an amount from one currency to another using real-time or historical exchange rates.
+      operationId: exchangeratesapiConvert
       parameters:
       - name: access_key
         in: query
@@ -333,73 +251,61 @@ paths:
           type: string
       - name: from
         in: query
-        description: Specify the currency to convert from.
+        description: The three-letter currency code of the currency you would like to convert from.
         required: true
         schema:
           type: string
-          example: USD
+          example: EUR
       - name: to
         in: query
-        description: Specify the currency to convert to.
+        description: The three-letter currency code of the currency you would like to convert to.
         required: true
         schema:
           type: string
           example: GBP
       - name: amount
         in: query
-        description: Specify the amount to convert.
+        description: The amount to be converted.
         required: true
         schema:
           type: number
-          example: 10
+          example: 25
       - name: date
         in: query
-        description: 'Specify a date to use historical rates for this conversion. [Format: YYYY-MM-DD]'
+        description: 'Perform the conversion using historical rates of a specific day. [Format: YYYY-MM-DD]'
         required: false
         schema:
           type: string
           format: date
-      - name: format
-        in: query
-        description: Set to `1` for pretty-printed JSON.
-        required: false
-        schema:
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: 1
       - name: callback
         in: query
-        description: Wrap the response in the function name.
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
         required: false
         schema:
           type: string
       responses:
         '200':
-          description: Currency conversion result.
+          description: Currency conversion result and metadata.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConvertResponse'
               examples:
-                convertExample:
-                  summary: Example conversion response
+                default:
                   value:
                     success: true
-                    terms: https://currencylayer.com/terms
-                    privacy: https://currencylayer.com/privacy
                     query:
-                      from: USD
-                      to: EUR
-                      amount: 10
+                      from: GBP
+                      to: JPY
+                      amount: 25
                     info:
                       timestamp: 1519328414
-                      quote: 0.813399
-                    result: 8.13399
+                      rate: 148.972231
+                    historical: true
+                    date: '2018-02-22'
+                    result: 3724.305775
         '400':
-          description: Bad Request - validation error (e.g. invalid_from_currency, invalid_to_currency, invalid_conversion_amount,
-            invalid_date).
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
           content:
             application/json:
               schema:
@@ -416,15 +322,13 @@ paths:
           $ref: '#/components/responses/500'
         '503':
           $ref: '#/components/responses/503'
-  /live:
+  /latest:
     get:
       tags:
       - Endpoints
-      summary: ExchangeRate.host :- /live
-      description: "Returns real-time exchange rates. Optionally define an additional source currency and specific output\
-        \ currencies using the currencies parameter.\n *\n * **Note:** *Exchange rate data is refreshed every 60 minutes for\
-        \ Free & Basic customers, every 10 minutes for the Professional Plan, and every 60 seconds for Business customers.*"
-      operationId: exchangeratehostLive
+      summary: exchangeratesapi :- /latest
+      description: Returns real-time exchange rate data for all available or a specific set of currencies.
+      operationId: exchangeratesapiLatest
       parameters:
       - name: access_key
         in: query
@@ -432,58 +336,124 @@ paths:
         required: true
         schema:
           type: string
-      - name: source
+      - name: base
         in: query
-        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        description: 'Change the base currency of your exchange rate data. [Default: EUR]'
         required: false
         schema:
           type: string
-          example: USD
-      - name: currencies
+          example: EUR
+      - name: symbols
         in: query
-        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        description: Comma-separated list of currency codes to limit the output currencies.
         required: false
         schema:
           type: string
-          example: AUD,EUR,GBP,PLN
-      - name: format
-        in: query
-        description: Set to `1` for pretty-printed JSON.
-        required: false
-        schema:
-          type: integer
-          enum:
-          - 0
-          - 1
-          example: 1
+          example: USD,GBP,JPY
       - name: callback
         in: query
-        description: Wrap the response in the function name.
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
         required: false
         schema:
           type: string
       responses:
         '200':
-          description: Real-time exchange rates.
+          description: Latest exchange rates snapshot.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LiveResponse'
+                $ref: '#/components/schemas/LatestRatesResponse'
               examples:
-                liveExample:
-                  summary: Example live rates response
+                default:
                   value:
                     success: true
-                    terms: https://currencylayer.com/terms
-                    privacy: https://currencylayer.com/privacy
-                    timestamp: 1430401802
-                    source: USD
-                    quotes:
-                      USDEUR: 0.918019
-                      USDGBP: 0.650364
-                      USDJPY: 119.640479
+                    timestamp: 1519296206
+                    base: EUR
+                    date: '2025-09-15'
+                    rates:
+                      USD: 1.23396
+                      GBP: 0.882047
+                      JPY: 132.360679
         '400':
-          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes).
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  /{date}:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /{date}
+      description: 'Returns historical exchange rate data for a specific day. [Format: YYYY-MM-DD]'
+      operationId: exchangeratesapiHistorical
+      parameters:
+      - name: date
+        in: path
+        description: 'The date you would like to request historical rates for. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: base
+        in: query
+        description: 'Change the base currency of your exchange rate data. [Default: EUR]'
+        required: false
+        schema:
+          type: string
+          example: EUR
+      - name: symbols
+        in: query
+        description: Comma-separated list of currency codes to limit the output currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,JPY
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Historical rates for the requested date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricalRatesResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    historical: true
+                    date: '2013-12-24'
+                    timestamp: 1387929599
+                    base: GBP
+                    rates:
+                      USD: 1.636492
+                      EUR: 1.196476
+                      CAD: 1.739516
+        '400':
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
           content:
             application/json:
               schema:
@@ -502,126 +472,138 @@ paths:
           $ref: '#/components/responses/503'
 components:
   schemas:
-    LiveResponse:
-      description: Real-time exchange rates.
+    SymbolsResponse:
+      description: Supported currency symbols.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-          example: https://currencylayer.com/terms
-        privacy:
-          type: string
-          example: https://currencylayer.com/privacy
+        symbols:
+          description: Map of currency code -> name.
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+      example:
+        success: true
+        symbols:
+          USD: United States Dollar
+          EUR: Euro
+          GBP: British Pound Sterling
+    LatestRatesResponse:
+      description: Latest exchange rates snapshot.
+      properties:
+        success:
+          type: boolean
+          example: true
         timestamp:
           type: integer
-          example: 1430401802
-        source:
+          example: 1519296206
+        base:
           type: string
-          example: USD
-        quotes:
-          description: Currency-pair quotes keyed by pair symbol (e.g. USDEUR).
+          example: EUR
+        date:
+          type: string
+          format: date
+          example: '2025-09-15'
+        rates:
+          description: Map of currency code -> rate relative to base.
           type: object
           additionalProperties:
             type: number
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        timestamp: 1430401802
-        source: USD
-        quotes:
-          USDEUR: 0.918019
-          USDGBP: 0.650364
-          USDJPY: 119.640479
-    HistoricalResponse:
-      description: Historical exchange rate data for a date.
+        timestamp: 1519296206
+        base: EUR
+        date: '2025-09-15'
+        rates:
+          USD: 1.23396
+          GBP: 0.882047
+          JPY: 132.360679
+    HistoricalRatesResponse:
+      description: Historical rates for a date.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-        privacy:
-          type: string
         historical:
           type: boolean
           example: true
         date:
           type: string
           format: date
-          example: '2005-02-01'
+          example: '2013-12-24'
         timestamp:
           type: integer
-          example: 1430401802
-        source:
+          example: 1387929599
+        base:
           type: string
-          example: USD
-        quotes:
+          example: GBP
+        rates:
           type: object
           additionalProperties:
             type: number
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
         historical: true
-        date: '2005-02-01'
-        timestamp: 1430401802
-        source: USD
-        quotes:
-          USDEUR: 0.918019
-          USDGBP: 0.650364
-          USDJPY: 119.640479
+        date: '2013-12-24'
+        timestamp: 1387929599
+        base: GBP
+        rates:
+          USD: 1.636492
+          EUR: 1.196476
+          CAD: 1.739516
+    ConvertQuery:
+      properties:
+        from:
+          type: string
+          example: GBP
+        to:
+          type: string
+          example: JPY
+        amount:
+          type: number
+          example: 25
+      type: object
+    ConvertInfo:
+      properties:
+        timestamp:
+          type: integer
+          example: 1519328414
+        rate:
+          type: number
+          example: 148.972231
+      type: object
     ConvertResponse:
-      description: Currency conversion result.
+      description: Convert endpoint response.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-        privacy:
-          type: string
         query:
-          properties:
-            from:
-              type: string
-              example: USD
-            to:
-              type: string
-              example: EUR
-            amount:
-              type: number
-              example: 10
-          type: object
+          $ref: '#/components/schemas/ConvertQuery'
         info:
-          properties:
-            timestamp:
-              type: integer
-              example: 1519328414
-            quote:
-              type: number
-              example: 0.813399
-          type: object
+          $ref: '#/components/schemas/ConvertInfo'
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2018-02-22'
         result:
           type: number
-          example: 8.13399
+          example: 3724.305775
       type: object
-    TimeframeResponse:
-      description: Exchange-rate quotes for each date in a timeframe.
+    TimeSeriesResponse:
+      description: Daily time-series rates.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-        privacy:
-          type: string
-        timeframe:
+        timeseries:
           type: boolean
           example: true
         start_date:
@@ -632,11 +614,11 @@ components:
           type: string
           format: date
           example: '2012-05-03'
-        source:
+        base:
           type: string
-          example: USD
-        quotes:
-          description: Map of ISO date -> (map of currency pair -> rate).
+          example: EUR
+        rates:
+          description: Map of ISO date -> (map of currency -> rate).
           type: object
           additionalProperties:
             type: object
@@ -645,48 +627,41 @@ components:
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
         timeseries: true
         start_date: '2012-05-01'
         end_date: '2012-05-03'
-        source: USD
-        quotes:
+        base: EUR
+        rates:
           '2012-05-01':
-            USDAUD: 0.9645
-            USDCHF: 0.91957
+            USD: 1.322891
+            AUD: 1.278047
+            CAD: 1.302303
           '2012-05-02':
-            USDAUD: 0.9575
-            USDCHF: 0.92036
-          '2012-05-03':
-            USDAUD: 0.95404
-            USDCHF: 0.91525
-    ChangeResponse:
-      description: Currency fluctuation between two dates.
+            USD: 1.315066
+            AUD: 1.274202
+            CAD: 1.299083
+    FluctuationResponse:
+      description: Fluctuation analysis between two dates.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-        privacy:
-          type: string
-        change:
+        fluctuation:
           type: boolean
           example: true
         start_date:
           type: string
           format: date
-          example: '2015-01-01'
+          example: '2015-12-01'
         end_date:
           type: string
           format: date
-          example: '2015-01-02'
-        source:
+          example: '2015-12-24'
+        base:
           type: string
-          example: USD
-        quotes:
-          description: Map of currency pair -> change statistics.
+          example: EUR
+        rates:
+          description: Map of currency -> fluctuation metrics.
           type: object
           additionalProperties:
             properties:
@@ -702,18 +677,16 @@ components:
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        change: true
-        start_date: '2015-01-01'
-        end_date: '2015-01-02'
-        source: USD
-        quotes:
-          USDAUD:
-            start_rate: 1.2345
-            end_rate: 1.3456
-            change: 0.1111
-            change_pct: 0.09
+        fluctuation: true
+        start_date: '2015-12-01'
+        end_date: '2015-12-24'
+        base: EUR
+        rates:
+          USD:
+            start_rate: 1.066494
+            end_rate: 1.073844
+            change: 0.00735
+            change_pct: 0.6899
     Error:
       title: Error
       type: object
@@ -901,6 +874,3 @@ components:
                   code: 503
                   type: maintenance_mode
                   info: ''
-externalDocs:
-  description: Official ExchangeRate.host documentation (reference)
-  url: https://exchangerate.host/documentation

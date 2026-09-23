@@ -1,4 +1,4 @@
-generated: '2026-09-12'
+generated: '2026-09-19'
 method: probed
 source: live HTTPS probes of every host this record knows (registrable domain, www, API base hosts, OpenAPI
   servers[] hosts, docs/console host, MCP host, and the authorization server the MCP protected-resource
@@ -12,7 +12,13 @@ note: 'Three real documents were served, all of them on the agent/auth side of t
   at all - no security.txt, no api-catalog, no ai-plugin.json, no agent card. The product API hosts (api.exchangerate.host,
   api.exchangeratesapi.io, api.ipapi.com) answer HTTP 200 to EVERY /.well-known path with the standard
   APILayer error envelope ({"success": false, "error": {"code": 101, ...}}); that is a catch-all soft-200,
-  not a document, and it is recorded here as a miss.'
+  not a document, and it is recorded here as a miss.
+
+
+  MCP-host OAuth discovery added 2026-09-19 (roadmap#321/#337): the harvest visits a provider''s primary
+  hosts, and RFC 9728 protected-resource metadata lives on the MCP host, so these documents existed and
+  were invisible to the scorer. Fetched live and validated on `resource`/`issuer`; one negative control
+  per host.'
 hosts:
 - host: apilayer.com
   documents:
@@ -130,6 +136,11 @@ hosts:
     status: 404
   - path: /.well-known/agent.json
     status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: apilayer-mcp-oauth-protected-resource.json
+    bytes: 181
+  path_echo_control: passed
 - host: auth.apilayer.com
   note: Discovered only from the authorization_servers[] array of the MCP protected-resource document
     - it is not linked from apilayer.com.
@@ -153,6 +164,11 @@ hosts:
     status: 404
   - path: /.well-known/agent.json
     status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: apilayer-auth-oauth-authorization-server.json
+    bytes: 2098
+  path_echo_control: passed
 - host: blog.apilayer.com
   documents:
   - path: /.well-known/security.txt
@@ -267,3 +283,15 @@ agent_card:
 security_txt:
   found: false
 checked: '2026-09-12'
+x-mcp-probe:
+  probed: '2026-09-19'
+  issue: roadmap#321, roadmap#337
+  documents:
+  - host: https://mcp.apilayer.com
+    path: /.well-known/oauth-protected-resource
+    file: apilayer-mcp-oauth-protected-resource.json
+  - host: https://auth.apilayer.com
+    path: /.well-known/oauth-authorization-server
+    file: apilayer-auth-oauth-authorization-server.json
+  validated_on: resource (RFC 9728) / issuer (RFC 8414, OIDC)
+  negative_control: one per host; a 2xx JSON object at an impossible path discards the host

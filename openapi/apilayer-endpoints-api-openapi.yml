@@ -1,0 +1,2191 @@
+openapi: 3.2.0
+info:
+  title: Apilayer Endpoints API
+  version: 1.0.0
+  description: 'Operations tagged Endpoints across 3 of this provider''s published API definitions: apilayer-exchangerate-openapi-original.json, apilayer-exchangeratesapi-openapi-original.json, apilayer-ipapi-openapi-original.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.exchangerate.host
+- url: https://api.exchangeratesapi.io/v1
+- url: https://api.ipapi.com/api
+tags:
+- name: Endpoints
+paths:
+  /change:
+    get:
+      tags:
+      - Endpoints
+      summary: ExchangeRate.host :- /change
+      description: Returns the change (both margin and percentage) of one or more currencies, relative to a Source Currency, within a specific time-frame. If no time-frame is supplied the API returns change values from yesterday's EOD data to the latest available rates.
+      operationId: exchangeratehostChange
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        description: 'Specify the start date of your time frame. [Format: YYYY-MM-DD]'
+        required: false
+        schema:
+          type: string
+          example: '2010-03-01'
+      - name: end_date
+        in: query
+        description: 'Specify the end date of your time frame. [Format: YYYY-MM-DD]'
+        required: false
+        schema:
+          type: string
+          example: '2010-04-01'
+      - name: source
+        in: query
+        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        required: false
+        schema:
+          type: string
+          example: USD
+      - name: currencies
+        in: query
+        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,EUR
+      - name: format
+        in: query
+        description: Set to `1` for pretty-printed JSON.
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: callback
+        in: query
+        description: Wrap the response in the function name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: "Currency change (start/end rate, absolute + percentage) per currency pair.\n *\n * **Note:** *Since foreign exchange (forex) markets are only open from Sunday 5 PM ET to Friday 5 PM ET, change parameters may converge to zero during weekends.*"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeResponse'
+              examples:
+                changeExample:
+                  summary: Example change response
+                  value:
+                    success: true
+                    terms: https://currencylayer.com/terms
+                    privacy: https://currencylayer.com/privacy
+                    change: true
+                    start_date: '2015-01-01'
+                    end_date: '2015-01-02'
+                    source: USD
+                    quotes:
+                      USDAUD:
+                        start_rate: 1.2345
+                        end_rate: 1.3456
+                        change: 0.1111
+                        change_pct: 0.09
+        '400':
+          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied, invalid_start_date, invalid_end_date).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangerate.host
+  /timeframe:
+    get:
+      tags:
+      - Endpoints
+      summary: ExchangeRate.host :- /timeframe
+      description: 'Returns historical exchange rates for a time-period of your choice (maximum range: 365 days). Specify your preferred time frame consisting of a start_date and an end_date, both of the format YYYY-MM-DD.
+
+        *
+
+        * **Note:** *Since the exchangeratehost API supports time frames of up to 365 days, not limiting the output currencies may produce very large files. For optimal performance and reduced server load, it is recommended to use the currencies parameter to select only the currencies you need.*'
+      operationId: exchangeratehostTimeframe
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        description: 'Specify the start date of your time frame. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          example: '2010-03-01'
+      - name: end_date
+        in: query
+        description: 'Specify the end date of your time frame. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          example: '2010-03-02'
+      - name: source
+        in: query
+        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        required: false
+        schema:
+          type: string
+          example: USD
+      - name: currencies
+        in: query
+        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        required: false
+        schema:
+          type: string
+          example: AUD,EUR,GBP,PLN
+      - name: format
+        in: query
+        description: Set to `1` for pretty-printed JSON.
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: callback
+        in: query
+        description: Wrap the response in the function name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Exchange-rate quotes for each date in the requested timeframe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeframeResponse'
+              examples:
+                timeframeExample:
+                  summary: Example timeframe response
+                  value:
+                    success: true
+                    terms: https://currencylayer.com/terms
+                    privacy: https://currencylayer.com/privacy
+                    timeseries: true
+                    start_date: '2012-05-01'
+                    end_date: '2012-05-03'
+                    source: USD
+                    quotes:
+                      '2012-05-01':
+                        USDAUD: 0.9645
+                        USDCHF: 0.91957
+                      '2012-05-02':
+                        USDAUD: 0.9575
+                        USDCHF: 0.92036
+                      '2012-05-03':
+                        USDAUD: 0.95404
+                        USDCHF: 0.91525
+        '400':
+          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_timeframe_supplied, invalid_start_date, invalid_end_date, invalid_time_frame, time_frame_too_long).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangerate.host
+  /historical:
+    get:
+      tags:
+      - Endpoints
+      summary: ExchangeRate.host :- /historical
+      description: 'Returns accurate historical exchange rate data for every past day all the way back to the year of 1999. Historical rates may be accessed by attaching the date parameter with a valid date (Format: YYYY-MM-DD).
+
+        *
+
+        * **Note:** *Please be aware that Exchange Rate data for certain currencies may not be available for each requested day (e.g. Bitcoin was only introduced in 2009).*'
+      operationId: exchangeratehostHistorical
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: date
+        in: query
+        description: 'Specify a date for which to request historical rates. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          example: '2005-02-01'
+      - name: source
+        in: query
+        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        required: false
+        schema:
+          type: string
+          example: GBP
+      - name: currencies
+        in: query
+        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        required: false
+        schema:
+          type: string
+          example: AUD,CHF,EUR,GBP,PLN
+      - name: format
+        in: query
+        description: Set to `1` for pretty-printed JSON.
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: callback
+        in: query
+        description: Wrap the response in the function name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Historical exchange rate data for the requested date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricalResponse'
+              examples:
+                historicalExample:
+                  summary: Example historical rates response
+                  value:
+                    success: true
+                    terms: https://currencylayer.com/terms
+                    privacy: https://currencylayer.com/privacy
+                    historical: true
+                    date: '2005-02-01'
+                    timestamp: 1430401802
+                    source: USD
+                    quotes:
+                      USDEUR: 0.918019
+                      USDGBP: 0.650364
+                      USDJPY: 119.640479
+        '400':
+          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes, no_date_supplied, invalid_date).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangerate.host
+  /convert:
+    get:
+      tags:
+      - Endpoints
+      summary: ExchangeRate.host :- /convert
+      description: Performs a single currency conversion. Specify a from currency code, a to currency code, and the amount you would like to convert.
+      operationId: exchangeratehostConvert
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: Specify the currency to convert from.
+        required: true
+        schema:
+          type: string
+          example: USD
+      - name: to
+        in: query
+        description: Specify the currency to convert to.
+        required: true
+        schema:
+          type: string
+          example: GBP
+      - name: amount
+        in: query
+        description: Specify the amount to convert.
+        required: true
+        schema:
+          type: number
+          example: 10
+      - name: date
+        in: query
+        description: 'Specify a date to use historical rates for this conversion. [Format: YYYY-MM-DD]'
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: format
+        in: query
+        description: Set to `1` for pretty-printed JSON.
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: callback
+        in: query
+        description: Wrap the response in the function name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Currency conversion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConvertResponse'
+              examples:
+                convertExample:
+                  summary: Example conversion response
+                  value:
+                    success: true
+                    terms: https://currencylayer.com/terms
+                    privacy: https://currencylayer.com/privacy
+                    query:
+                      from: USD
+                      to: EUR
+                      amount: 10
+                    info:
+                      timestamp: 1519328414
+                      quote: 0.813399
+                    result: 8.13399
+        '400':
+          description: Bad Request - validation error (e.g. invalid_from_currency, invalid_to_currency, invalid_conversion_amount, invalid_date).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangerate.host
+  /live:
+    get:
+      tags:
+      - Endpoints
+      summary: ExchangeRate.host :- /live
+      description: 'Returns real-time exchange rates. Optionally define an additional source currency and specific output currencies using the currencies parameter.
+
+        *
+
+        * **Note:** *Exchange rate data is refreshed every 60 minutes for Free & Basic customers, every 10 minutes for the Professional Plan, and every 60 seconds for Business customers.*'
+      operationId: exchangeratehostLive
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: source
+        in: query
+        description: Specify a Source Currency other than the default USD. Supported on the Basic Plan and higher.
+        required: false
+        schema:
+          type: string
+          example: USD
+      - name: currencies
+        in: query
+        description: Specify a comma-separated list of currency codes to limit your API response to specific currencies.
+        required: false
+        schema:
+          type: string
+          example: AUD,EUR,GBP,PLN
+      - name: format
+        in: query
+        description: Set to `1` for pretty-printed JSON.
+        required: false
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: callback
+        in: query
+        description: Wrap the response in the function name.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Real-time exchange rates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveResponse'
+              examples:
+                liveExample:
+                  summary: Example live rates response
+                  value:
+                    success: true
+                    terms: https://currencylayer.com/terms
+                    privacy: https://currencylayer.com/privacy
+                    timestamp: 1430401802
+                    source: USD
+                    quotes:
+                      USDEUR: 0.918019
+                      USDGBP: 0.650364
+                      USDJPY: 119.640479
+        '400':
+          description: Bad Request - validation error (e.g. invalid_source_currency, invalid_currency_codes).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangerate.host
+  /fluctuation:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /fluctuation
+      description: Returns fluctuation data (start rate, end rate, change and change percentage) between two dates for the requested currencies.
+      operationId: exchangeratesapiFluctuation
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        description: 'The start date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: 'The end date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: base
+        in: query
+        description: 'Change the base currency of your fluctuation data. [Default: EUR]'
+        required: false
+        schema:
+          type: string
+          example: EUR
+      - name: symbols
+        in: query
+        description: Comma-separated list of currency codes to limit the output currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,JPY
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Fluctuation metrics (start/end rate, change, change %) per currency.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FluctuationResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    fluctuation: true
+                    start_date: '2015-12-01'
+                    end_date: '2015-12-24'
+                    base: EUR
+                    rates:
+                      USD:
+                        start_rate: 1.066494
+                        end_rate: 1.073844
+                        change: 0.00735
+                        change_pct: 0.6899
+        '400':
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangeratesapi.io/v1
+  /timeseries:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /timeseries
+      description: Returns daily historical exchange rates between two dates (max. 365 days) for the requested currencies.
+      operationId: exchangeratesapiTimeseries
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: start_date
+        in: query
+        description: 'The start date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: 'The end date of your preferred timeframe. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: base
+        in: query
+        description: 'Change the base currency of your time-series data. [Default: EUR]'
+        required: false
+        schema:
+          type: string
+          example: EUR
+      - name: symbols
+        in: query
+        description: Comma-separated list of currency codes to limit the output currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,JPY
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Daily time-series rates keyed by ISO date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSeriesResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    timeseries: true
+                    start_date: '2012-05-01'
+                    end_date: '2012-05-03'
+                    base: EUR
+                    rates:
+                      '2012-05-01':
+                        USD: 1.322891
+                        AUD: 1.278047
+                        CAD: 1.302303
+                      '2012-05-02':
+                        USD: 1.315066
+                        AUD: 1.274202
+                        CAD: 1.299083
+        '400':
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangeratesapi.io/v1
+  /symbols:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /symbols
+      description: Returns all currently supported currency symbols together with their full names.
+      operationId: exchangeratesapiSymbols
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Supported currency symbols (code -> name).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SymbolsResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    symbols:
+                      USD: United States Dollar
+                      EUR: Euro
+                      GBP: British Pound Sterling
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangeratesapi.io/v1
+  /latest:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /latest
+      description: Returns real-time exchange rate data for all available or a specific set of currencies.
+      operationId: exchangeratesapiLatest
+      parameters:
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: base
+        in: query
+        description: 'Change the base currency of your exchange rate data. [Default: EUR]'
+        required: false
+        schema:
+          type: string
+          example: EUR
+      - name: symbols
+        in: query
+        description: Comma-separated list of currency codes to limit the output currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,JPY
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Latest exchange rates snapshot.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LatestRatesResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    timestamp: 1519296206
+                    base: EUR
+                    date: '2025-09-15'
+                    rates:
+                      USD: 1.23396
+                      GBP: 0.882047
+                      JPY: 132.360679
+        '400':
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangeratesapi.io/v1
+  /{date}:
+    get:
+      tags:
+      - Endpoints
+      summary: exchangeratesapi :- /{date}
+      description: 'Returns historical exchange rate data for a specific day. [Format: YYYY-MM-DD]'
+      operationId: exchangeratesapiHistorical
+      parameters:
+      - name: date
+        in: path
+        description: 'The date you would like to request historical rates for. [Format: YYYY-MM-DD]'
+        required: true
+        schema:
+          type: string
+          format: date
+      - name: access_key
+        in: query
+        description: A unique key assigned to each API account used to authenticate with the API.
+        required: true
+        schema:
+          type: string
+      - name: base
+        in: query
+        description: 'Change the base currency of your exchange rate data. [Default: EUR]'
+        required: false
+        schema:
+          type: string
+          example: EUR
+      - name: symbols
+        in: query
+        description: Comma-separated list of currency codes to limit the output currencies.
+        required: false
+        schema:
+          type: string
+          example: USD,GBP,JPY
+      - name: callback
+        in: query
+        description: JSONP callback function name. If provided, the response will be wrapped in this function.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Historical rates for the requested date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricalRatesResponse'
+              examples:
+                default:
+                  value:
+                    success: true
+                    historical: true
+                    date: '2013-12-24'
+                    timestamp: 1387929599
+                    base: GBP
+                    rates:
+                      USD: 1.636492
+                      EUR: 1.196476
+                      CAD: 1.739516
+        '400':
+          description: Bad Request - validation error (e.g. invalid base currency, invalid date, invalid amount, invalid timeframe)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.exchangeratesapi.io/v1
+  /{IPAddress}:
+    get:
+      tags:
+      - Endpoints
+      summary: ipapi :- Standard & Bulk IP Lookup
+      description: The ipapi primary endpoint looks up IPv4/IPv6 addresses. Attach a single IP address to the base URL for a Standard Lookup, or a comma-separated list of up to 50 addresses for a Bulk Lookup. Domain URLs are also accepted and resolved to the underlying IP address.
+      operationId: ipapiIPLookup
+      parameters:
+      - name: IPAddress
+        in: path
+        description: A single IPv4/IPv6 address (Standard Lookup) or a comma-separated list of up to 50 addresses (Bulk Lookup). Domain URLs are also accepted.
+        required: true
+        schema:
+          type: string
+          example: 134.201.250.155
+      - name: access_key
+        in: query
+        description: Your API Access Key.
+        required: true
+        schema:
+          type: string
+      - name: callback
+        in: query
+        description: Specify a JSONP callback function name according to the JSONP Callbacks section.
+        required: false
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Set to your preferred output field(s) according to the Specify Output Fields section.
+        required: false
+        schema:
+          type: string
+      - name: hostname
+        in: query
+        description: Set to 1 to enable Hostname Lookup.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: security
+        in: query
+        description: Set to 1 to enable the Security module.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: language
+        in: query
+        description: Set to a 2-letter language code according to the Specify Output Language section to change output language.
+        required: false
+        schema:
+          type: string
+          example: en
+      - name: output
+        in: query
+        description: Set to json or xml to choose between output formats.
+        required: false
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          example: json
+      responses:
+        '200':
+          description: Geolocation data. A single IP returns one result object; a comma-separated (bulk) request returns an array of result objects.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/IpLookupResponse'
+                - type: array
+                  items:
+                    $ref: '#/components/schemas/IpLookupResponse'
+              examples:
+                single:
+                  summary: Standard single-IP JSON response
+                  value:
+                    ip: 161.185.160.93
+                    type: ipv4
+                    continent_code: NA
+                    continent_name: North America
+                    country_code: US
+                    country_name: United States
+                    region_code: NY
+                    region_name: New York
+                    city: Bath Beach
+                    zip: '11201'
+                    latitude: 40.69459915161133
+                    longitude: -73.99063873291016
+                    msa: '35620'
+                    dma: '501'
+                    radius: 30.012950897216797
+                    ip_routing_type: fixed
+                    connection_type: tx
+                    hostname: 161.185.160.93
+                    location:
+                      geoname_id: 5110302
+                      capital: Washington D.C.
+                      languages:
+                      - code: en
+                        name: English
+                        native: English
+                      country_flag: https://assets.ipapi.com/images/assets/flags_svg/us.svg
+                      country_flag_emoji: "ð\x9F\x87ºð\x9F\x87¸"
+                      country_flag_emoji_unicode: U+1F1FA U+1F1F8
+                      calling_code: '1'
+                      is_eu: false
+                    time_zone:
+                      id: America/New_York
+                      current_time: '2024-06-14T00:26:20-04:00'
+                      gmt_offset: -14400
+                      code: EDT
+                      is_daylight_saving: true
+                    currency:
+                      code: USD
+                      name: US Dollar
+                      plural: US dollars
+                      symbol: $
+                      symbol_native: $
+                    connection:
+                      asn: 22252
+                      isp: The City of New York
+                      sld: nyc
+                      tld: gov
+                      carrier: the city of new york
+                      home: false
+                      organization_type: Government (Municipal)
+                      isic_code: O8411
+                      naics_code: 009211
+                    security:
+                      is_proxy: false
+                      proxy_type: null
+                      is_crawler: false
+                      crawler_name: null
+                      crawler_type: null
+                      is_tor: false
+                      threat_level: low
+                      threat_types: null
+                      proxy_last_detected: null
+                      proxy_level: null
+                      vpn_service: null
+                      anonymizer_status: null
+                      hosting_facility: false
+        '400':
+          description: Malformed request or invalid parameters (e.g. invalid_fields).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Too many IP addresses provided in a single bulk request (too_many_ips).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.ipapi.com/api
+  /check:
+    get:
+      tags:
+      - Endpoints
+      summary: ipapi :- /check (Requester IP Lookup)
+      description: The ipapi API also offers a separate API endpoint capable of detecting the IP address which the current API request is coming from. In order to use this endpoint, simply append check to the API's base URL and specify your preferred optional parameters.
+      operationId: ipapiCheckRequesterIPLookup
+      parameters:
+      - name: access_key
+        in: query
+        description: Your API Access Key.
+        required: true
+        schema:
+          type: string
+      - name: callback
+        in: query
+        description: Specify a JSONP callback function name according to the JSONP Callbacks section.
+        required: false
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Set to your preferred output field(s) according to the Specify Output Fields section.
+        required: false
+        schema:
+          type: string
+      - name: hostname
+        in: query
+        description: Set to 1 to enable Hostname Lookup.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: security
+        in: query
+        description: Set to 1 to enable the Security module.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          enum:
+          - 0
+          - 1
+          example: 1
+      - name: language
+        in: query
+        description: Set to a 2-letter language code according to the Specify Output Language section to change output language.
+        required: false
+        schema:
+          type: string
+          example: en
+      - name: output
+        in: query
+        description: Set to json or xml to choose between output formats.
+        required: false
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          example: json
+      responses:
+        '200':
+          description: Geolocation data for the IP address the request originated from.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpLookupResponse'
+              examples:
+                single:
+                  summary: Standard single-IP JSON response
+                  value:
+                    ip: 161.185.160.93
+                    type: ipv4
+                    continent_code: NA
+                    continent_name: North America
+                    country_code: US
+                    country_name: United States
+                    region_code: NY
+                    region_name: New York
+                    city: Bath Beach
+                    zip: '11201'
+                    latitude: 40.69459915161133
+                    longitude: -73.99063873291016
+                    msa: '35620'
+                    dma: '501'
+                    radius: 30.012950897216797
+                    ip_routing_type: fixed
+                    connection_type: tx
+                    hostname: 161.185.160.93
+                    location:
+                      geoname_id: 5110302
+                      capital: Washington D.C.
+                      languages:
+                      - code: en
+                        name: English
+                        native: English
+                      country_flag: https://assets.ipapi.com/images/assets/flags_svg/us.svg
+                      country_flag_emoji: "ð\x9F\x87ºð\x9F\x87¸"
+                      country_flag_emoji_unicode: U+1F1FA U+1F1F8
+                      calling_code: '1'
+                      is_eu: false
+                    time_zone:
+                      id: America/New_York
+                      current_time: '2024-06-14T00:26:20-04:00'
+                      gmt_offset: -14400
+                      code: EDT
+                      is_daylight_saving: true
+                    currency:
+                      code: USD
+                      name: US Dollar
+                      plural: US dollars
+                      symbol: $
+                      symbol_native: $
+                    connection:
+                      asn: 22252
+                      isp: The City of New York
+                      sld: nyc
+                      tld: gov
+                      carrier: the city of new york
+                      home: false
+                      organization_type: Government (Municipal)
+                      isic_code: O8411
+                      naics_code: 009211
+                    security:
+                      is_proxy: false
+                      proxy_type: null
+                      is_crawler: false
+                      crawler_name: null
+                      crawler_type: null
+                      is_tor: false
+                      threat_level: low
+                      threat_types: null
+                      proxy_last_detected: null
+                      proxy_level: null
+                      vpn_service: null
+                      anonymizer_status: null
+                      hosting_facility: false
+        '400':
+          description: Malformed request or invalid parameters (e.g. invalid_fields).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    servers:
+    - url: https://api.ipapi.com/api
+components:
+  responses:
+    '429':
+      description: Too Many Requests
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            usage_limit_reached:
+              summary: usage_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: usage_limit_reached
+                  info: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
+            daily_usage_limit_reached:
+              summary: daily_usage_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: daily_usage_limit_reached
+                  info: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan.
+            fair_use_limit_reached:
+              summary: fair_use_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: fair_use_limit_reached
+                  info: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
+            rate_limit_reached:
+              summary: rate_limit_reached
+              value:
+                success: false
+                error:
+                  code: 106
+                  type: rate_limit_reached
+                  info: 'You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the "Rate Limits" section of the API Documentation for details. '
+    '503':
+      description: Service Unavailable
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            maintenance_mode:
+              summary: maintenance_mode
+              value:
+                success: false
+                error:
+                  code: 503
+                  type: maintenance_mode
+                  info: ''
+    '404':
+      description: Not Found
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalid_api_function:
+              summary: invalid_api_function
+              value:
+                success: false
+                error:
+                  code: 103
+                  type: invalid_api_function
+                  info: This API Function does not exist.
+            404_not_found:
+              summary: 404_not_found
+              value:
+                success: false
+                error:
+                  code: 404
+                  type: 404_not_found
+                  info: 404 - The requested resource could not be found. Please try again or contact support.
+    '401':
+      description: Unauthorized
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            account_on_hold:
+              summary: account_on_hold
+              value:
+                success: false
+                error:
+                  code: 107
+                  type: account_on_hold
+                  info: 'Your account currently has open invoices and API has been automatically disabled. Please settle your open balance or downgrade to the Free Plan to restore API access. [Support: support@apilayer.com]'
+            invalid_access_key:
+              summary: invalid_access_key
+              value:
+                success: false
+                error:
+                  code: 101
+                  type: invalid_access_key
+                  info: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
+            missing_access_key:
+              summary: missing_access_key
+              value:
+                success: false
+                error:
+                  code: 101
+                  type: missing_access_key
+                  info: 'You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]'
+            inactive_user:
+              summary: inactive_user
+              value:
+                success: false
+                error:
+                  code: 102
+                  type: inactive_user
+                  info: Permission denied - User not active.
+    '403':
+      description: Forbidden
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            https_access_restricted:
+              summary: https_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: https_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
+            function_access_restricted:
+              summary: function_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: function_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support this API Function.
+            api_access_blocked:
+              summary: api_access_blocked
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: api_access_blocked
+                  info: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support.
+    '500':
+      description: Internal Server Error
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            internal_error:
+              summary: internal_error
+              value:
+                success: false
+                error:
+                  code: 0
+                  type: internal_error
+                  info: 'An error has occured. [Technical Support: support@apilayer.com]'
+  schemas:
+    HistoricalResponse:
+      description: Historical exchange rate data for a date.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2005-02-01'
+        timestamp:
+          type: integer
+          example: 1430401802
+        source:
+          type: string
+          example: USD
+        quotes:
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        historical: true
+        date: '2005-02-01'
+        timestamp: 1430401802
+        source: USD
+        quotes:
+          USDEUR: 0.918019
+          USDGBP: 0.650364
+          USDJPY: 119.640479
+    TimeframeResponse:
+      description: Exchange-rate quotes for each date in a timeframe.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        timeframe:
+          type: boolean
+          example: true
+        start_date:
+          type: string
+          format: date
+          example: '2012-05-01'
+        end_date:
+          type: string
+          format: date
+          example: '2012-05-03'
+        source:
+          type: string
+          example: USD
+        quotes:
+          description: Map of ISO date -> (map of currency pair -> rate).
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        timeseries: true
+        start_date: '2012-05-01'
+        end_date: '2012-05-03'
+        source: USD
+        quotes:
+          '2012-05-01':
+            USDAUD: 0.9645
+            USDCHF: 0.91957
+          '2012-05-02':
+            USDAUD: 0.9575
+            USDCHF: 0.92036
+          '2012-05-03':
+            USDAUD: 0.95404
+            USDCHF: 0.91525
+    ConvertResponse:
+      description: Currency conversion result.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        query:
+          properties:
+            from:
+              type: string
+              example: USD
+            to:
+              type: string
+              example: EUR
+            amount:
+              type: number
+              example: 10
+          type: object
+        info:
+          properties:
+            timestamp:
+              type: integer
+              example: 1519328414
+            quote:
+              type: number
+              example: 0.813399
+          type: object
+        result:
+          type: number
+          example: 8.13399
+      type: object
+    LiveResponse:
+      description: Real-time exchange rates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+          example: https://currencylayer.com/terms
+        privacy:
+          type: string
+          example: https://currencylayer.com/privacy
+        timestamp:
+          type: integer
+          example: 1430401802
+        source:
+          type: string
+          example: USD
+        quotes:
+          description: Currency-pair quotes keyed by pair symbol (e.g. USDEUR).
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        timestamp: 1430401802
+        source: USD
+        quotes:
+          USDEUR: 0.918019
+          USDGBP: 0.650364
+          USDJPY: 119.640479
+    Error:
+      title: Error
+      type: object
+      required:
+      - success
+      - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 101
+            type:
+              type: string
+              example: invalid_access_key
+            info:
+              type: string
+              example: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
+    ChangeResponse:
+      description: Currency fluctuation between two dates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        change:
+          type: boolean
+          example: true
+        start_date:
+          type: string
+          format: date
+          example: '2015-01-01'
+        end_date:
+          type: string
+          format: date
+          example: '2015-01-02'
+        source:
+          type: string
+          example: USD
+        quotes:
+          description: Map of currency pair -> change statistics.
+          type: object
+          additionalProperties:
+            properties:
+              start_rate:
+                type: number
+              end_rate:
+                type: number
+              change:
+                type: number
+              change_pct:
+                type: number
+            type: object
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        change: true
+        start_date: '2015-01-01'
+        end_date: '2015-01-02'
+        source: USD
+        quotes:
+          USDAUD:
+            start_rate: 1.2345
+            end_rate: 1.3456
+            change: 0.1111
+            change_pct: 0.09
+    LatestRatesResponse:
+      description: Latest exchange rates snapshot.
+      properties:
+        success:
+          type: boolean
+          example: true
+        timestamp:
+          type: integer
+          example: 1519296206
+        base:
+          type: string
+          example: EUR
+        date:
+          type: string
+          format: date
+          example: '2025-09-15'
+        rates:
+          description: Map of currency code -> rate relative to base.
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        timestamp: 1519296206
+        base: EUR
+        date: '2025-09-15'
+        rates:
+          USD: 1.23396
+          GBP: 0.882047
+          JPY: 132.360679
+    HistoricalRatesResponse:
+      description: Historical rates for a date.
+      properties:
+        success:
+          type: boolean
+          example: true
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2013-12-24'
+        timestamp:
+          type: integer
+          example: 1387929599
+        base:
+          type: string
+          example: GBP
+        rates:
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        historical: true
+        date: '2013-12-24'
+        timestamp: 1387929599
+        base: GBP
+        rates:
+          USD: 1.636492
+          EUR: 1.196476
+          CAD: 1.739516
+    ConvertInfo:
+      properties:
+        timestamp:
+          type: integer
+          example: 1519328414
+        rate:
+          type: number
+          example: 148.972231
+      type: object
+    FluctuationResponse:
+      description: Fluctuation analysis between two dates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        fluctuation:
+          type: boolean
+          example: true
+        start_date:
+          type: string
+          format: date
+          example: '2015-12-01'
+        end_date:
+          type: string
+          format: date
+          example: '2015-12-24'
+        base:
+          type: string
+          example: EUR
+        rates:
+          description: Map of currency -> fluctuation metrics.
+          type: object
+          additionalProperties:
+            properties:
+              start_rate:
+                type: number
+              end_rate:
+                type: number
+              change:
+                type: number
+              change_pct:
+                type: number
+            type: object
+      type: object
+      example:
+        success: true
+        fluctuation: true
+        start_date: '2015-12-01'
+        end_date: '2015-12-24'
+        base: EUR
+        rates:
+          USD:
+            start_rate: 1.066494
+            end_rate: 1.073844
+            change: 0.00735
+            change_pct: 0.6899
+    TimeSeriesResponse:
+      description: Daily time-series rates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        timeseries:
+          type: boolean
+          example: true
+        start_date:
+          type: string
+          format: date
+          example: '2012-05-01'
+        end_date:
+          type: string
+          format: date
+          example: '2012-05-03'
+        base:
+          type: string
+          example: EUR
+        rates:
+          description: Map of ISO date -> (map of currency -> rate).
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: number
+      type: object
+      example:
+        success: true
+        timeseries: true
+        start_date: '2012-05-01'
+        end_date: '2012-05-03'
+        base: EUR
+        rates:
+          '2012-05-01':
+            USD: 1.322891
+            AUD: 1.278047
+            CAD: 1.302303
+          '2012-05-02':
+            USD: 1.315066
+            AUD: 1.274202
+            CAD: 1.299083
+    ConvertResponse_2:
+      description: Convert endpoint response.
+      properties:
+        success:
+          type: boolean
+          example: true
+        query:
+          $ref: '#/components/schemas/ConvertQuery'
+        info:
+          $ref: '#/components/schemas/ConvertInfo'
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2018-02-22'
+        result:
+          type: number
+          example: 3724.305775
+      type: object
+    SymbolsResponse:
+      description: Supported currency symbols.
+      properties:
+        success:
+          type: boolean
+          example: true
+        symbols:
+          description: Map of currency code -> name.
+          type: object
+          additionalProperties:
+            type: string
+      type: object
+      example:
+        success: true
+        symbols:
+          USD: United States Dollar
+          EUR: Euro
+          GBP: British Pound Sterling
+    ConvertQuery:
+      properties:
+        from:
+          type: string
+          example: GBP
+        to:
+          type: string
+          example: JPY
+        amount:
+          type: number
+          example: 25
+      type: object
+    IpLookupResponse:
+      title: IpLookupResponse
+      description: Geolocation and metadata for a single IP address. The location, time_zone, currency, connection and security sub-objects depend on the plan and the enabled modules (hostname/security).
+      properties:
+        ip:
+          type: string
+          example: 134.201.250.155
+        hostname:
+          description: Present when hostname=1.
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+          example: ipv4
+        continent_code:
+          type: string
+          example: NA
+        continent_name:
+          type: string
+          example: North America
+        country_code:
+          type: string
+          example: US
+        country_name:
+          type: string
+          example: United States
+        region_code:
+          type:
+          - string
+          - 'null'
+          example: CA
+        region_name:
+          type:
+          - string
+          - 'null'
+          example: California
+        city:
+          type:
+          - string
+          - 'null'
+          example: Los Angeles
+        zip:
+          type:
+          - string
+          - 'null'
+          example: '90013'
+        latitude:
+          type:
+          - number
+          - 'null'
+          format: double
+          example: 34.0655
+        longitude:
+          type:
+          - number
+          - 'null'
+          format: double
+          example: -118.2405
+        msa:
+          type:
+          - string
+          - 'null'
+        dma:
+          type:
+          - string
+          - 'null'
+        radius:
+          type:
+          - number
+          - 'null'
+        ip_routing_type:
+          type:
+          - string
+          - 'null'
+        connection_type:
+          type:
+          - string
+          - 'null'
+        location:
+          description: Country and locality metadata.
+          properties:
+            geoname_id:
+              type:
+              - integer
+              - 'null'
+            capital:
+              type:
+              - string
+              - 'null'
+              example: Washington D.C.
+            languages:
+              type: array
+              items:
+                properties:
+                  code:
+                    type: string
+                    example: en
+                  name:
+                    type: string
+                    example: English
+                  native:
+                    type: string
+                    example: English
+                type: object
+            country_flag:
+              type:
+              - string
+              - 'null'
+              format: uri
+            country_flag_emoji:
+              type:
+              - string
+              - 'null'
+            country_flag_emoji_unicode:
+              type:
+              - string
+              - 'null'
+            calling_code:
+              type:
+              - string
+              - 'null'
+              example: '1'
+            is_eu:
+              type:
+              - boolean
+              - 'null'
+          type:
+          - object
+          - 'null'
+        time_zone:
+          description: Time zone metadata.
+          properties:
+            id:
+              type: string
+              example: America/Los_Angeles
+            current_time:
+              type: string
+              format: date-time
+            gmt_offset:
+              type: integer
+            code:
+              type: string
+              example: PDT
+            is_daylight_saving:
+              type: boolean
+          type:
+          - object
+          - 'null'
+        currency:
+          description: Currency metadata for the country.
+          properties:
+            code:
+              type: string
+              example: USD
+            name:
+              type: string
+              example: US Dollar
+            plural:
+              type: string
+              example: US dollars
+            symbol:
+              type: string
+              example: $
+            symbol_native:
+              type: string
+              example: $
+          type:
+          - object
+          - 'null'
+        connection:
+          description: Network and ISP data.
+          properties:
+            asn:
+              type:
+              - integer
+              - 'null'
+            isp:
+              type:
+              - string
+              - 'null'
+            sld:
+              type:
+              - string
+              - 'null'
+            tld:
+              type:
+              - string
+              - 'null'
+            carrier:
+              type:
+              - string
+              - 'null'
+            home:
+              type:
+              - boolean
+              - 'null'
+            organization_type:
+              type:
+              - string
+              - 'null'
+            isic_code:
+              type:
+              - string
+              - 'null'
+            naics_code:
+              type:
+              - string
+              - 'null'
+          type:
+          - object
+          - 'null'
+        security:
+          description: Security assessment (present when security=1 and the plan supports it).
+          properties:
+            is_proxy:
+              type:
+              - boolean
+              - 'null'
+            proxy_type:
+              type:
+              - string
+              - 'null'
+            is_crawler:
+              type:
+              - boolean
+              - 'null'
+            crawler_name:
+              type:
+              - string
+              - 'null'
+            crawler_type:
+              type:
+              - string
+              - 'null'
+            is_tor:
+              type:
+              - boolean
+              - 'null'
+            threat_level:
+              type:
+              - string
+              - 'null'
+              example: low
+            threat_types:
+              type:
+              - array
+              - 'null'
+              items:
+                type: string
+            proxy_last_detected:
+              type:
+              - string
+              - 'null'
+            proxy_level:
+              type:
+              - string
+              - 'null'
+            vpn_service:
+              type:
+              - string
+              - 'null'
+            anonymizer_status:
+              type:
+              - string
+              - 'null'
+            hosting_facility:
+              type:
+              - boolean
+              - 'null'
+          type:
+          - object
+          - 'null'
+      type: object
+      example:
+        ip: 161.185.160.93
+        type: ipv4
+        continent_code: NA
+        continent_name: North America
+        country_code: US
+        country_name: United States
+        region_code: NY
+        region_name: New York
+        city: Bath Beach
+        zip: '11201'
+        latitude: 40.69459915161133
+        longitude: -73.99063873291016
+        msa: '35620'
+        dma: '501'
+        radius: 30.012950897216797
+        ip_routing_type: fixed
+        connection_type: tx
+        hostname: 161.185.160.93
+        location:
+          geoname_id: 5110302
+          capital: Washington D.C.
+          languages:
+          - code: en
+            name: English
+            native: English
+          country_flag: https://assets.ipapi.com/images/assets/flags_svg/us.svg
+          country_flag_emoji: 🇺🇸
+          country_flag_emoji_unicode: U+1F1FA U+1F1F8
+          calling_code: '1'
+          is_eu: false
+        time_zone:
+          id: America/New_York
+          current_time: '2024-06-14T00:26:20-04:00'
+          gmt_offset: -14400
+          code: EDT
+          is_daylight_saving: true
+        currency:
+          code: USD
+          name: US Dollar
+          plural: US dollars
+          symbol: $
+          symbol_native: $
+        connection:
+          asn: 22252
+          isp: The City of New York
+          sld: nyc
+          tld: gov
+          carrier: the city of new york
+          home: false
+          organization_type: Government (Municipal)
+          isic_code: O8411
+          naics_code: 009211
+        security:
+          is_proxy: false
+          proxy_type: null
+          is_crawler: false
+          crawler_name: null
+          crawler_type: null
+          is_tor: false
+          threat_level: low
+          threat_types: null
+          proxy_last_detected: null
+          proxy_level: null
+          vpn_service: null
+          anonymizer_status: null
+          hosting_facility: false
+x-refined-from:
+- apilayer-exchangerate-openapi-original.json
+- apilayer-exchangeratesapi-openapi-original.json
+- apilayer-ipapi-openapi-original.json

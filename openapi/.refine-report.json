@@ -1,0 +1,32 @@
+{
+  "provider": "apilayer",
+  "sources": [
+    "_original/apilayer-exchangerate-openapi-original.json",
+    "_original/apilayer-exchangeratesapi-openapi-original.json",
+    "_original/apilayer-ipapi-openapi-original.json"
+  ],
+  "outputs": [
+    "apilayer-endpoints-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "3 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "apilayer-exchangerate-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apilayer-exchangerate-openapi-original.json: declared missing tag: Endpoints",
+    "apilayer-exchangeratesapi-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apilayer-exchangeratesapi-openapi-original.json: declared missing tag: Endpoints",
+    "apilayer-ipapi-openapi-original.json: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "apilayer-ipapi-openapi-original.json: declared missing tag: Endpoints",
+    "tag 'Endpoints' spans 3 source specs (apilayer-exchangerate-openapi-original.json, apilayer-exchangeratesapi-openapi-original.json, apilayer-ipapi-openapi-original.json): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/apilayer-ipapi-openapi.yml: archived document superseded by a larger archived document",
+    "_original/apilayer-exchangeratesapi-openapi.yml: archived document superseded by a larger archived document",
+    "_original/apilayer-exchangerate-openapi.yml: archived document superseded by a larger archived document",
+    "apilayer-endpoints-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

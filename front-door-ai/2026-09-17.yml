@@ -1,0 +1,32 @@
+# Front Door AI Index — apilayer — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: apilayer
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: apilayer.com
+  final_host: apilayer.com
+  ownership: own
+  owner: apilayer
+  shares_host_with:
+  - bank-data-api
+  - checkiday-national-holiday-api
+  - image-upload
+  - smart-image-enhancement-api
+  - tax-data-api
+  inherited_from: null
+  verdict: scored
+  score: 3
+  host_score: 3
+  density: 1.69
+  words: 1772
+  tiers:
+    agentic: 1
+    core: 2
+    model: 0
+  ambiguous: 3
+  top_terms:
+    intelligence: 3
+    AI: 2
+    MCP: 1
