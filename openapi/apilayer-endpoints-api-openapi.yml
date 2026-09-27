@@ -1232,60 +1232,37 @@ paths:
     - url: https://api.ipapi.com/api
 components:
   responses:
-    '429':
-      description: Too Many Requests
+    '403':
+      description: Forbidden
       content:
         application/json; Charset=UTF-8:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            usage_limit_reached:
-              summary: usage_limit_reached
+            https_access_restricted:
+              summary: https_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: https_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
+            function_access_restricted:
+              summary: function_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: function_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support this API Function.
+            api_access_blocked:
+              summary: api_access_blocked
               value:
                 success: false
                 error:
                   code: 104
-                  type: usage_limit_reached
-                  info: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
-            daily_usage_limit_reached:
-              summary: daily_usage_limit_reached
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: daily_usage_limit_reached
-                  info: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan.
-            fair_use_limit_reached:
-              summary: fair_use_limit_reached
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: fair_use_limit_reached
-                  info: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
-            rate_limit_reached:
-              summary: rate_limit_reached
-              value:
-                success: false
-                error:
-                  code: 106
-                  type: rate_limit_reached
-                  info: 'You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the "Rate Limits" section of the API Documentation for details. '
-    '503':
-      description: Service Unavailable
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            maintenance_mode:
-              summary: maintenance_mode
-              value:
-                success: false
-                error:
-                  code: 503
-                  type: maintenance_mode
-                  info: ''
+                  type: api_access_blocked
+                  info: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support.
     '404':
       description: Not Found
       content:
@@ -1309,6 +1286,21 @@ components:
                   code: 404
                   type: 404_not_found
                   info: 404 - The requested resource could not be found. Please try again or contact support.
+    '500':
+      description: Internal Server Error
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            internal_error:
+              summary: internal_error
+              value:
+                success: false
+                error:
+                  code: 0
+                  type: internal_error
+                  info: 'An error has occured. [Technical Support: support@apilayer.com]'
     '401':
       description: Unauthorized
       content:
@@ -1348,93 +1340,61 @@ components:
                   code: 102
                   type: inactive_user
                   info: Permission denied - User not active.
-    '403':
-      description: Forbidden
+    '503':
+      description: Service Unavailable
       content:
         application/json; Charset=UTF-8:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            https_access_restricted:
-              summary: https_access_restricted
+            maintenance_mode:
+              summary: maintenance_mode
               value:
                 success: false
                 error:
-                  code: 105
-                  type: https_access_restricted
-                  info: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
-            function_access_restricted:
-              summary: function_access_restricted
-              value:
-                success: false
-                error:
-                  code: 105
-                  type: function_access_restricted
-                  info: Access Restricted - Your current Subscription Plan does not support this API Function.
-            api_access_blocked:
-              summary: api_access_blocked
+                  code: 503
+                  type: maintenance_mode
+                  info: ''
+    '429':
+      description: Too Many Requests
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            usage_limit_reached:
+              summary: usage_limit_reached
               value:
                 success: false
                 error:
                   code: 104
-                  type: api_access_blocked
-                  info: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support.
-    '500':
-      description: Internal Server Error
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            internal_error:
-              summary: internal_error
+                  type: usage_limit_reached
+                  info: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
+            daily_usage_limit_reached:
+              summary: daily_usage_limit_reached
               value:
                 success: false
                 error:
-                  code: 0
-                  type: internal_error
-                  info: 'An error has occured. [Technical Support: support@apilayer.com]'
+                  code: 104
+                  type: daily_usage_limit_reached
+                  info: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan.
+            fair_use_limit_reached:
+              summary: fair_use_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: fair_use_limit_reached
+                  info: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
+            rate_limit_reached:
+              summary: rate_limit_reached
+              value:
+                success: false
+                error:
+                  code: 106
+                  type: rate_limit_reached
+                  info: 'You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the "Rate Limits" section of the API Documentation for details. '
   schemas:
-    HistoricalResponse:
-      description: Historical exchange rate data for a date.
-      properties:
-        success:
-          type: boolean
-          example: true
-        terms:
-          type: string
-        privacy:
-          type: string
-        historical:
-          type: boolean
-          example: true
-        date:
-          type: string
-          format: date
-          example: '2005-02-01'
-        timestamp:
-          type: integer
-          example: 1430401802
-        source:
-          type: string
-          example: USD
-        quotes:
-          type: object
-          additionalProperties:
-            type: number
-      type: object
-      example:
-        success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        historical: true
-        date: '2005-02-01'
-        timestamp: 1430401802
-        source: USD
-        quotes:
-          USDEUR: 0.918019
-          USDGBP: 0.650364
-          USDJPY: 119.640479
     TimeframeResponse:
       description: Exchange-rate quotes for each date in a timeframe.
       properties:
@@ -1485,6 +1445,59 @@ components:
           '2012-05-03':
             USDAUD: 0.95404
             USDCHF: 0.91525
+    ChangeResponse:
+      description: Currency fluctuation between two dates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        change:
+          type: boolean
+          example: true
+        start_date:
+          type: string
+          format: date
+          example: '2015-01-01'
+        end_date:
+          type: string
+          format: date
+          example: '2015-01-02'
+        source:
+          type: string
+          example: USD
+        quotes:
+          description: Map of currency pair -> change statistics.
+          type: object
+          additionalProperties:
+            properties:
+              start_rate:
+                type: number
+              end_rate:
+                type: number
+              change:
+                type: number
+              change_pct:
+                type: number
+            type: object
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        change: true
+        start_date: '2015-01-01'
+        end_date: '2015-01-02'
+        source: USD
+        quotes:
+          USDAUD:
+            start_rate: 1.2345
+            end_rate: 1.3456
+            change: 0.1111
+            change_pct: 0.09
     ConvertResponse:
       description: Currency conversion result.
       properties:
@@ -1520,6 +1533,46 @@ components:
           type: number
           example: 8.13399
       type: object
+    HistoricalResponse:
+      description: Historical exchange rate data for a date.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2005-02-01'
+        timestamp:
+          type: integer
+          example: 1430401802
+        source:
+          type: string
+          example: USD
+        quotes:
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        historical: true
+        date: '2005-02-01'
+        timestamp: 1430401802
+        source: USD
+        quotes:
+          USDEUR: 0.918019
+          USDGBP: 0.650364
+          USDJPY: 119.640479
     LiveResponse:
       description: Real-time exchange rates.
       properties:
@@ -1576,59 +1629,49 @@ components:
             info:
               type: string
               example: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
-    ChangeResponse:
-      description: Currency fluctuation between two dates.
+    TimeSeriesResponse:
+      description: Daily time-series rates.
       properties:
         success:
           type: boolean
           example: true
-        terms:
-          type: string
-        privacy:
-          type: string
-        change:
+        timeseries:
           type: boolean
           example: true
         start_date:
           type: string
           format: date
-          example: '2015-01-01'
+          example: '2012-05-01'
         end_date:
           type: string
           format: date
-          example: '2015-01-02'
-        source:
+          example: '2012-05-03'
+        base:
           type: string
-          example: USD
-        quotes:
-          description: Map of currency pair -> change statistics.
+          example: EUR
+        rates:
+          description: Map of ISO date -> (map of currency -> rate).
           type: object
           additionalProperties:
-            properties:
-              start_rate:
-                type: number
-              end_rate:
-                type: number
-              change:
-                type: number
-              change_pct:
-                type: number
             type: object
+            additionalProperties:
+              type: number
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        change: true
-        start_date: '2015-01-01'
-        end_date: '2015-01-02'
-        source: USD
-        quotes:
-          USDAUD:
-            start_rate: 1.2345
-            end_rate: 1.3456
-            change: 0.1111
-            change_pct: 0.09
+        timeseries: true
+        start_date: '2012-05-01'
+        end_date: '2012-05-03'
+        base: EUR
+        rates:
+          '2012-05-01':
+            USD: 1.322891
+            AUD: 1.278047
+            CAD: 1.302303
+          '2012-05-02':
+            USD: 1.315066
+            AUD: 1.274202
+            CAD: 1.299083
     LatestRatesResponse:
       description: Latest exchange rates snapshot.
       properties:
@@ -1660,48 +1703,35 @@ components:
           USD: 1.23396
           GBP: 0.882047
           JPY: 132.360679
-    HistoricalRatesResponse:
-      description: Historical rates for a date.
+    SymbolsResponse:
+      description: Supported currency symbols.
       properties:
         success:
           type: boolean
           example: true
-        historical:
-          type: boolean
-          example: true
-        date:
-          type: string
-          format: date
-          example: '2013-12-24'
-        timestamp:
-          type: integer
-          example: 1387929599
-        base:
-          type: string
-          example: GBP
-        rates:
+        symbols:
+          description: Map of currency code -> name.
           type: object
           additionalProperties:
-            type: number
+            type: string
       type: object
       example:
         success: true
-        historical: true
-        date: '2013-12-24'
-        timestamp: 1387929599
-        base: GBP
-        rates:
-          USD: 1.636492
-          EUR: 1.196476
-          CAD: 1.739516
-    ConvertInfo:
+        symbols:
+          USD: United States Dollar
+          EUR: Euro
+          GBP: British Pound Sterling
+    ConvertQuery:
       properties:
-        timestamp:
-          type: integer
-          example: 1519328414
-        rate:
+        from:
+          type: string
+          example: GBP
+        to:
+          type: string
+          example: JPY
+        amount:
           type: number
-          example: 148.972231
+          example: 25
       type: object
     FluctuationResponse:
       description: Fluctuation analysis between two dates.
@@ -1750,49 +1780,49 @@ components:
             end_rate: 1.073844
             change: 0.00735
             change_pct: 0.6899
-    TimeSeriesResponse:
-      description: Daily time-series rates.
+    HistoricalRatesResponse:
+      description: Historical rates for a date.
       properties:
         success:
           type: boolean
           example: true
-        timeseries:
+        historical:
           type: boolean
           example: true
-        start_date:
+        date:
           type: string
           format: date
-          example: '2012-05-01'
-        end_date:
-          type: string
-          format: date
-          example: '2012-05-03'
+          example: '2013-12-24'
+        timestamp:
+          type: integer
+          example: 1387929599
         base:
           type: string
-          example: EUR
+          example: GBP
         rates:
-          description: Map of ISO date -> (map of currency -> rate).
           type: object
           additionalProperties:
-            type: object
-            additionalProperties:
-              type: number
+            type: number
       type: object
       example:
         success: true
-        timeseries: true
-        start_date: '2012-05-01'
-        end_date: '2012-05-03'
-        base: EUR
+        historical: true
+        date: '2013-12-24'
+        timestamp: 1387929599
+        base: GBP
         rates:
-          '2012-05-01':
-            USD: 1.322891
-            AUD: 1.278047
-            CAD: 1.302303
-          '2012-05-02':
-            USD: 1.315066
-            AUD: 1.274202
-            CAD: 1.299083
+          USD: 1.636492
+          EUR: 1.196476
+          CAD: 1.739516
+    ConvertInfo:
+      properties:
+        timestamp:
+          type: integer
+          example: 1519328414
+        rate:
+          type: number
+          example: 148.972231
+      type: object
     ConvertResponse_2:
       description: Convert endpoint response.
       properties:
@@ -1813,36 +1843,6 @@ components:
         result:
           type: number
           example: 3724.305775
-      type: object
-    SymbolsResponse:
-      description: Supported currency symbols.
-      properties:
-        success:
-          type: boolean
-          example: true
-        symbols:
-          description: Map of currency code -> name.
-          type: object
-          additionalProperties:
-            type: string
-      type: object
-      example:
-        success: true
-        symbols:
-          USD: United States Dollar
-          EUR: Euro
-          GBP: British Pound Sterling
-    ConvertQuery:
-      properties:
-        from:
-          type: string
-          example: GBP
-        to:
-          type: string
-          example: JPY
-        amount:
-          type: number
-          example: 25
       type: object
     IpLookupResponse:
       title: IpLookupResponse

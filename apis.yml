@@ -110,6 +110,24 @@ apis:
     url: https://docs.apilayer.com/ipapi/docs/api-documentation
   - type: Pricing
     url: https://ipapi.com/pricing
+- name: Bank Data API
+  description: Instant IBAN and SWIFT number validation across the globe
+  humanURL: https://apilayer.com/marketplace/bank_data-api
+  baseURL: https://apilayer.com/marketplace/bank_data-api
+  tags:
+  - Finance
+  properties:
+  - type: Documentation
+    url: https://apilayer.com/marketplace/bank_data-api
+- name: Tax Data API
+  description: Instant VAT number and tax validation across the globe
+  humanURL: https://apilayer.com/marketplace/tax_data-api
+  baseURL: https://apilayer.com/marketplace/tax_data-api
+  tags:
+  - Finance
+  properties:
+  - type: Documentation
+    url: https://apilayer.com/marketplace/tax_data-api
 common:
 - type: Overlay
   url: overlays/apilayer-exchangerate-overlay.yaml
