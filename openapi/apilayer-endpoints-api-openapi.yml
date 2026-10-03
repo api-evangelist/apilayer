@@ -1231,170 +1231,47 @@ paths:
     servers:
     - url: https://api.ipapi.com/api
 components:
-  responses:
-    '403':
-      description: Forbidden
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            https_access_restricted:
-              summary: https_access_restricted
-              value:
-                success: false
-                error:
-                  code: 105
-                  type: https_access_restricted
-                  info: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
-            function_access_restricted:
-              summary: function_access_restricted
-              value:
-                success: false
-                error:
-                  code: 105
-                  type: function_access_restricted
-                  info: Access Restricted - Your current Subscription Plan does not support this API Function.
-            api_access_blocked:
-              summary: api_access_blocked
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: api_access_blocked
-                  info: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support.
-    '404':
-      description: Not Found
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            invalid_api_function:
-              summary: invalid_api_function
-              value:
-                success: false
-                error:
-                  code: 103
-                  type: invalid_api_function
-                  info: This API Function does not exist.
-            404_not_found:
-              summary: 404_not_found
-              value:
-                success: false
-                error:
-                  code: 404
-                  type: 404_not_found
-                  info: 404 - The requested resource could not be found. Please try again or contact support.
-    '500':
-      description: Internal Server Error
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            internal_error:
-              summary: internal_error
-              value:
-                success: false
-                error:
-                  code: 0
-                  type: internal_error
-                  info: 'An error has occured. [Technical Support: support@apilayer.com]'
-    '401':
-      description: Unauthorized
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            account_on_hold:
-              summary: account_on_hold
-              value:
-                success: false
-                error:
-                  code: 107
-                  type: account_on_hold
-                  info: 'Your account currently has open invoices and API has been automatically disabled. Please settle your open balance or downgrade to the Free Plan to restore API access. [Support: support@apilayer.com]'
-            invalid_access_key:
-              summary: invalid_access_key
-              value:
-                success: false
-                error:
-                  code: 101
-                  type: invalid_access_key
-                  info: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
-            missing_access_key:
-              summary: missing_access_key
-              value:
-                success: false
-                error:
-                  code: 101
-                  type: missing_access_key
-                  info: 'You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]'
-            inactive_user:
-              summary: inactive_user
-              value:
-                success: false
-                error:
-                  code: 102
-                  type: inactive_user
-                  info: Permission denied - User not active.
-    '503':
-      description: Service Unavailable
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            maintenance_mode:
-              summary: maintenance_mode
-              value:
-                success: false
-                error:
-                  code: 503
-                  type: maintenance_mode
-                  info: ''
-    '429':
-      description: Too Many Requests
-      content:
-        application/json; Charset=UTF-8:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            usage_limit_reached:
-              summary: usage_limit_reached
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: usage_limit_reached
-                  info: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
-            daily_usage_limit_reached:
-              summary: daily_usage_limit_reached
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: daily_usage_limit_reached
-                  info: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan.
-            fair_use_limit_reached:
-              summary: fair_use_limit_reached
-              value:
-                success: false
-                error:
-                  code: 104
-                  type: fair_use_limit_reached
-                  info: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
-            rate_limit_reached:
-              summary: rate_limit_reached
-              value:
-                success: false
-                error:
-                  code: 106
-                  type: rate_limit_reached
-                  info: 'You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the "Rate Limits" section of the API Documentation for details. '
   schemas:
+    HistoricalResponse:
+      description: Historical exchange rate data for a date.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+        privacy:
+          type: string
+        historical:
+          type: boolean
+          example: true
+        date:
+          type: string
+          format: date
+          example: '2005-02-01'
+        timestamp:
+          type: integer
+          example: 1430401802
+        source:
+          type: string
+          example: USD
+        quotes:
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        historical: true
+        date: '2005-02-01'
+        timestamp: 1430401802
+        source: USD
+        quotes:
+          USDEUR: 0.918019
+          USDGBP: 0.650364
+          USDJPY: 119.640479
     TimeframeResponse:
       description: Exchange-rate quotes for each date in a timeframe.
       properties:
@@ -1445,6 +1322,62 @@ components:
           '2012-05-03':
             USDAUD: 0.95404
             USDCHF: 0.91525
+    LiveResponse:
+      description: Real-time exchange rates.
+      properties:
+        success:
+          type: boolean
+          example: true
+        terms:
+          type: string
+          example: https://currencylayer.com/terms
+        privacy:
+          type: string
+          example: https://currencylayer.com/privacy
+        timestamp:
+          type: integer
+          example: 1430401802
+        source:
+          type: string
+          example: USD
+        quotes:
+          description: Currency-pair quotes keyed by pair symbol (e.g. USDEUR).
+          type: object
+          additionalProperties:
+            type: number
+      type: object
+      example:
+        success: true
+        terms: https://currencylayer.com/terms
+        privacy: https://currencylayer.com/privacy
+        timestamp: 1430401802
+        source: USD
+        quotes:
+          USDEUR: 0.918019
+          USDGBP: 0.650364
+          USDJPY: 119.640479
+    Error:
+      title: Error
+      type: object
+      required:
+      - success
+      - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 101
+            type:
+              type: string
+              example: invalid_access_key
+            info:
+              type: string
+              example: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
     ChangeResponse:
       description: Currency fluctuation between two dates.
       properties:
@@ -1533,102 +1466,49 @@ components:
           type: number
           example: 8.13399
       type: object
-    HistoricalResponse:
-      description: Historical exchange rate data for a date.
+    LatestRatesResponse:
+      description: Latest exchange rates snapshot.
       properties:
         success:
           type: boolean
           example: true
-        terms:
+        timestamp:
+          type: integer
+          example: 1519296206
+        base:
           type: string
-        privacy:
-          type: string
-        historical:
-          type: boolean
-          example: true
+          example: EUR
         date:
           type: string
           format: date
-          example: '2005-02-01'
-        timestamp:
-          type: integer
-          example: 1430401802
-        source:
-          type: string
-          example: USD
-        quotes:
+          example: '2025-09-15'
+        rates:
+          description: Map of currency code -> rate relative to base.
           type: object
           additionalProperties:
             type: number
       type: object
       example:
         success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        historical: true
-        date: '2005-02-01'
-        timestamp: 1430401802
-        source: USD
-        quotes:
-          USDEUR: 0.918019
-          USDGBP: 0.650364
-          USDJPY: 119.640479
-    LiveResponse:
-      description: Real-time exchange rates.
+        timestamp: 1519296206
+        base: EUR
+        date: '2025-09-15'
+        rates:
+          USD: 1.23396
+          GBP: 0.882047
+          JPY: 132.360679
+    ConvertQuery:
       properties:
-        success:
-          type: boolean
-          example: true
-        terms:
+        from:
           type: string
-          example: https://currencylayer.com/terms
-        privacy:
+          example: GBP
+        to:
           type: string
-          example: https://currencylayer.com/privacy
-        timestamp:
-          type: integer
-          example: 1430401802
-        source:
-          type: string
-          example: USD
-        quotes:
-          description: Currency-pair quotes keyed by pair symbol (e.g. USDEUR).
-          type: object
-          additionalProperties:
-            type: number
+          example: JPY
+        amount:
+          type: number
+          example: 25
       type: object
-      example:
-        success: true
-        terms: https://currencylayer.com/terms
-        privacy: https://currencylayer.com/privacy
-        timestamp: 1430401802
-        source: USD
-        quotes:
-          USDEUR: 0.918019
-          USDGBP: 0.650364
-          USDJPY: 119.640479
-    Error:
-      title: Error
-      type: object
-      required:
-      - success
-      - error
-      properties:
-        success:
-          type: boolean
-          example: false
-        error:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 101
-            type:
-              type: string
-              example: invalid_access_key
-            info:
-              type: string
-              example: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
     TimeSeriesResponse:
       description: Daily time-series rates.
       properties:
@@ -1672,37 +1552,36 @@ components:
             USD: 1.315066
             AUD: 1.274202
             CAD: 1.299083
-    LatestRatesResponse:
-      description: Latest exchange rates snapshot.
+    ConvertInfo:
+      properties:
+        timestamp:
+          type: integer
+          example: 1519328414
+        rate:
+          type: number
+          example: 148.972231
+      type: object
+    ConvertResponse_2:
+      description: Convert endpoint response.
       properties:
         success:
           type: boolean
           example: true
-        timestamp:
-          type: integer
-          example: 1519296206
-        base:
-          type: string
-          example: EUR
+        query:
+          $ref: '#/components/schemas/ConvertQuery'
+        info:
+          $ref: '#/components/schemas/ConvertInfo'
+        historical:
+          type: boolean
+          example: true
         date:
           type: string
           format: date
-          example: '2025-09-15'
-        rates:
-          description: Map of currency code -> rate relative to base.
-          type: object
-          additionalProperties:
-            type: number
+          example: '2018-02-22'
+        result:
+          type: number
+          example: 3724.305775
       type: object
-      example:
-        success: true
-        timestamp: 1519296206
-        base: EUR
-        date: '2025-09-15'
-        rates:
-          USD: 1.23396
-          GBP: 0.882047
-          JPY: 132.360679
     SymbolsResponse:
       description: Supported currency symbols.
       properties:
@@ -1721,18 +1600,6 @@ components:
           USD: United States Dollar
           EUR: Euro
           GBP: British Pound Sterling
-    ConvertQuery:
-      properties:
-        from:
-          type: string
-          example: GBP
-        to:
-          type: string
-          example: JPY
-        amount:
-          type: number
-          example: 25
-      type: object
     FluctuationResponse:
       description: Fluctuation analysis between two dates.
       properties:
@@ -1814,36 +1681,6 @@ components:
           USD: 1.636492
           EUR: 1.196476
           CAD: 1.739516
-    ConvertInfo:
-      properties:
-        timestamp:
-          type: integer
-          example: 1519328414
-        rate:
-          type: number
-          example: 148.972231
-      type: object
-    ConvertResponse_2:
-      description: Convert endpoint response.
-      properties:
-        success:
-          type: boolean
-          example: true
-        query:
-          $ref: '#/components/schemas/ConvertQuery'
-        info:
-          $ref: '#/components/schemas/ConvertInfo'
-        historical:
-          type: boolean
-          example: true
-        date:
-          type: string
-          format: date
-          example: '2018-02-22'
-        result:
-          type: number
-          example: 3724.305775
-      type: object
     IpLookupResponse:
       title: IpLookupResponse
       description: Geolocation and metadata for a single IP address. The location, time_zone, currency, connection and security sub-objects depend on the plan and the enabled modules (hostname/security).
@@ -2185,6 +2022,169 @@ components:
           vpn_service: null
           anonymizer_status: null
           hosting_facility: false
+  responses:
+    '503':
+      description: Service Unavailable
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            maintenance_mode:
+              summary: maintenance_mode
+              value:
+                success: false
+                error:
+                  code: 503
+                  type: maintenance_mode
+                  info: ''
+    '403':
+      description: Forbidden
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            https_access_restricted:
+              summary: https_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: https_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support HTTPS Encryption.
+            function_access_restricted:
+              summary: function_access_restricted
+              value:
+                success: false
+                error:
+                  code: 105
+                  type: function_access_restricted
+                  info: Access Restricted - Your current Subscription Plan does not support this API Function.
+            api_access_blocked:
+              summary: api_access_blocked
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: api_access_blocked
+                  info: Your API access has been temporarily disabled. Please upgrade your Subscription Plan or contact support.
+    '429':
+      description: Too Many Requests
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            usage_limit_reached:
+              summary: usage_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: usage_limit_reached
+                  info: Your monthly usage limit has been reached. Please upgrade your Subscription Plan.
+            daily_usage_limit_reached:
+              summary: daily_usage_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: daily_usage_limit_reached
+                  info: Your daily usage limit has been reached. Please try again tomorrow or upgrade your subscription plan.
+            fair_use_limit_reached:
+              summary: fair_use_limit_reached
+              value:
+                success: false
+                error:
+                  code: 104
+                  type: fair_use_limit_reached
+                  info: 'Your fair use limit has been reached. [Please contact support: support@apilayer.com]'
+            rate_limit_reached:
+              summary: rate_limit_reached
+              value:
+                success: false
+                error:
+                  code: 106
+                  type: rate_limit_reached
+                  info: 'You have exceeded the maximum rate limitation allowed on your subscription plan. Please refer to the "Rate Limits" section of the API Documentation for details. '
+    '401':
+      description: Unauthorized
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            account_on_hold:
+              summary: account_on_hold
+              value:
+                success: false
+                error:
+                  code: 107
+                  type: account_on_hold
+                  info: 'Your account currently has open invoices and API has been automatically disabled. Please settle your open balance or downgrade to the Free Plan to restore API access. [Support: support@apilayer.com]'
+            invalid_access_key:
+              summary: invalid_access_key
+              value:
+                success: false
+                error:
+                  code: 101
+                  type: invalid_access_key
+                  info: 'You have not supplied a valid API Access Key. [Technical Support: support@apilayer.com]'
+            missing_access_key:
+              summary: missing_access_key
+              value:
+                success: false
+                error:
+                  code: 101
+                  type: missing_access_key
+                  info: 'You have not supplied an API Access Key. [Required format: access_key=YOUR_ACCESS_KEY]'
+            inactive_user:
+              summary: inactive_user
+              value:
+                success: false
+                error:
+                  code: 102
+                  type: inactive_user
+                  info: Permission denied - User not active.
+    '500':
+      description: Internal Server Error
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            internal_error:
+              summary: internal_error
+              value:
+                success: false
+                error:
+                  code: 0
+                  type: internal_error
+                  info: 'An error has occured. [Technical Support: support@apilayer.com]'
+    '404':
+      description: Not Found
+      content:
+        application/json; Charset=UTF-8:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalid_api_function:
+              summary: invalid_api_function
+              value:
+                success: false
+                error:
+                  code: 103
+                  type: invalid_api_function
+                  info: This API Function does not exist.
+            404_not_found:
+              summary: 404_not_found
+              value:
+                success: false
+                error:
+                  code: 404
+                  type: 404_not_found
+                  info: 404 - The requested resource could not be found. Please try again or contact support.
 x-refined-from:
 - apilayer-exchangerate-openapi-original.json
 - apilayer-exchangeratesapi-openapi-original.json
