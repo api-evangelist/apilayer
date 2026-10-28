@@ -1,4 +1,4 @@
-# APILayer (apilayer)
+# APILayer
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,109 +64,173 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-APILayer is an API marketplace and hub that enables developers to discover, integrate, and build with high-quality, reliable API services. The platform hosts 100+ APIs across categories including geolocation, currency, weather, dev tools, marketing, finance, security, and AI/ML, serving 445,000+ developers with 30 million+ API calls monthly.
+APILayer is an API marketplace and hub, an Idera, Inc. brand headquartered in Vienna, Austria, that publishes and operates a portfolio of self-service REST data APIs alongside a gateway marketplace of third-party APIs. The house products cover IP geolocation (IPstack, ipapi), foreign exchange (Fixer, Currencylayer, ExchangeRate.host, Exchange Rates API), weather (Weatherstack), market data (Marketstack), news (Mediastack), aviation (Aviationstack), scraping and SERP (Scrapestack, Serpstack), and validation utilities (Numverify, Mailboxlayer, Vatlayer, Userstack, Countrylayer, Positionstack, Pdflayer, Screenshotlayer). One account and one dashboard cover every product, each product is keyed and billed separately, and every API has a free plan. APILayer publishes 22 OpenAPI documents from its own SwaggerHub organization, an llms.txt, and an OAuth-protected hosted MCP server.
 
-**URL:** [https://apilayer.com/](https://apilayer.com/)
+**Areas:** API Marketplace · API Catalog · API Discovery · Developer Tools · SaaS APIs · Geolocation · Currency · Data API
 
-## Tags:
+## APILayer on APIs.io
 
- - API Catalog, API Discovery, API Marketplace, Developer Tools, SaaS APIs
+Everything profiled for APILayer is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/apilayer/](https://apis.io/providers/apilayer/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (4)
 
-- **Created:** 2025-03-01
-- **Modified:** 2026-04-19
+- [APILayer Marketplace API](https://apis.io/apis/apilayer/apilayer-api/) — The APILayer marketplace gateway at api.apilayer.com fronts the third-party APIs listed on marketplace.apilayer.com (Bank Data, Tax Data and others) behind…
+- [APILayer Endpoints API](https://apis.io/apis/apilayer/apilayer-endpoints-api/) — The Endpoints API from APILayer — 12 operation(s) for endpoints.
+- [Bank Data API](https://apis.io/apis/apilayer/bank-data-api/) — Instant IBAN and SWIFT number validation across the globe
+- [Tax Data API](https://apis.io/apis/apilayer/tax-data-api/) — Instant VAT number and tax validation across the globe
 
-## APIs
+### Published properties
 
-### APILayer Marketplace API
-The APILayer Marketplace API provides access to 100+ APIs across geolocation, currency, weather, dev tools, marketing, finance, security, and AI/ML categories. Individual APIs include IPstack, Fixer, Currencylayer, Weatherstack, Serpstack, Mediastack, and many more.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-**Human URL:** [https://apilayer.com/](https://apilayer.com/)
+#### MCP servers (1)
 
-#### Tags:
+Model Context Protocol servers that expose the API to agents.
 
- - API Marketplace, Currency, Geolocation, Weather
+- [apilayer](https://apis.io/servers/apilayer/apilayer/)
 
-#### Properties
+#### JSON Schema (1)
 
-- [Documentation](https://apilayer.com/)
-- [Pricing](https://apilayer.com/pricing)
-- [JSONSchema](json-schema/apilayer-api-schema.json)
-- [JSON-LD](json-ld/apilayer-context.jsonld)
+The data models the API reads and writes.
 
-## Common Properties
+- [APILayer API](https://apis.io/schemas/apilayer/apilayer-api/)
+
+#### JSON Structure (1)
+
+Data models expressed in JSON Structure.
+
+- [Apilayer Api Structure](https://apis.io/json-structure/apilayer/apilayer-api-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Apilayer Context](https://apis.io/jsonld/apilayer/apilayer-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [APILayer Vocabulary](https://apis.io/vocabularies/apilayer/apilayer-vocabulary/)
+
+#### Examples (1)
+
+Example requests and responses.
+
+- [Apilayer Api Example](https://apis.io/examples/apilayer/apilayer-api-example/)
+
+#### Overlays (4)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Apilayer Endpoints Api Phrasing Overlay](https://apis.io/overlays/apilayer/apilayer-endpoints-api-phrasing-overlay/)
+- [Apilayer Exchangerate Overlay](https://apis.io/overlays/apilayer/apilayer-exchangerate-overlay/)
+- [Apilayer Exchangeratesapi Overlay](https://apis.io/overlays/apilayer/apilayer-exchangeratesapi-overlay/)
+- [Apilayer Ipapi Overlay](https://apis.io/overlays/apilayer/apilayer-ipapi-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [APILayer — jsonschema rules](https://apis.io/rules/apilayer/apilayer-jsonschema-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Apilayer Authentication](https://apis.io/security/apilayer/apilayer-authentication/)
+- [Apilayer Domain Security](https://apis.io/security/apilayer/apilayer-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Apilayer Scopes](https://apis.io/scopes/apilayer/apilayer-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Apilayer Plans Pricing](https://apis.io/plans/apilayer/apilayer-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Apilayer Rate Limits](https://apis.io/rate-limits/apilayer/apilayer-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Apilayer Finops](https://apis.io/finops/apilayer/apilayer-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://apilayer.com/)
-- [Pricing](https://apilayer.com/pricing)
+- [Documentation](https://docs.apilayer.com/apilayer/docs/api-layer-hub)
+- [Getting started](https://apilayer.com/developers/suite/)
+- [API reference](https://docs.apilayer.com/)
+- [Sign up](https://app.apilayer.com/signup)
+- [Support](https://apilayer.com/support/)
 - [Blog](https://blog.apilayer.com/)
-- [SignUp](https://apilayer.com/signup)
-- [Login](https://apilayer.com/login)
+- [Terms of service](https://www.ideracorp.com/legal/APILayer)
+- [Privacy policy](https://www.ideracorp.com/en/legal/privacypolicy)
+- [GitHub](https://github.com/apilayer)
 
-## Features
+## API Evangelist rating
 
-| Name | Description |
-|------|-------------|
-| API Marketplace | Browse and integrate 100+ high-quality APIs across categories including geolocation, currency, weather, dev tools, and more. |
-| Unified Authentication | Single API key management across multiple APIs from the APILayer platform. |
-| Low Latency Infrastructure | High-performance, reliable API infrastructure with global CDN for low-latency responses. |
-| Developer Dashboard | Centralized dashboard to manage API subscriptions, monitor usage, and access documentation. |
-| Usage Analytics | Real-time usage tracking and analytics across all subscribed APIs. |
+**Kin Score 66.7** — exemplar · rubric 0.25.0 · scored 2026-10-23
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 59.6 |
+| Contract governance | 41.7 |
+| Operational transparency | 65.8 |
+| Developer ergonomics | 67.3 |
+| Access clarity | 69.7 |
 
-| Name | Description |
-|------|-------------|
-| IP Geolocation | Determine user location, timezone, and geographic data from IP addresses using IPstack or IPapi. |
-| Currency Conversion | Access real-time and historical currency exchange rates using Fixer or Currencylayer APIs. |
-| Weather Data | Integrate real-time weather forecasts and historical weather data using Weatherstack. |
-| Search Engine Data | Scrape search engine results programmatically using the Serpstack API. |
-| Phone Validation | Validate and look up phone number details globally using Numverify. |
+**Agent readiness 67.3** — agent-native
 
-## Integrations
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | na |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-| Name | Description |
-|------|-------------|
-| IPstack | IP geolocation API for geographic profiling and location intelligence. |
-| Fixer | Real-time and historical currency exchange rate data API. |
-| Weatherstack | Real-time weather data and forecasting API. |
-| Serpstack | Search engine results page scraping and SERP data API. |
-| Mediastack | Live and historical news data API for media monitoring. |
-| Numverify | Global phone number validation and carrier lookup API. |
-| Coinlayer | Real-time cryptocurrency exchange rate data API. |
-| Pdflayer | HTML to PDF conversion and document generation API. |
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
 
-## Solutions
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/apilayer/](https://apis.io/providers/apilayer/).
 
-| Name | Description |
-|------|-------------|
-| Free Plan | Limited free tier for each API to explore and prototype integrations. |
-| Basic Plan | Entry-level paid plan with increased request limits for individual APIs. |
-| Professional Plan | Higher volume plans for production applications requiring reliable API access. |
-| Enterprise Plan | Custom volume and SLA guarantees for enterprise-scale API consumption. |
+## How this profile is made
 
-## Artifacts
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-Machine-readable schemas organized by format.
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for APILayer: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
 
-### JSON Schema
+## Open an issue
 
-- [apilayer-api-schema.json](json-schema/apilayer-api-schema.json)
-
-### JSON Structure
-
-- [apilayer-api-structure.json](json-structure/apilayer-api-structure.json)
-
-### JSON-LD
-
-- [apilayer-context.jsonld](json-ld/apilayer-context.jsonld)
-
-## Vocabulary
-
-- [APILayer Vocabulary](vocabulary/apilayer-vocabulary.yaml) — Unified taxonomy mapping API marketplace resources, categories, and personas across the APILayer platform domain
-
-## Maintainers
-
-**FN:** Kin Lane
-
-**Email:** info@apievangelist.com
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/apilayer/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
