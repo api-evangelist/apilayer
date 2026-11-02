@@ -29,6 +29,9 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-02.yml:
+    method: unknown
+    evidence: no authorship recorded
   json-ld/apilayer-context.jsonld:
     method: unknown
     evidence: no authorship recorded
@@ -41,7 +44,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-10-31T095417.yml:
+  kin/checks-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -99,6 +102,15 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-10-31T095417.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T171331.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T200237.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/apilayer-lifecycle.yml:
@@ -186,6 +198,9 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/apilayer-historical-fx-series.md:
+    method: generated
+    evidence: declared in the artifact
+  sla/apilayer-sla.yml:
     method: generated
     evidence: declared in the artifact
   vocabulary/apilayer-vocabulary.yaml:
