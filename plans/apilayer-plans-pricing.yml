@@ -1,0 +1,153 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://exchangerate.host/pricing
+sources:
+- https://exchangerate.host/pricing
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T120612
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: true
+note: Monthly and yearly prices listed per tier; free tier limited to non-commercial use.
+plan_count: 8
+currency: USD
+plans:
+- name: FREE
+  price_text: '0'
+  price: 0
+  period: month
+  unit: requests
+  included_quota: 100 Requests / mo
+- name: BASIC
+  price_text: $14.99
+  price: 14.99
+  currency: USD
+  period: month
+  unit: requests
+  included_quota: 10,000 Requests / mo
+  overage: + 0.005996 each
+- name: BASIC (yearly)
+  price_text: $161.99
+  price: 161.99
+  currency: USD
+  period: year
+  unit: requests
+  included_quota: 10,000 Requests / mo
+  overage: + 0.005996 each
+- name: PROFESSIONAL PLUS
+  price_text: $59.99
+  price: 59.99
+  currency: USD
+  period: month
+  unit: requests
+  included_quota: 100,000 Requests / mo
+  overage: + 0.0023996 each
+- name: PROFESSIONAL PLUS (yearly)
+  price_text: $629.99
+  price: 629.99
+  currency: USD
+  period: year
+  unit: requests
+  included_quota: 100,000 Requests / mo
+  overage: + 0.0023996 each
+- name: BUSINESS
+  price_text: $99.99
+  price: 99.99
+  currency: USD
+  period: month
+  unit: requests
+  included_quota: 500,000 Requests / mo
+  overage: + 0.00079992 each
+- name: BUSINESS (yearly)
+  price_text: $1,019.99
+  price: 1019.99
+  currency: USD
+  period: year
+  unit: requests
+  included_quota: 500,000 Requests / mo
+  overage: + 0.00079992 each
+- name: Custom
+  price_text: Contact Us
+  period: none
+  included_quota: Volume Requests
+rate_limit_statements:
+- All API requests are subject to rate limits.
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  units:
+  - request
+  plans:
+  - name: FREE
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - request
+    periods:
+    - month
+  - name: BASIC
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - month
+  - name: BASIC (yearly)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - year
+  - name: PROFESSIONAL PLUS
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - month
+  - name: PROFESSIONAL PLUS (yearly)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - year
+  - name: BUSINESS
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - month
+  - name: BUSINESS (yearly)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - request
+    periods:
+    - year
+  - name: Custom
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
